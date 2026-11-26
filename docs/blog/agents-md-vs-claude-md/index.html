@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="en" data-ai-url="https://bugsy-ai.bugsy-ai.workers.dev/chat">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-7q7lZnB/O21xdpB9Iv5ENpUmsQIxXxmsGhq3Y6NPAS0='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' https://bugsy-ai.bugsy-ai.workers.dev; frame-src https://www.youtube-nocookie.com; worker-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'self';">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<title>AGENTS.md vs CLAUDE.md: Which One Do You Need?</title>
+<meta name="description" content="AGENTS.md is read by most coding agents, CLAUDE.md by Claude Code. How they differ, and the one-line setup that keeps both in sync.">
+<link rel="canonical" href="https://bytebuddydev.com/blog/agents-md-vs-claude-md/">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<meta name="color-scheme" content="dark light">
+<meta name="theme-color" content="#0b0814" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#faf8f4" media="(prefers-color-scheme: light)">
+<script>try{var t=localStorage.getItem('bb-theme');if(t==='light'||t==='dark')document.documentElement.dataset.theme=t}catch(e){}</script>
+<meta property="og:site_name" content="Byte Buddy">
+<meta property="og:type" content="article">
+<meta property="og:title" content="AGENTS.md vs CLAUDE.md: Which One Do You Need?">
+<meta property="og:description" content="AGENTS.md is read by most coding agents, CLAUDE.md by Claude Code. How they differ, and the one-line setup that keeps both in sync.">
+<meta property="og:url" content="https://bytebuddydev.com/blog/agents-md-vs-claude-md/">
+<meta property="og:image" content="https://bytebuddydev.com/img/og.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="/img/favicon-48.png" sizes="48x48" type="image/png">
+<link rel="apple-touch-icon" href="/img/icon-192.png">
+<link rel="alternate" type="application/rss+xml" title="Byte Buddy Blog" href="/blog/rss.xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600..800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap">
+<link rel="stylesheet" href="/assets/site.css?v=mwy0l1t3">
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://bytebuddydev.com/#org","name":"Byte Buddy","url":"https://bytebuddydev.com/","logo":"https://bytebuddydev.com/img/icon-192.png","sameAs":["https://www.youtube.com/@bytebuddydev","https://www.instagram.com/bytebuddydev/","https://www.tiktok.com/@bytebuddydev","https://github.com/bytebuddy-dev"]},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://bytebuddydev.com/"},{"@type":"ListItem","position":2,"name":"Blog","item":"https://bytebuddydev.com/blog/"},{"@type":"ListItem","position":3,"name":"AGENTS.md vs CLAUDE.md: Which One Do You Need?","item":"https://bytebuddydev.com/blog/agents-md-vs-claude-md/"}]},{"@type":"BlogPosting","headline":"AGENTS.md vs CLAUDE.md: Which One Do You Need?","description":"AGENTS.md is read by most coding agents, CLAUDE.md by Claude Code. How they differ, and the one-line setup that keeps both in sync.","datePublished":"2026-11-27","dateModified":"2026-11-27","url":"https://bytebuddydev.com/blog/agents-md-vs-claude-md/","mainEntityOfPage":"https://bytebuddydev.com/blog/agents-md-vs-claude-md/","image":"https://bytebuddydev.com/img/og.jpg","author":{"@id":"https://bytebuddydev.com/#org"},"publisher":{"@id":"https://bytebuddydev.com/#org"}}]}</script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="site-header"><div class="wrap">
+<a class="brand" href="/"><img src="/img/icon-192.png" alt="" width="36" height="36">Byte<span>Buddy</span></a>
+<nav class="nav" aria-label="Main"><a href="/" class="hide-sm">Home</a><a href="/tools/">Tools</a><a href="/skills/" class="hide-xs">Skills</a><a href="/repos/" class="hide-sm">Repos</a><a href="/blog/">Blog</a><a href="/gta/" class="hide-sm">GTA Portfolio</a><a href="/about/" class="hide-xs">About</a></nav>
+<button class="search-btn" type="button" aria-label="Search the site" aria-keyshortcuts="Control+K"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><span>Search</span><kbd>Ctrl K</kbd></button>
+<button class="theme-btn" type="button" aria-label="Switch colour theme"><svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg><svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M4.9 19.1l1.8-1.8M17.3 6.7l1.8-1.8"/></svg></button>
+</div></header>
+<main id="main">
+
+<div class="wrap page-hero"><nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a> / <a href="/blog/">Blog</a> / AGENTS.md vs CLAUDE.md: Which One Do You Need?</nav>
+<span class="eyebrow">🤖 Guide</span>
+<h1>AGENTS.md vs CLAUDE.md: Which One Do You Need?</h1>
+<p class="lead">AGENTS.md is read by most coding agents, CLAUDE.md by Claude Code. How they differ, and the one-line setup that keeps both in sync.</p>
+<p class="meta post-meta">By Byte Buddy · <time datetime="2026-11-27">November 27, 2026</time> · 3 min read</p>
+</div>
+<article class="wrap article post">
+<p><strong>Short answer:</strong> use both, but write your rules only once. Put them in <code>AGENTS.md</code>, and make <code>CLAUDE.md</code> a single line that imports it:</p>
+<pre><code class="language-markdown">@AGENTS.md
+</code></pre>
+<p>Claude Code reads <code>CLAUDE.md</code>, follows the import and gets your rules. Codex, Cursor, Copilot, Gemini CLI and the rest read <code>AGENTS.md</code> directly. One set of rules, every agent.</p>
+<p>The rest of this post explains why, and what goes in each file.</p>
+<h2 id="what-each-file-is">What each file is</h2>
+<p>Both files do the same job: they tell an AI coding agent how to work on your project. That means which command runs the tests, which style to follow, and what it must never touch. Think of them as a README written for the agent instead of for people.</p>
+<ul>
+<li><strong>AGENTS.md</strong> is an open format. It started as a shared effort between OpenAI Codex, Amp, Google&#39;s Jules, Cursor and Factory, and is now looked after by the Agentic AI Foundation under the Linux Foundation. Codex, Cursor, GitHub Copilot, Jules, Gemini CLI, Aider, Zed, Windsurf, Devin, Junie and many more read it.</li>
+<li><strong>CLAUDE.md</strong> is Claude Code&#39;s own file. Claude Code loads it at the start of every session.</li>
+</ul>
+<h2 id="the-differences-that-matter">The differences that matter</h2>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>AGENTS.md</th>
+<th>CLAUDE.md</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Read by</td>
+<td>Most coding agents</td>
+<td>Claude Code</td>
+</tr>
+<tr>
+<td>Format</td>
+<td>Plain Markdown, any headings</td>
+<td>Plain Markdown, plus <code>@path</code> imports</td>
+</tr>
+<tr>
+<td>Where</td>
+<td>Repo root, plus one per package in a monorepo (closest file wins)</td>
+<td>Repo root or <code>.claude/CLAUDE.md</code>; personal rules in <code>~/.claude/CLAUDE.md</code>; private notes in <code>CLAUDE.local.md</code></td>
+</tr>
+<tr>
+<td>Size</td>
+<td>No limit set; shorter is better</td>
+<td>Anthropic recommends under 200 lines</td>
+</tr>
+</tbody></table>
+<p>The <code>@path</code> import is the key difference. A line like <code>@AGENTS.md</code> in a CLAUDE.md pulls that file in, which is what lets one file serve both.</p>
+<h2 id="why-not-only-agents-md">Why not only AGENTS.md?</h2>
+<p>Recent versions of Claude Code can read <code>AGENTS.md</code>, but by default only when there is <strong>no</strong> <code>CLAUDE.md</code>. The moment someone on your team adds a CLAUDE.md (or Claude creates one with <code>/init</code>), your AGENTS.md stops being read. The import line removes that trap.</p>
+<h2 id="why-not-a-symlink">Why not a symlink?</h2>
+<p><code>ln -s AGENTS.md CLAUDE.md</code> works if you never need Claude-only notes, but it has two problems:</p>
+<ul>
+<li>Claude can&#39;t edit a file through a symlink, so it can&#39;t update its own memory file.</li>
+<li>On Windows, symlinks need admin rights or Developer Mode, and Git may check them out as a plain text file holding the path.</li>
+</ul>
+<p>The import works on every system.</p>
+<h2 id="what-goes-where">What goes where</h2>
+<p><strong>AGENTS.md</strong> holds everything every agent should know:</p>
+<ul>
+<li>The exact commands: install, test, lint, type-check, and how to run a single test.</li>
+<li>Code style rules, written plainly: &quot;Use 2-space indentation&quot; beats &quot;format code properly&quot;.</li>
+<li>Gotchas the code doesn&#39;t make obvious: &quot;Dates in the API are UTC&quot;, &quot;the e2e tests need the dev server running&quot;.</li>
+<li>No secrets. This file is committed to git.</li>
+</ul>
+<p><strong>CLAUDE.md</strong> holds the import, plus anything only Claude Code understands:</p>
+<pre><code class="language-markdown">@AGENTS.md
+
+## Claude Code
+- Use the /release skill to publish a new version.
+</code></pre>
+<h2 id="what-to-leave-out-of-both">What to leave out of both</h2>
+<ul>
+<li><strong>Folder tours.</strong> Agents can read your folders. Every line in these files is read on every task, so a long tour wastes space.</li>
+<li><strong>Shouting.</strong> Piling on IMPORTANT and ALL CAPS makes current models over-apply a rule. Plain wording works better.</li>
+<li><strong>Hard limits.</strong> For things that must <em>never</em> happen, like force-pushing or deleting a database, a line of text isn&#39;t enough. In Claude Code, use a hook or a permission deny rule: those are enforced every time.</li>
+</ul>
+<h2 id="monorepos">Monorepos</h2>
+<p>Put an <code>AGENTS.md</code> in each package that needs its own rules. Agents read the file closest to the code they are editing, so <code>packages/api/AGENTS.md</code> wins over the root file for API code. An instruction you type in the chat overrides them all.</p>
+<h2 id="make-both-files-in-a-minute">Make both files in a minute</h2>
+<p>Our free generator writes both files for your stack, with the import already set up, and checks them for leaked keys, vague rules and missing test commands. It runs in your browser, so nothing you type leaves your computer.</p>
+<p><em>Sources: <a href="https://agents.md/" rel="noopener">agents.md</a>, <a href="https://code.claude.com/docs/en/memory" rel="noopener">Claude Code: How Claude remembers your project</a>, <a href="https://code.claude.com/docs/en/best-practices" rel="noopener">Claude Code: Best practices</a>. Checked November 2026.</em></p>
+
+<div class="tool-cta"><div><strong>AGENTS.md &amp; CLAUDE.md generator</strong><p>Pick your stack, tick your rules, get an AGENTS.md and CLAUDE.md. Plus a checker for leaked secrets and vague rules.</p></div><a class="btn btn-primary" href="/tools/agents-md-generator/">Open the free tool →</a></div>
+<h2 class="more-h">Keep reading</h2><ul class="post-links"><li><a href="/blog/add-mcp-server-to-cursor/">How to Add an MCP Server to Cursor (and Fix It When It Won't Start)</a></li><li><a href="/blog/claude-code-hooks-examples/">Claude Code Hooks: 10 Copy-Paste Examples That Actually Work</a></li></ul>
+</article>
+</main>
+<footer class="site-footer"><div class="wrap">
+<div class="foot-grid">
+<div class="foot-brand"><a class="brand" href="/"><img src="/img/icon-192.png" alt="" width="34" height="34" loading="lazy">Byte<span>Buddy</span></a><p>Practical tech for developers, hosted by a bug. Free tools and guides, checked against the official docs.</p></div>
+<div><p class="foot-h">Free tools</p><nav aria-label="Tools"><a href="/tools/skill-md-generator/">SKILL.md generator</a><a href="/tools/agents-md-generator/">AGENTS.md generator</a><a href="/tools/mcp-config-generator/">MCP config generator</a><a href="/tools/claude-code-hooks-generator/">Claude Code hooks generator</a><a href="/tools/">All tools</a></nav></div>
+<div><p class="foot-h">Guides</p><nav aria-label="Guides"><a href="/blog/">Blog</a><a href="/skills/">Claude Skills repos</a><a href="/repos/">30 GitHub repos</a><a href="/gta/">GTA 6-style portfolio</a></nav></div>
+<div><p class="foot-h">Byte Buddy</p><nav aria-label="Byte Buddy"><a href="/about/">About</a><a href="/contact/">Contact</a><a href="/privacy/">Privacy</a><a href="https://www.youtube.com/@bytebuddydev" rel="noopener">YouTube</a><a href="https://github.com/bytebuddy-dev" rel="noopener">GitHub</a></nav></div>
+</div>
+<div class="foot-base"><span>© 2026 Byte Buddy</span><span>Free, no sign-up. Nothing you type in our tools leaves your browser.</span></div>
+</div></footer>
+<dialog id="palette" aria-label="Search the site"><form method="dialog"><div class="pal-in"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><label class="sr" for="pal-q">Search</label><input id="pal-q" type="search" autocomplete="off" spellcheck="false" placeholder="Search tools, guides, repos…" role="combobox" aria-expanded="true" aria-controls="pal-list"><kbd>Esc</kbd></div><ul id="pal-list" role="listbox"></ul><p class="pal-foot"><span><kbd>↑</kbd><kbd>↓</kbd> move</span><span><kbd>Enter</kbd> open</span></p></form></dialog>
+<canvas id="bugsy-canvas" aria-hidden="true"></canvas>
+<div id="bugsy-bubble" role="status" aria-live="polite"></div>
+<button id="chat-launch" type="button" aria-label="Chat with Bugsy" aria-expanded="false" aria-controls="chat"><span class="chat-tip">Chat with me!</span></button>
+<section id="chat" aria-label="Chat with Bugsy" hidden>
+  <header><img src="/img/icon-192.png" alt="" width="34" height="34"><div><strong>Bugsy</strong><small>Replies instantly · I'm a bot</small></div><button class="chat-close" type="button" aria-label="Close chat">✕</button></header>
+  <div class="chat-log" aria-live="polite"></div>
+  <div class="chat-chips"></div>
+  <form><label class="sr" for="chat-input">Message</label><input id="chat-input" autocomplete="off" maxlength="500" placeholder="Ask Bugsy or leave a message…"><button type="submit" aria-label="Send">➤</button></form>
+</section>
+<script type="module" src="/assets/site.js?v=mwy0l1t3"></script>
+<script type="module" src="/assets/chat.js?v=mwy0l1t3"></script>
+
+</body>
+</html>

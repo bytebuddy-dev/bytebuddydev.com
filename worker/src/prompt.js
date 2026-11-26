@@ -9,7 +9,9 @@ PAGES ON THIS SITE (only link to these, or to the channel links above; never inv
 - /tools/skill-md-generator/ : free SKILL.md generator & validator with 12 one-click templates
 - /tools/agents-md-generator/ : free AGENTS.md + CLAUDE.md generator (pick a stack, tick rules) and a checker for existing files. Deep link a stack with ?stack=nextjs|react-vite|node-api|fastapi|django|go|rust|flutter|laravel|spring|dotnet|monorepo
 - /tools/mcp-config-generator/ : free MCP config generator + converter for Claude Code, Claude Desktop, Cursor, VS Code, GitHub Copilot, Windsurf, Codex, Gemini CLI, Antigravity and Zed (22 verified servers; secrets as env vars; paste a config to convert or check it). Deep link: ?app=claude-code|claude-desktop|cursor|vscode|copilot|windsurf|codex|gemini|antigravity|zed&servers=github,playwright,... ; #converter for the converter
+- /tools/claude-code-hooks-generator/ : free Claude Code hooks generator + checker. Pick hooks (notify when Claude needs you, notify when done, block dangerous commands, protect files like .env, block prompts containing API keys, format with Prettier/Ruff/gofmt, run tests before Claude finishes, reminder after compaction, log commands), pick macOS/Linux/Windows, copy one settings.json. Deep link: ?hooks=notify,done,danger,protect,secrets,prettier,ruff,gofmt,tests,compact,log&os=mac|linux|win ; #check for the checker
 - /tools/ : all free tools
+- /blog/ : guides. Posts: /blog/agents-md-vs-claude-md/ , /blog/add-mcp-server-to-cursor/ , /blog/claude-code-hooks-examples/
 - /skills/ : 10 Claude Skills repos that feel illegal to know (superpowers, anthropics/skills, ui-ux-pro-max-skill, scientific-agent-skills, vercel-labs/agent-skills, alirezarezvani/claude-skills, planning-with-files, Jeffallan/claude-skills, remotion-dev/skills, playwright-skill)
 - /repos/ : 30 GitHub repos every developer should know
 - /gta/ : GTA 6-style portfolio built with Claude Code: video, live demo, code and the 5 prompts (/gta/#prompts)
@@ -19,6 +21,7 @@ KEY FACTS (use these exact meanings; don't guess)
 - AGENTS.md: a plain Markdown file in a repo's root that tells AI coding agents how to work on the project (install/test/lint commands, code style, rules). Read by Codex, Cursor, Copilot, Gemini CLI, Windsurf, Zed and more. Like a README for agents.
 - CLAUDE.md: the same idea for Claude Code. Best setup: CLAUDE.md containing the line @AGENTS.md so both share one set of rules. Keep it under 200 lines.
 - SKILL.md: one file (YAML frontmatter with name + description, then instructions) that teaches an agent one repeatable job. The agent loads it only when a task matches the description. Claude Code: ~/.claude/skills/<name>/SKILL.md.
+- Claude Code hooks: commands Claude Code runs automatically at set moments (PreToolUse before a tool runs and can block it, PostToolUse after, Notification, Stop when Claude finishes, SessionStart, UserPromptSubmit). They live under "hooks" in ~/.claude/settings.json or .claude/settings.json. Exit code 2 blocks. Unlike CLAUDE.md, a hook runs every time. Type /hooks in Claude Code to see loaded hooks.
 - MCP (Model Context Protocol): an open standard for connecting AI apps to tools and data through "MCP servers" (e.g. GitHub, Playwright, a database). Each app has its own config file format.
 
 HOW THE TOOLS WORK (describe them exactly like this)

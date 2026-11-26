@@ -1,0 +1,276 @@
+<!doctype html>
+<html lang="en" data-ai-url="https://bugsy-ai.bugsy-ai.workers.dev/chat">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-7q7lZnB/O21xdpB9Iv5ENpUmsQIxXxmsGhq3Y6NPAS0='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' https://bugsy-ai.bugsy-ai.workers.dev; frame-src https://www.youtube-nocookie.com; worker-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'self';">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<title>Claude Code Hooks: 10 Copy-Paste Examples That Actually Work</title>
+<meta name="description" content="Ten tested Claude Code hooks: notifications, auto-format, blocking rm -rf and force-push, protecting .env, running tests before Claude stops. Windows too.">
+<link rel="canonical" href="https://bytebuddydev.com/blog/claude-code-hooks-examples/">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<meta name="color-scheme" content="dark light">
+<meta name="theme-color" content="#0b0814" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#faf8f4" media="(prefers-color-scheme: light)">
+<script>try{var t=localStorage.getItem('bb-theme');if(t==='light'||t==='dark')document.documentElement.dataset.theme=t}catch(e){}</script>
+<meta property="og:site_name" content="Byte Buddy">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Claude Code Hooks: 10 Copy-Paste Examples That Actually Work">
+<meta property="og:description" content="Ten tested Claude Code hooks: notifications, auto-format, blocking rm -rf and force-push, protecting .env, running tests before Claude stops. Windows too.">
+<meta property="og:url" content="https://bytebuddydev.com/blog/claude-code-hooks-examples/">
+<meta property="og:image" content="https://bytebuddydev.com/img/og.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="/img/favicon-48.png" sizes="48x48" type="image/png">
+<link rel="apple-touch-icon" href="/img/icon-192.png">
+<link rel="alternate" type="application/rss+xml" title="Byte Buddy Blog" href="/blog/rss.xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600..800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap">
+<link rel="stylesheet" href="/assets/site.css?v=mwy0l1t3">
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://bytebuddydev.com/#org","name":"Byte Buddy","url":"https://bytebuddydev.com/","logo":"https://bytebuddydev.com/img/icon-192.png","sameAs":["https://www.youtube.com/@bytebuddydev","https://www.instagram.com/bytebuddydev/","https://www.tiktok.com/@bytebuddydev","https://github.com/bytebuddy-dev"]},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://bytebuddydev.com/"},{"@type":"ListItem","position":2,"name":"Blog","item":"https://bytebuddydev.com/blog/"},{"@type":"ListItem","position":3,"name":"Claude Code Hooks: 10 Copy-Paste Examples That Actually Work","item":"https://bytebuddydev.com/blog/claude-code-hooks-examples/"}]},{"@type":"BlogPosting","headline":"Claude Code Hooks: 10 Copy-Paste Examples That Actually Work","description":"Ten tested Claude Code hooks: notifications, auto-format, blocking rm -rf and force-push, protecting .env, running tests before Claude stops. Windows too.","datePublished":"2026-11-27","dateModified":"2026-11-27","url":"https://bytebuddydev.com/blog/claude-code-hooks-examples/","mainEntityOfPage":"https://bytebuddydev.com/blog/claude-code-hooks-examples/","image":"https://bytebuddydev.com/img/og.jpg","author":{"@id":"https://bytebuddydev.com/#org"},"publisher":{"@id":"https://bytebuddydev.com/#org"}}]}</script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="site-header"><div class="wrap">
+<a class="brand" href="/"><img src="/img/icon-192.png" alt="" width="36" height="36">Byte<span>Buddy</span></a>
+<nav class="nav" aria-label="Main"><a href="/" class="hide-sm">Home</a><a href="/tools/">Tools</a><a href="/skills/" class="hide-xs">Skills</a><a href="/repos/" class="hide-sm">Repos</a><a href="/blog/">Blog</a><a href="/gta/" class="hide-sm">GTA Portfolio</a><a href="/about/" class="hide-xs">About</a></nav>
+<button class="search-btn" type="button" aria-label="Search the site" aria-keyshortcuts="Control+K"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><span>Search</span><kbd>Ctrl K</kbd></button>
+<button class="theme-btn" type="button" aria-label="Switch colour theme"><svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg><svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M4.9 19.1l1.8-1.8M17.3 6.7l1.8-1.8"/></svg></button>
+</div></header>
+<main id="main">
+
+<div class="wrap page-hero"><nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a> / <a href="/blog/">Blog</a> / Claude Code Hooks: 10 Copy-Paste Examples That Actually Work</nav>
+<span class="eyebrow">🪝 Guide</span>
+<h1>Claude Code Hooks: 10 Copy-Paste Examples That Actually Work</h1>
+<p class="lead">Ten tested Claude Code hooks: notifications, auto-format, blocking rm -rf and force-push, protecting .env, running tests before Claude stops. Windows too.</p>
+<p class="meta post-meta">By Byte Buddy · <time datetime="2026-11-27">November 27, 2026</time> · 3 min read</p>
+</div>
+<article class="wrap article post">
+<p>Hooks are commands Claude Code runs on its own at set moments: before it uses a tool, after it edits a file, when it needs you, when it finishes. CLAUDE.md can only <em>ask</em> Claude to do something; a hook makes it happen every time.</p>
+<p>Each example below is a complete <code>settings.json</code>. Save it as <code>~/.claude/settings.json</code> (all your projects) or <code>.claude/settings.json</code> in a repo (that project, shared with your team). Every command was run with test input before it went on this page.</p>
+<blockquote>
+<p><strong>Using more than one?</strong> Each example has its own <code>&quot;hooks&quot;</code> block, and pasting two into one file breaks it. Our <a href="/tools/claude-code-hooks-generator/">hooks generator</a> combines any of these into one file, and can merge them into the settings.json you already have.</p>
+</blockquote>
+<p><strong>macOS and Linux:</strong> most of these read Claude&#39;s input with <code>jq</code>. Install it with <code>brew install jq</code> or <code>sudo apt install jq</code>.</p>
+<p><strong>Windows:</strong> these commands are for <code>sh</code>. Pick Windows in the generator and you get PowerShell versions of all ten, with <code>&quot;shell&quot;: &quot;powershell&quot;</code> and nothing to install.</p>
+<h2 id="1-notify-me-when-claude-needs-me">1. Notify me when Claude needs me</h2>
+<p>You start a long task, switch to another window, and Claude sits there waiting for a &quot;yes&quot; for ten minutes. This fixes that.</p>
+<pre><code class="language-json">{
+  &quot;hooks&quot;: {
+    &quot;Notification&quot;: [
+      {
+        &quot;hooks&quot;: [
+          {
+            &quot;type&quot;: &quot;command&quot;,
+            &quot;command&quot;: &quot;osascript -e &#39;display notification \&quot;Claude Code needs your attention\&quot; with title \&quot;Claude Code\&quot;&#39;&quot;
+          }
+        ]
+      }
+    ]
+  }
+}
+</code></pre>
+<p>On Linux, use <code>notify-send &#39;Claude Code&#39; &#39;Claude Code needs your attention&#39;</code> as the command (needs <code>libnotify-bin</code>).</p>
+<h2 id="2-notify-me-when-claude-is-done">2. Notify me when Claude is done</h2>
+<p>Same idea, for when Claude finishes. On macOS it also plays a sound.</p>
+<pre><code class="language-json">{
+  &quot;hooks&quot;: {
+    &quot;Stop&quot;: [
+      {
+        &quot;hooks&quot;: [
+          {
+            &quot;type&quot;: &quot;command&quot;,
+            &quot;command&quot;: &quot;osascript -e &#39;display notification \&quot;Claude is done\&quot; with title \&quot;Claude Code\&quot; sound name \&quot;Glass\&quot;&#39;&quot;
+          }
+        ]
+      }
+    ]
+  }
+}
+</code></pre>
+<p>On Linux, use <code>notify-send &#39;Claude Code&#39; &#39;Claude is done&#39;</code> as the command (needs <code>libnotify-bin</code>).</p>
+<h2 id="3-block-dangerous-commands">3. Block dangerous commands</h2>
+<p>Claude asks before running commands, but after the fiftieth &quot;yes&quot; you stop reading. This blocks the few commands that can wipe out work: <code>rm -rf</code> on your home or root folder, force-pushes, <code>git reset --hard</code> and <code>DROP TABLE</code>. <code>rm -rf node_modules</code> and <code>git push --force-with-lease</code> still work.</p>
+<pre><code class="language-json">{
+  &quot;hooks&quot;: {
+    &quot;PreToolUse&quot;: [
+      {
+        &quot;matcher&quot;: &quot;Bash&quot;,
+        &quot;hooks&quot;: [
+          {
+            &quot;type&quot;: &quot;command&quot;,
+            &quot;command&quot;: &quot;c=$(jq -r &#39;.tool_input.command // empty&#39;); if printf &#39;%s&#39; \&quot;$c\&quot; | grep -Eqi &#39;rm -(rf|fr) (/|~|\\*|\\$HOME)( |$)|git push .*(--force|-f)( |$)|git reset --hard|drop (table|database)&#39;; then echo \&quot;Blocked by a hook: this command can destroy work. Ask the user to run it themselves.\&quot; &gt;&amp;2; exit 2; fi&quot;
+          }
+        ]
+      }
+    ]
+  }
+}
+</code></pre>
+<h2 id="4-protect-files-from-edits">4. Protect files from edits</h2>
+<p>Keeps Claude&#39;s edits away from files it should never touch. Edit the list to suit your project.</p>
+<pre><code class="language-json">{
+  &quot;hooks&quot;: {
+    &quot;PreToolUse&quot;: [
+      {
+        &quot;matcher&quot;: &quot;Edit|Write&quot;,
+        &quot;hooks&quot;: [
+          {
+            &quot;type&quot;: &quot;command&quot;,
+            &quot;command&quot;: &quot;f=$(jq -r &#39;.tool_input.file_path // empty&#39;); for p in &#39;.env&#39; &#39;package-lock.json&#39; &#39;.git/&#39;; do case \&quot;$f\&quot; in *\&quot;$p\&quot;*) echo \&quot;Blocked by a hook: $f is protected ($p). Ask the user to change it.\&quot; &gt;&amp;2; exit 2 ;; esac; done&quot;
+          }
+        ]
+      }
+    ]
+  }
+}
+</code></pre>
+<p>This guards Claude&#39;s Edit and Write tools. Claude could still change a file with a shell command, so for secrets also add a deny rule (for example &quot;Read(./.env)&quot;) under permissions.</p>
+<h2 id="5-stop-me-pasting-api-keys">5. Stop me pasting API keys</h2>
+<p>It&#39;s easy to paste an error log or a config with a key in it. This blocks the prompt before it reaches Claude, for OpenAI, GitHub, AWS and Slack keys and private keys.</p>
+<pre><code class="language-json">{
+  &quot;hooks&quot;: {
+    &quot;UserPromptSubmit&quot;: [
+      {
+        &quot;hooks&quot;: [
+          {
+            &quot;type&quot;: &quot;command&quot;,
+            &quot;command&quot;: &quot;if jq -r &#39;.prompt // empty&#39; | grep -Eq &#39;sk-[A-Za-z0-9_-]{20,}|gh[pousr]_[A-Za-z0-9]{30,}|github_pat_[A-Za-z0-9_]{30,}|AKIA[0-9A-Z]{16}|xox[baprs]-[A-Za-z0-9-]{10,}|-----BEGIN [A-Z ]*PRIVATE KEY&#39;; then echo &#39;Blocked: your prompt looks like it contains an API key or private key. Remove it and send it again.&#39; &gt;&amp;2; exit 2; fi&quot;
+          }
+        ]
+      }
+    ]
+  }
+}
+</code></pre>
+<h2 id="6-format-with-prettier-after-edits">6. Format with Prettier after edits</h2>
+<p>Claude&#39;s code comes out formatted the way your project wants, every time, without asking.</p>
+<pre><code class="language-json">{
+  &quot;hooks&quot;: {
+    &quot;PostToolUse&quot;: [
+      {
+        &quot;matcher&quot;: &quot;Edit|Write&quot;,
+        &quot;hooks&quot;: [
+          {
+            &quot;type&quot;: &quot;command&quot;,
+            &quot;command&quot;: &quot;f=$(jq -r &#39;.tool_input.file_path // empty&#39;) &amp;&amp; [ -n \&quot;$f\&quot; ] &amp;&amp; npx prettier --write --ignore-unknown \&quot;$f\&quot;&quot;
+          }
+        ]
+      }
+    ]
+  }
+}
+</code></pre>
+<p>Needs: Prettier in your project (npm i -D prettier).</p>
+<h2 id="7-format-python-with-ruff">7. Format Python with Ruff</h2>
+<p>The Python version. For Go, swap <code>ruff format</code> for <code>gofmt -w</code> and <code>*.py</code> for <code>*.go</code>.</p>
+<pre><code class="language-json">{
+  &quot;hooks&quot;: {
+    &quot;PostToolUse&quot;: [
+      {
+        &quot;matcher&quot;: &quot;Edit|Write&quot;,
+        &quot;hooks&quot;: [
+          {
+            &quot;type&quot;: &quot;command&quot;,
+            &quot;command&quot;: &quot;f=$(jq -r &#39;.tool_input.file_path // empty&#39;); case \&quot;$f\&quot; in *.py) ruff format \&quot;$f\&quot; ;; esac&quot;
+          }
+        ]
+      }
+    ]
+  }
+}
+</code></pre>
+<p>Needs: Ruff (pip install ruff).</p>
+<h2 id="8-run-tests-before-claude-finishes">8. Run tests before Claude finishes</h2>
+<p>When Claude says &quot;done&quot; and files have changed, your tests run. If they fail, Claude sees the last 30 lines of output and keeps working. It checks <code>stop_hook_active</code>, so Claude gets one retry instead of looping forever.</p>
+<pre><code class="language-json">{
+  &quot;hooks&quot;: {
+    &quot;Stop&quot;: [
+      {
+        &quot;hooks&quot;: [
+          {
+            &quot;type&quot;: &quot;command&quot;,
+            &quot;command&quot;: &quot;i=$(cat); [ \&quot;$(printf &#39;%s&#39; \&quot;$i\&quot; | jq -r &#39;.stop_hook_active&#39;)\&quot; = true ] &amp;&amp; exit 0; cd \&quot;$CLAUDE_PROJECT_DIR\&quot; || exit 0; [ -z \&quot;$(git status --porcelain 2&gt;/dev/null)\&quot; ] &amp;&amp; exit 0; out=$(npm test 2&gt;&amp;1) || { echo \&quot;Tests failed. Fix them before you finish:\&quot; &gt;&amp;2; printf &#39;%s\\n&#39; \&quot;$out\&quot; | tail -n 30 &gt;&amp;2; exit 2; }&quot;,
+            &quot;timeout&quot;: 300
+          }
+        ]
+      }
+    ]
+  }
+}
+</code></pre>
+<p>It skips when nothing changed, and only asks Claude to retry once in a row (stop_hook_active), so it can&#39;t loop forever. Slow test suite? Use a faster command here, such as only the unit tests.</p>
+<h2 id="9-remind-claude-after-it-compacts">9. Remind Claude after it compacts</h2>
+<p>In long sessions Claude summarizes the conversation (&quot;compacts&quot;) and details get lost. Whatever this prints is added back to Claude&#39;s context right after.</p>
+<pre><code class="language-json">{
+  &quot;hooks&quot;: {
+    &quot;SessionStart&quot;: [
+      {
+        &quot;matcher&quot;: &quot;compact&quot;,
+        &quot;hooks&quot;: [
+          {
+            &quot;type&quot;: &quot;command&quot;,
+            &quot;command&quot;: &quot;echo &#39;Reminder: run the tests before committing. Never commit .env files.&#39;&quot;
+          }
+        ]
+      }
+    ]
+  }
+}
+</code></pre>
+<h2 id="10-log-every-command-claude-runs">10. Log every command Claude runs</h2>
+<p>A running list of every shell command Claude ran, in <code>~/.claude/command-log.txt</code>.</p>
+<pre><code class="language-json">{
+  &quot;hooks&quot;: {
+    &quot;PostToolUse&quot;: [
+      {
+        &quot;matcher&quot;: &quot;Bash&quot;,
+        &quot;hooks&quot;: [
+          {
+            &quot;type&quot;: &quot;command&quot;,
+            &quot;command&quot;: &quot;jq -r &#39;.tool_input.command&#39; &gt;&gt; ~/.claude/command-log.txt&quot;
+          }
+        ]
+      }
+    ]
+  }
+}
+</code></pre>
+<h2 id="how-to-check-they-39-re-working">How to check they&#39;re working</h2>
+<ol>
+<li>Type <code>/hooks</code> in Claude Code. You&#39;ll see every hook it loaded and which file it came from.</li>
+<li>Try one: ask Claude to run <code>git push --force</code> with hook 3 installed. It should be blocked, and Claude should tell you why.</li>
+<li>Nothing happening? Event names and matchers are case-sensitive (<code>Bash</code>, not <code>bash</code>), and the JSON must be valid. Paste your file into the <a href="/tools/claude-code-hooks-generator/#check">hooks checker</a> and it points at the problem.</li>
+</ol>
+<h2 id="one-warning">One warning</h2>
+<p>Hooks run with your full permissions, without asking. Only add hooks you understand. And before you trust a repo you cloned, look at its <code>.claude/settings.json</code>: a hook in there runs on your machine.</p>
+<p><em>Sources: <a href="https://code.claude.com/docs/en/hooks" rel="noopener">Claude Code: Hooks reference</a>, <a href="https://code.claude.com/docs/en/hooks-guide" rel="noopener">Claude Code: Get started with hooks</a>. Checked November 2026.</em></p>
+
+<div class="tool-cta"><div><strong>Claude Code hooks generator &amp; checker</strong><p>Notifications, auto-format, blocked dangerous commands, tests before Claude finishes: pick them, copy one settings.json. macOS, Linux and Windows.</p></div><a class="btn btn-primary" href="/tools/claude-code-hooks-generator/">Open the free tool →</a></div>
+<h2 class="more-h">Keep reading</h2><ul class="post-links"><li><a href="/blog/add-mcp-server-to-cursor/">How to Add an MCP Server to Cursor (and Fix It When It Won't Start)</a></li><li><a href="/blog/agents-md-vs-claude-md/">AGENTS.md vs CLAUDE.md: Which One Do You Need?</a></li></ul>
+</article>
+</main>
+<footer class="site-footer"><div class="wrap">
+<div class="foot-grid">
+<div class="foot-brand"><a class="brand" href="/"><img src="/img/icon-192.png" alt="" width="34" height="34" loading="lazy">Byte<span>Buddy</span></a><p>Practical tech for developers, hosted by a bug. Free tools and guides, checked against the official docs.</p></div>
+<div><p class="foot-h">Free tools</p><nav aria-label="Tools"><a href="/tools/skill-md-generator/">SKILL.md generator</a><a href="/tools/agents-md-generator/">AGENTS.md generator</a><a href="/tools/mcp-config-generator/">MCP config generator</a><a href="/tools/claude-code-hooks-generator/">Claude Code hooks generator</a><a href="/tools/">All tools</a></nav></div>
+<div><p class="foot-h">Guides</p><nav aria-label="Guides"><a href="/blog/">Blog</a><a href="/skills/">Claude Skills repos</a><a href="/repos/">30 GitHub repos</a><a href="/gta/">GTA 6-style portfolio</a></nav></div>
+<div><p class="foot-h">Byte Buddy</p><nav aria-label="Byte Buddy"><a href="/about/">About</a><a href="/contact/">Contact</a><a href="/privacy/">Privacy</a><a href="https://www.youtube.com/@bytebuddydev" rel="noopener">YouTube</a><a href="https://github.com/bytebuddy-dev" rel="noopener">GitHub</a></nav></div>
+</div>
+<div class="foot-base"><span>© 2026 Byte Buddy</span><span>Free, no sign-up. Nothing you type in our tools leaves your browser.</span></div>
+</div></footer>
+<dialog id="palette" aria-label="Search the site"><form method="dialog"><div class="pal-in"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><label class="sr" for="pal-q">Search</label><input id="pal-q" type="search" autocomplete="off" spellcheck="false" placeholder="Search tools, guides, repos…" role="combobox" aria-expanded="true" aria-controls="pal-list"><kbd>Esc</kbd></div><ul id="pal-list" role="listbox"></ul><p class="pal-foot"><span><kbd>↑</kbd><kbd>↓</kbd> move</span><span><kbd>Enter</kbd> open</span></p></form></dialog>
+<canvas id="bugsy-canvas" aria-hidden="true"></canvas>
+<div id="bugsy-bubble" role="status" aria-live="polite"></div>
+<button id="chat-launch" type="button" aria-label="Chat with Bugsy" aria-expanded="false" aria-controls="chat"><span class="chat-tip">Chat with me!</span></button>
+<section id="chat" aria-label="Chat with Bugsy" hidden>
+  <header><img src="/img/icon-192.png" alt="" width="34" height="34"><div><strong>Bugsy</strong><small>Replies instantly · I'm a bot</small></div><button class="chat-close" type="button" aria-label="Close chat">✕</button></header>
+  <div class="chat-log" aria-live="polite"></div>
+  <div class="chat-chips"></div>
+  <form><label class="sr" for="chat-input">Message</label><input id="chat-input" autocomplete="off" maxlength="500" placeholder="Ask Bugsy or leave a message…"><button type="submit" aria-label="Send">➤</button></form>
+</section>
+<script type="module" src="/assets/site.js?v=mwy0l1t3"></script>
+<script type="module" src="/assets/chat.js?v=mwy0l1t3"></script>
+
+</body>
+</html>

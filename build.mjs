@@ -4,7 +4,9 @@ import fs from 'node:fs';
 import { createHash } from 'node:crypto';
 import path from 'node:path';
 import { build } from 'esbuild';
+import { marked } from 'marked';
 import { SERVERS as MCP_SERVERS, CHECKED as MCP_CHECKED } from './src/tools/mcp-servers.js';
+import { CHECKED as HOOKS_CHECKED } from './src/tools/hooks-recipes.js';
 const SERVER_COUNT = MCP_SERVERS.length;
 
 const ORIGIN = 'https://bytebuddydev.com';
@@ -60,6 +62,7 @@ const NAV = [
   ['/tools/', 'Tools', ''],
   ['/skills/', 'Skills', 'hide-xs'],
   ['/repos/', 'Repos', 'hide-sm'],
+  ['/blog/', 'Blog', ''],
   ['/gta/', 'GTA Portfolio', 'hide-sm'],
   ['/about/', 'About', 'hide-xs'],
 ];
@@ -107,6 +110,7 @@ const layout = ({ url, title, description, image = '/img/og.jpg', body, schema =
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="/img/favicon-48.png" sizes="48x48" type="image/png">
 <link rel="apple-touch-icon" href="/img/icon-192.png">
+<link rel="alternate" type="application/rss+xml" title="Byte Buddy Blog" href="/blog/rss.xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600..800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap">
@@ -128,7 +132,7 @@ ${body}
 <div class="foot-grid">
 <div class="foot-brand"><a class="brand" href="/"><img src="/img/icon-192.png" alt="" width="34" height="34" loading="lazy">Byte<span>Buddy</span></a><p>Practical tech for developers, hosted by a bug. Free tools and guides, checked against the official docs.</p></div>
 <div><p class="foot-h">Free tools</p><nav aria-label="Tools">${TOOLS.map((t) => `<a href="${t.url}">${esc(t.short)}</a>`).join('')}<a href="/tools/">All tools</a></nav></div>
-<div><p class="foot-h">Guides</p><nav aria-label="Guides"><a href="/skills/">Claude Skills repos</a><a href="/repos/">30 GitHub repos</a><a href="/gta/">GTA 6-style portfolio</a></nav></div>
+<div><p class="foot-h">Guides</p><nav aria-label="Guides"><a href="/blog/">Blog</a><a href="/skills/">Claude Skills repos</a><a href="/repos/">30 GitHub repos</a><a href="/gta/">GTA 6-style portfolio</a></nav></div>
 <div><p class="foot-h">Byte Buddy</p><nav aria-label="Byte Buddy"><a href="/about/">About</a><a href="/contact/">Contact</a><a href="/privacy/">Privacy</a><a href="${SOCIAL.youtube}" rel="noopener">YouTube</a><a href="${SOCIAL.github}" rel="noopener">GitHub</a></nav></div>
 </div>
 <div class="foot-base"><span>© ${new Date().getFullYear()} Byte Buddy</span><span>Free, no sign-up. Nothing you type in our tools leaves your browser.</span></div>
@@ -195,6 +199,13 @@ const TOOLS = [
     short: 'MCP config generator',
     blurb: 'The exact MCP config for Claude Code, Cursor, VS Code, Codex and 6 more apps, or convert one app\'s config to another.',
     art: ['mcp.json', 'Generator + converter'],
+  },
+  {
+    url: '/tools/claude-code-hooks-generator/',
+    name: 'Claude Code hooks generator & checker',
+    short: 'Claude Code hooks generator',
+    blurb: 'Notifications, auto-format, blocked dangerous commands, tests before Claude finishes: pick them, copy one settings.json. macOS, Linux and Windows.',
+    art: ['hooks', 'Generator + checker'],
   },
 ];
 const toolCard = (t) =>
@@ -423,7 +434,7 @@ ${prompts.map((p) => `<h3>${esc(p.title)}</h3>\n<pre><code>${esc(p.text)}</code>
 pages.push({
   url: '/tools/',
   title: 'Free AI Developer Tools · Byte Buddy',
-  description: 'Free tools for AI coding agents: MCP config generator, AGENTS.md and CLAUDE.md generator, SKILL.md validator. No sign-up, nothing leaves your browser.',
+  description: 'Free tools for AI coding agents: Claude Code hooks, MCP config, AGENTS.md and CLAUDE.md, SKILL.md. No sign-up, nothing leaves your browser.',
   schema: [ORG, crumbSchema([['/', 'Home'], ['/tools/', 'Tools']])],
   body: `
 <div class="wrap page-hero">${crumbs([['/', 'Home'], ['/tools/', 'Tools']])}
@@ -435,7 +446,7 @@ pages.push({
 <div class="cards">
 ${TOOLS.map(toolCard).join('\n')}
 </div>
-<p class="meta" style="margin-top:28px">More on the way: a Claude Code hooks builder and a GitHub repo health checker.</p>
+<p class="meta" style="margin-top:28px">More on the way: a secret leak checker, a Cursor rules ↔ CLAUDE.md converter and an llms.txt generator.</p>
 </div>`,
 });
 
@@ -862,6 +873,253 @@ ${MCP_FAQ.map(([q, a]) => `<h3>${esc(q)}</h3><p>${esc(a)}</p>`).join('\n')}
 </article>`,
 });
 
+const HOOKS_FAQ = [
+  ['What are Claude Code hooks?', 'Hooks are commands that Claude Code runs automatically at set moments: before a tool runs, after a file is edited, when Claude finishes, when it needs your attention, and more. Unlike instructions in CLAUDE.md, which Claude can forget or skip, a hook runs every time.'],
+  ['Where do I put hooks?', 'In a settings file under a top-level "hooks" key. ~/.claude/settings.json applies to all your projects, .claude/settings.json applies to one project and is committed for your team, and .claude/settings.local.json is for one project and only you.'],
+  ['How does a hook block something?', 'Exit with code 2. For PreToolUse that stops the tool call, for UserPromptSubmit it blocks the prompt, and for Stop it makes Claude keep working. Whatever the hook writes to stderr is passed to Claude as the reason. Exit 0 means carry on; any other exit code is a non-blocking error.'],
+  ['Why doesn\'t my hook run?', 'The usual causes: a matcher with the wrong case ("bash" instead of "Bash"), an event name with the wrong case, a relative script path, a script that isn\'t executable (chmod +x), or jq not being installed. Type /hooks in Claude Code to see which hooks loaded. Paste your settings.json into the checker on this page to find the rest.'],
+  ['Do hooks work on Windows?', 'Yes. Claude Code runs hook commands in Git Bash on Windows, or in PowerShell when Git Bash isn\'t installed. Adding "shell": "powershell" makes a hook always run in PowerShell, which can read the hook\'s JSON input without jq. This generator writes PowerShell versions when you pick Windows.'],
+  ['Are hooks safe?', 'Hooks run with your full user permissions, without asking. Only add hooks you understand, and look at .claude/settings.json in any repo you clone before you trust the folder: Claude Code holds hooks back until you accept the workspace trust dialog.'],
+  ['Does this tool upload anything?', 'No. The generator and the checker run entirely in your browser. Nothing you type or paste is sent anywhere.'],
+];
+pages.push({
+  url: '/tools/claude-code-hooks-generator/',
+  title: 'Claude Code Hooks Generator + Checker (Free, Copy-Paste)',
+  description: 'Make Claude Code hooks without writing JSON: notifications, auto-format, block dangerous commands, run tests. For macOS, Linux and Windows. Free.',
+  type: 'article',
+  scripts: ['tool-hooks.js'],
+  schema: [
+    ORG,
+    crumbSchema([['/', 'Home'], ['/tools/', 'Tools'], ['/tools/claude-code-hooks-generator/', 'Claude Code hooks generator']]),
+    {
+      '@type': 'WebApplication',
+      name: 'Claude Code Hooks Generator',
+      url: `${ORIGIN}/tools/claude-code-hooks-generator/`,
+      applicationCategory: 'DeveloperApplication',
+      operatingSystem: 'Any (runs in the browser)',
+      offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+      publisher: { '@id': `${ORIGIN}/#org` },
+    },
+    { '@type': 'FAQPage', mainEntity: HOOKS_FAQ.map(([q, a]) => ({ '@type': 'Question', name: q, acceptedAnswer: { '@type': 'Answer', text: a } })) },
+  ],
+  body: `
+<div class="wrap page-hero">${crumbs([['/', 'Home'], ['/tools/', 'Tools'], ['/tools/claude-code-hooks-generator/', 'Claude Code hooks generator']])}
+<span class="eyebrow">🪝 Free tool</span>
+<h1><span class="hl">Claude Code hooks</span> generator</h1>
+<p class="lead">Pick what you want Claude Code to do automatically, copy one file. Every hook is tested on macOS, Linux and Windows. Or check the hooks you already have. Free, and nothing leaves your browser.</p>
+</div>
+<div class="wrap tool simple">
+  <div class="tabs" role="tablist" aria-label="What do you want to do?">
+    <button type="button" role="tab" id="t-create" aria-controls="tab-create" aria-selected="true">Create</button>
+    <button type="button" role="tab" id="t-check" aria-controls="tab-check" aria-selected="false" tabindex="-1">Check my hooks</button>
+  </div>
+
+  <section id="tab-create" class="duo" role="tabpanel" aria-labelledby="t-create">
+    <form id="hk" class="panel pick-panel" autocomplete="off">
+      <div class="step-head"><h2>What should happen automatically?</h2></div>
+      <div class="picks" id="hk-picks" role="group" aria-label="Hooks"></div>
+      <fieldset class="seg mini"><legend>Your computer</legend>
+        <label><input type="radio" name="os" value="mac"> macOS</label>
+        <label><input type="radio" name="os" value="linux"> Linux</label>
+        <label><input type="radio" name="os" value="win"> Windows</label>
+      </fieldset>
+      <details class="adv"><summary>Customize <small>protected files, test command, merge into your settings</small></summary>
+        <div class="adv-body">
+          <div id="hk-params"></div>
+          <label>Your current settings.json <small>optional · paste it and we add the hooks to it, keeping everything else</small><textarea name="existing" rows="4" spellcheck="false" placeholder='{ "permissions": { … } }'></textarea></label>
+        </div>
+      </details>
+    </form>
+    <div class="panel result" id="hk-result" aria-live="polite"></div>
+  </section>
+
+  <section id="tab-check" class="duo" role="tabpanel" aria-labelledby="t-check" hidden>
+    <div class="panel pick-panel">
+      <div class="step-head"><h2>Paste your settings.json</h2><button type="button" id="ck-bad" class="link-btn">Load a broken example</button></div>
+      <label class="sr" for="ck-in">Paste a Claude Code settings.json</label>
+      <textarea id="ck-in" rows="14" spellcheck="false" placeholder="Paste .claude/settings.json or ~/.claude/settings.json here"></textarea>
+    </div>
+    <div class="panel result" id="ck-result" aria-live="polite"></div>
+  </section>
+</div>
+
+<div class="wrap guide-divider"><span>Guide</span></div>
+
+<article class="wrap article">
+<h2>What are Claude Code hooks?</h2>
+<p><strong>Hooks</strong> are commands Claude Code runs on its own at set moments: before it uses a tool, after it edits a file, when it needs you, when it finishes. They turn "please always do X" into something that actually happens every time.</p>
+<p>That's the difference from CLAUDE.md. A line like "run Prettier after editing" is advice: Claude usually follows it, but it can forget. A hook is code: it runs whether Claude remembers or not. Use CLAUDE.md for guidance and hooks for rules that must hold.</p>
+
+<h2>The events you'll use most</h2>
+<table><thead><tr><th>Event</th><th>Runs when</th><th>Good for</th></tr></thead><tbody>
+<tr><td><code>PreToolUse</code></td><td>Before a tool runs; can block it</td><td>Blocking dangerous commands, protecting files</td></tr>
+<tr><td><code>PostToolUse</code></td><td>After a tool succeeds</td><td>Formatting edited files, logging commands</td></tr>
+<tr><td><code>UserPromptSubmit</code></td><td>When you send a prompt, before Claude sees it</td><td>Blocking pasted secrets, adding context</td></tr>
+<tr><td><code>Notification</code></td><td>When Claude needs your permission or input</td><td>Desktop notifications</td></tr>
+<tr><td><code>Stop</code></td><td>When Claude finishes a reply</td><td>Running tests, "done" notifications</td></tr>
+<tr><td><code>SessionStart</code></td><td>When a session starts, resumes or is compacted</td><td>Loading context, reminders after compaction</td></tr>
+<tr><td><code>PreCompact</code> / <code>PostCompact</code></td><td>Around context compaction</td><td>Saving notes before details are summarized</td></tr>
+<tr><td><code>SessionEnd</code></td><td>When the session closes</td><td>Quick cleanup (it gets 1.5 seconds by default)</td></tr>
+</tbody></table>
+<p>There are more (SubagentStop, PermissionRequest, PostToolUseFailure, ConfigChange, FileChanged…). Our checker knows all of them.</p>
+
+<h2>How the settings.json is laid out</h2>
+<pre><code>{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          { "type": "command", "command": "your command here" }
+        ]
+      }
+    ]
+  }
+}</code></pre>
+<ul>
+<li><strong>The event</strong> (<code>PostToolUse</code>) holds a list of groups.</li>
+<li><strong>The matcher</strong> picks which tools the group applies to. <code>"Edit|Write"</code> means either; <code>"Bash"</code> means shell commands; <code>"mcp__github__.*"</code> matches every tool from the GitHub MCP server. Leave it out to match everything. Names are case-sensitive: <code>bash</code> matches nothing.</li>
+<li><strong>The hooks</strong> list holds what to run. The command gets a JSON description of what's happening on stdin: the tool name, the file path, the shell command, your prompt.</li>
+</ul>
+
+<h2>How a hook says yes or no</h2>
+<table><thead><tr><th>Exit code</th><th>Means</th></tr></thead><tbody>
+<tr><td><code>0</code></td><td>All good, carry on. On SessionStart and UserPromptSubmit, anything printed is added to Claude's context.</td></tr>
+<tr><td><code>2</code></td><td>Block it. The text written to stderr goes to Claude as the reason, so write something it can act on.</td></tr>
+<tr><td>Anything else</td><td>The hook failed, but Claude carries on. You see a "hook error" notice.</td></tr>
+</tbody></table>
+<p>For finer control a hook can print JSON instead, for example to answer a permission prompt with allow, deny or ask. The generator sticks to exit codes, which are simpler and work everywhere.</p>
+
+<h2>Where the file goes</h2>
+<table><thead><tr><th>File</th><th>Applies to</th></tr></thead><tbody>
+<tr><td><code>~/.claude/settings.json</code></td><td>All your projects on this computer</td></tr>
+<tr><td><code>.claude/settings.json</code></td><td>This project, for everyone (commit it)</td></tr>
+<tr><td><code>.claude/settings.local.json</code></td><td>This project, just you (keep it out of git)</td></tr>
+</tbody></table>
+<p>Hooks from all of these files run together. Changes are usually picked up without a restart; type <code>/hooks</code> in Claude Code to see what it loaded and from which file.</p>
+
+<h2>Hooks on Windows</h2>
+<p>Claude Code runs hook commands with <code>sh</code> on macOS and Linux, and with Git Bash on Windows (or PowerShell when Git Bash isn't installed). Most examples online pipe the input through <code>jq</code>, which Windows doesn't have. Add <code>"shell": "powershell"</code> to a hook and it always runs in PowerShell, which reads JSON natively with <code>ConvertFrom-Json</code>. Pick Windows in the generator and every hook is written that way, with nothing to install.</p>
+
+<h2>Stop hooks that never stop</h2>
+<p>A Stop hook that exits with 2 keeps Claude working, which is how "run the tests before finishing" works. If the tests keep failing, Claude keeps trying. Claude Code gives each Stop hook a <code>stop_hook_active</code> field that's true when it's already continuing because of a Stop hook: exit 0 when it's true, and Claude gets one retry instead of a loop. Our test hook does this, and the checker warns when yours doesn't.</p>
+
+<h2>Keep hooks safe</h2>
+<ul>
+<li>Hooks run with your full permissions, without asking. Read every hook before you add it.</li>
+<li>Look at <code>.claude/settings.json</code> in any repo you clone. Claude Code holds hooks back until you accept the folder's trust dialog, so check before you click it.</li>
+<li>Never put API keys in a hook command. settings.json gets committed; read keys from environment variables.</li>
+<li>A file-protection hook only guards Claude's Edit and Write tools. For secrets, also add a deny rule such as <code>Read(./.env)</code> under <code>permissions</code>.</li>
+</ul>
+<p class="meta">Sources: <a href="https://code.claude.com/docs/en/hooks" rel="noopener">Claude Code: Hooks reference</a>, <a href="https://code.claude.com/docs/en/hooks-guide" rel="noopener">Claude Code: Get started with hooks</a>, <a href="https://code.claude.com/docs/en/settings" rel="noopener">Claude Code: Settings</a>, <a href="https://code.claude.com/docs/en/tools-reference" rel="noopener">Claude Code: Tools reference</a>. Every command in the generator was run on macOS/Linux (sh) and Windows (PowerShell) with test input. Checked ${HOOKS_CHECKED}.</p>
+
+<h2>Next: give Claude your project's rules</h2>
+<p>Hooks enforce the must-never-happen rules. For everything else (the test command, the code style, the gotchas) write an <a href="/tools/agents-md-generator/">AGENTS.md and CLAUDE.md</a>. To connect Claude to GitHub, a browser or your database, use the <a href="/tools/mcp-config-generator/">MCP config generator</a>.</p>
+
+<h2>FAQ</h2>
+${HOOKS_FAQ.map(([q, a]) => `<h3>${esc(q)}</h3><p>${esc(a)}</p>`).join('\n')}
+</article>`,
+});
+
+// ---- blog ----
+// One Markdown file per post in content/blog/<slug>.md, with a small frontmatter block:
+//   title, description (≤158 chars), date, updated, tool (a /tools/ url this post supports), emoji, draft
+marked.use({
+  renderer: {
+    link({ href, title, tokens }) {
+      const text = this.parser.parseInline(tokens);
+      return `<a href="${href}"${title ? ` title="${title}"` : ''}${/^https?:/.test(href) ? ' rel="noopener"' : ''}>${text}</a>`;
+    },
+  },
+});
+const frontmatter = (src, file) => {
+  const m = /^---\r?\n([\s\S]*?)\r?\n---\r?\n/.exec(src);
+  if (!m) throw new Error(`${file}: missing frontmatter`);
+  const data = Object.fromEntries(
+    m[1].split(/\r?\n/).filter(Boolean).map((l) => {
+      const i = l.indexOf(':');
+      return [l.slice(0, i).trim(), l.slice(i + 1).trim().replace(/^"(.*)"$/, '$1')];
+    }),
+  );
+  return { data, body: src.slice(m[0].length) };
+};
+const POSTS = fs.existsSync('content/blog')
+  ? fs
+      .readdirSync('content/blog')
+      .filter((f) => f.endsWith('.md'))
+      .map((f) => {
+        const { data, body } = frontmatter(read(`content/blog/${f}`), f);
+        for (const k of ['title', 'description', 'date']) if (!data[k]) throw new Error(`content/blog/${f}: needs "${k}"`);
+        if (data.description.length > 158) throw new Error(`content/blog/${f}: description is ${data.description.length} chars (max 158)`);
+        const words = body.replace(/```[\s\S]*?```/g, ' ').split(/\s+/).filter(Boolean).length;
+        return { ...data, slug: f.replace(/\.md$/, ''), url: `/blog/${f.replace(/\.md$/, '')}/`, html: marked.parse(body), minutes: Math.max(1, Math.round(words / 220)), updated: data.updated || data.date };
+      })
+      .filter((p) => p.draft !== 'true')
+      .sort((a, b) => b.date.localeCompare(a.date))
+  : [];
+const niceDate = (d) => new Date(d + 'T12:00:00Z').toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' });
+const postCard = (p) =>
+  `<a class="card post-card" href="${p.url}"><div class="body"><span class="tag">${esc(p.emoji || '📝')} Guide · ${p.minutes} min read</span><h3>${esc(p.title)}</h3><p>${esc(p.description)}</p><span class="go">Read it →</span></div></a>`;
+
+for (const p of POSTS) {
+  const tool = TOOLS.find((t) => t.url === p.tool);
+  const others = POSTS.filter((x) => x !== p).slice(0, 3);
+  pages.push({
+    url: p.url,
+    title: p.title,
+    description: p.description,
+    type: 'article',
+    lastmod: p.updated,
+    post: true,
+    schema: [
+      ORG,
+      crumbSchema([['/', 'Home'], ['/blog/', 'Blog'], [p.url, p.title]]),
+      {
+        '@type': 'BlogPosting',
+        headline: p.title,
+        description: p.description,
+        datePublished: p.date,
+        dateModified: p.updated,
+        url: `${ORIGIN}${p.url}`,
+        mainEntityOfPage: `${ORIGIN}${p.url}`,
+        image: `${ORIGIN}/img/og.jpg`,
+        author: { '@id': `${ORIGIN}/#org` },
+        publisher: { '@id': `${ORIGIN}/#org` },
+      },
+    ],
+    body: `
+<div class="wrap page-hero">${crumbs([['/', 'Home'], ['/blog/', 'Blog'], [p.url, p.title]])}
+<span class="eyebrow">${esc(p.emoji || '📝')} Guide</span>
+<h1>${esc(p.title)}</h1>
+<p class="lead">${esc(p.description)}</p>
+<p class="meta post-meta">By Byte Buddy · ${p.updated !== p.date ? `Updated <time datetime="${p.updated}">${niceDate(p.updated)}</time>` : `<time datetime="${p.date}">${niceDate(p.date)}</time>`} · ${p.minutes} min read</p>
+</div>
+<article class="wrap article post">
+${p.html}
+${tool ? `<div class="tool-cta"><div><strong>${esc(tool.name)}</strong><p>${esc(tool.blurb)}</p></div><a class="btn btn-primary" href="${tool.url}">Open the free tool →</a></div>` : ''}
+${others.length ? `<h2 class="more-h">Keep reading</h2><ul class="post-links">${others.map((o) => `<li><a href="${o.url}">${esc(o.title)}</a></li>`).join('')}</ul>` : ''}
+</article>`,
+  });
+}
+if (POSTS.length)
+  pages.push({
+    url: '/blog/',
+    title: 'Blog: Claude Code, AI Coding Agents & Dev Guides · Byte Buddy',
+    description: 'Short, practical guides to Claude Code, MCP, AGENTS.md and AI coding agents. Every step checked against the official docs.',
+    schema: [ORG, crumbSchema([['/', 'Home'], ['/blog/', 'Blog']]), { '@type': 'Blog', name: 'Byte Buddy Blog', url: `${ORIGIN}/blog/`, publisher: { '@id': `${ORIGIN}/#org` } }],
+    body: `
+<div class="wrap page-hero">${crumbs([['/', 'Home'], ['/blog/', 'Blog']])}
+<span class="eyebrow">📝 Blog</span>
+<h1>Guides for <span class="hl">AI-powered</span> developers</h1>
+<p class="lead">Short, practical answers about Claude Code, MCP and AI coding agents. Every step is checked against the official docs. <a href="/blog/rss.xml">RSS feed</a></p>
+</div>
+<div class="wrap" style="padding-bottom:80px">
+<div class="cards">
+${POSTS.map(postCard).join('\n')}
+</div>
+</div>`,
+  });
+
 // ---- about / contact / privacy ----
 pages.push({
   url: '/about/',
@@ -951,7 +1209,7 @@ for (const p of pages) {
   if (at >= 0) p.body = p.body.slice(0, at) + p.body.slice(at).replace(/<h2>((?:(?!<span class="num">)[\s\S])*?)<\/h2>/g, addId('h2')).replace(/<h3>([^<]+\?)<\/h3>/g, addId('h3'));
   const short = plain(p.title.split(/ · |: | \(/)[0]);
   const tool = TOOLS.find((t) => t.url === p.url);
-  search.push({ k: tool ? 'Tool' : 'Page', t: tool ? tool.name : short, d: p.description, u: p.url, x: p.title });
+  search.push({ k: tool ? 'Tool' : p.post ? 'Guide' : 'Page', t: tool ? tool.name : p.post ? p.title : short, d: p.description, u: p.url, x: p.title });
   if (p.url !== '/' && p.url !== '/privacy/' && at >= 0) {
     const art = p.body.slice(at);
     for (const m of art.matchAll(/<h2 id="([^"]+)">([\s\S]*?)<\/h2>/g)) if (m[1] !== 'faq') search.push({ k: 'Section', t: plain(m[2]), d: short, u: `${p.url}#${m[1]}` });
@@ -977,6 +1235,7 @@ fs.writeFileSync(
 await build({ entryPoints: ['src/scene.js'], bundle: true, minify: true, format: 'esm', target: 'es2020', outfile: `${OUT}/assets/scene.js`, legalComments: 'none' });
 await build({ entryPoints: ['src/tools/skill-md.js'], bundle: true, minify: true, format: 'esm', target: 'es2020', outfile: `${OUT}/assets/tool-skill-md.js` });
 await build({ entryPoints: ['src/tools/mcp-config.js'], bundle: true, minify: true, format: 'esm', target: 'es2020', outfile: `${OUT}/assets/tool-mcp-config.js` });
+await build({ entryPoints: ['src/tools/hooks.js'], bundle: true, minify: true, format: 'esm', target: 'es2020', outfile: `${OUT}/assets/tool-hooks.js` });
 await build({ entryPoints: ['src/tools/agents-md.js'], bundle: true, minify: true, format: 'esm', target: 'es2020', outfile: `${OUT}/assets/tool-agents-md.js` });
 await build({ entryPoints: ['src/chat.js'], bundle: true, minify: true, format: 'esm', target: 'es2020', outfile: `${OUT}/assets/chat.js` });
 await build({ entryPoints: ['src/site.js'], bundle: false, minify: true, format: 'esm', target: 'es2020', outfile: `${OUT}/assets/site.js` });
@@ -993,8 +1252,23 @@ fs.writeFileSync(path.join(OUT, 'assets', 'search.json'), JSON.stringify(search)
 fs.writeFileSync(path.join(OUT, 'robots.txt'), `User-agent: *\nAllow: /\n\nSitemap: ${ORIGIN}/sitemap.xml\n`);
 fs.writeFileSync(
   path.join(OUT, 'sitemap.xml'),
-  `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${pages.map((p) => `  <url><loc>${ORIGIN}${p.url}</loc><lastmod>${TODAY}</lastmod></url>`).join('\n')}\n</urlset>\n`,
+  `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${pages.map((p) => `  <url><loc>${ORIGIN}${p.url}</loc><lastmod>${p.lastmod || TODAY}</lastmod></url>`).join('\n')}\n</urlset>\n`,
 );
+// RSS for the blog
+if (POSTS.length) {
+  const x = (v) => esc(v).replace(/'/g, '&#39;');
+  const items = POSTS.map((p) => `<item><title>${x(p.title)}</title><link>${ORIGIN}${p.url}</link><guid>${ORIGIN}${p.url}</guid><pubDate>${new Date(p.date + 'T12:00:00Z').toUTCString()}</pubDate><description>${x(p.description)}</description></item>`);
+  fs.writeFileSync(
+    path.join(OUT, 'blog', 'rss.xml'),
+    `<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel>
+<title>Byte Buddy Blog</title><link>${ORIGIN}/blog/</link><description>Practical guides to Claude Code, MCP and AI coding agents.</description><language>en</language>
+<atom:link href="${ORIGIN}/blog/rss.xml" rel="self" type="application/rss+xml"/>
+${items.join('\n')}
+</channel></rss>
+`,
+  );
+}
 fs.writeFileSync(path.join(OUT, 'CNAME'), 'bytebuddydev.com\n');
 fs.writeFileSync(path.join(OUT, '.nojekyll'), '');
 

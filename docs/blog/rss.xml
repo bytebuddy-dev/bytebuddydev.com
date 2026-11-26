@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel>
+<title>Byte Buddy Blog</title><link>https://bytebuddydev.com/blog/</link><description>Practical guides to Claude Code, MCP and AI coding agents.</description><language>en</language>
+<atom:link href="https://bytebuddydev.com/blog/rss.xml" rel="self" type="application/rss+xml"/>
+<item><title>How to Add an MCP Server to Cursor (and Fix It When It Won&#39;t Start)</title><link>https://bytebuddydev.com/blog/add-mcp-server-to-cursor/</link><guid>https://bytebuddydev.com/blog/add-mcp-server-to-cursor/</guid><pubDate>Fri, 27 Nov 2026 12:00:00 GMT</pubDate><description>Where Cursor&#39;s mcp.json lives, the exact format for local and remote servers, how to keep API keys out of it, and the 5 mistakes that stop servers.</description></item>
+<item><title>AGENTS.md vs CLAUDE.md: Which One Do You Need?</title><link>https://bytebuddydev.com/blog/agents-md-vs-claude-md/</link><guid>https://bytebuddydev.com/blog/agents-md-vs-claude-md/</guid><pubDate>Fri, 27 Nov 2026 12:00:00 GMT</pubDate><description>AGENTS.md is read by most coding agents, CLAUDE.md by Claude Code. How they differ, and the one-line setup that keeps both in sync.</description></item>
+<item><title>Claude Code Hooks: 10 Copy-Paste Examples That Actually Work</title><link>https://bytebuddydev.com/blog/claude-code-hooks-examples/</link><guid>https://bytebuddydev.com/blog/claude-code-hooks-examples/</guid><pubDate>Fri, 27 Nov 2026 12:00:00 GMT</pubDate><description>Ten tested Claude Code hooks: notifications, auto-format, blocking rm -rf and force-push, protecting .env, running tests before Claude stops. Windows too.</description></item>
+</channel></rss>
