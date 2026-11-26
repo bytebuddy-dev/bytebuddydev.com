@@ -7,6 +7,7 @@ import { copyText, download, renderChecks, setupTabs, statusCallout } from './ui
 const $ = (sel) => document.querySelector(sel);
 const form = $('#gen');
 const F = form.elements;
+form.addEventListener('submit', (e) => e.preventDefault()); // Enter in a box must not reload the page
 const showTab = setupTabs({ 't-check': 'check' });
 
 const slug = (s) =>

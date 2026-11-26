@@ -180,14 +180,16 @@ if (launch && chat) {
   // Enabled when the page has <html data-ai-url="…">. Any failure falls back to the scripted answers above.
   const AI_URL = document.documentElement.dataset.aiUrl || '';
   const history = []; // [{ role, content }] for the AI's context
-  const SOCIAL = /^https:\/\/(www\.)?(youtube\.com\/@bytebuddydev|instagram\.com\/bytebuddydev|tiktok\.com\/@bytebuddydev|github\.com\/)/;
+  const SOCIAL = /^https:\/\/(www\.)?(youtube\.com\/@bytebuddydev|instagram\.com\/bytebuddydev|tiktok\.com\/@bytebuddydev|github\.com\/bytebuddy-dev)([/?#]|$)/;
+  // Our own pages only: "/path". Browsers read "/\evil.com" and "//evil.com" as another website, so no second slash or backslash.
+  const OWN = /^\/(?![/\\])[^\\\s]*$/;
   /** AI text → safe HTML: escaped, with **bold** and [links](…) only to our pages or our channels. */
   const aiHtml = (s) =>
     esc(s)
       .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
       .replace(/\[([^\]]+)\]\(([^)\s]+)\)/g, (m, t, u) => {
         const url = u.replace(/&amp;/g, '&');
-        if (url.startsWith('/') && !url.startsWith('//')) return `<a href="${esc(url)}">${t}</a>`;
+        if (OWN.test(url)) return `<a href="${esc(url)}">${t}</a>`;
         if (SOCIAL.test(url)) return `<a href="${esc(url)}" target="_blank" rel="noopener">${t}</a>`;
         return t;
       })

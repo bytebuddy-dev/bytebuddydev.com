@@ -5,3 +5,14 @@ compatibility_date = "2026-11-01"
 
 [vars]
 GROQ_MODEL = "openai/gpt-oss-20b"
+
+# Rate limits (free, counted across all Cloudflare servers). period must be 10 or 60 seconds.
+[[ratelimits]]
+name = "PER_IP"
+namespace_id = "1001"
+simple = { limit = 8, period = 60 }
+
+[[ratelimits]]
+name = "ALL"
+namespace_id = "1002"
+simple = { limit = 60, period = 60 }

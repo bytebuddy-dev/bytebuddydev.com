@@ -66,4 +66,17 @@ console.log('✔ quota exhausted → { fallback: true }');
 j = await (await worker.fetch(new Request('https://x/chat', { method: 'POST', headers: { Origin: 'http://localhost:4321' }, body: JSON.stringify(msg('hi')) }), {})).json();
 assert.equal(j.fallback, true);
 console.log('✔ missing key → { fallback: true }');
+// Cloudflare rate limit bindings: a blocked key means no Groq call
+{
+  const block = { limit: async () => ({ success: false }) };
+  const pass = { limit: async () => ({ success: true }) };
+  for (const [PER_IP, ALL, label] of [[block, pass, 'per visitor'], [pass, block, 'site-wide']]) {
+    lastGroqBody = null;
+    groqStatus = 200;
+    const res = await worker.fetch(new Request('https://x/chat', { method: 'POST', headers: { Origin: 'http://localhost:4321', 'CF-Connecting-IP': '7.7.7.7' }, body: JSON.stringify(msg('hi')) }), { ...env, PER_IP, ALL });
+    assert.match((await res.json()).reply, /catch my breath/);
+    assert.equal(lastGroqBody, null);
+  }
+  console.log('✔ Cloudflare rate limits (per visitor and site-wide) stop the Groq call');
+}
 console.log('All worker tests passed.');

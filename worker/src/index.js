@@ -5,7 +5,7 @@
 //   → { reply, action: 'none' | 'skill' | 'contact', skill_md }
 //   → { fallback: true } when Groq is unavailable or the quota is used up (the site then uses scripted Bugsy)
 //
-// Guards: allowed origins only, ≤ 8 requests/minute per IP (best effort, per Worker instance),
+// Guards: allowed origins only, ≤ 8 requests/minute per IP and ≤ 60/minute in total (Cloudflare rate limiting),
 // ≤ 10 messages of ≤ 600 characters, short answers (max_completion_tokens).
 
 import { SYSTEM_PROMPT } from './prompt.js';
@@ -46,6 +46,15 @@ const limited = (ip) => {
   return recent.length > PER_MINUTE;
 };
 
+// Cloudflare's rate limiter counts across all its servers (an in-memory count only sees one).
+// PER_IP: one visitor. ALL: everyone together, so a spread-out attack can't drain the Groq quota quickly.
+// Falls back to the in-memory count when the bindings are missing (local tests).
+const overLimit = async (env, ip) => {
+  if (!env.PER_IP || !env.ALL) return limited(ip);
+  const [one, all] = await Promise.all([env.PER_IP.limit({ key: ip }), env.ALL.limit({ key: 'all' })]);
+  return !one.success || !all.success;
+};
+
 const cors = (origin) => ({
   'Access-Control-Allow-Origin': origin,
   'Access-Control-Allow-Methods': 'POST, OPTIONS',
@@ -66,7 +75,7 @@ export default {
     if (!allowed) return new Response('Forbidden', { status: 403 });
 
     const ip = request.headers.get('CF-Connecting-IP') || 'local';
-    if (limited(ip)) return json({ reply: "Whoa, that's a lot of messages! Give me a minute to catch my breath 🐝", action: 'none', skill_md: '' }, 200, origin);
+    if (await overLimit(env, ip)) return json({ reply: "Whoa, that's a lot of messages! Give me a minute to catch my breath 🐝", action: 'none', skill_md: '' }, 200, origin);
 
     let body;
     try {

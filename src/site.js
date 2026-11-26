@@ -128,7 +128,8 @@ if (!saveData && document.getElementById('bugsy-canvas')) {
   });
   q?.addEventListener('input', render);
   q?.addEventListener('keydown', (e) => {
-    if (e.key === 'ArrowDown') { e.preventDefault(); move(1); }
+    if (e.key === 'Escape') { e.preventDefault(); dlg.close(); }
+    else if (e.key === 'ArrowDown') { e.preventDefault(); move(1); }
     else if (e.key === 'ArrowUp') { e.preventDefault(); move(-1); }
     else if (e.key === 'Enter') { e.preventDefault(); const a = list.children[sel]?.querySelector('a'); if (a) { dlg.close(); a.click(); } }
   });

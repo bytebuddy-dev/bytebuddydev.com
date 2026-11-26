@@ -8,6 +8,7 @@ import { copyText, download, renderChecks, setupTabs, statusCallout } from './ui
 const $ = (sel) => document.querySelector(sel);
 const form = $('#am');
 const F = form.elements;
+form.addEventListener('submit', (e) => e.preventDefault()); // Enter in a box must not reload the page
 const showTab = setupTabs({ 't-check': 'check' });
 const lines = (s) => s.split('\n').map((l) => l.replace(/^\s*([-*•]|\d+[.)])\s*/, '').trim()).filter(Boolean);
 const sentence = (s) => (/[.!?:]$/.test(s) ? s : s + '.');

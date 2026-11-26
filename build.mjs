@@ -1,6 +1,7 @@
 // npm run build → docs/ (GitHub Pages: Settings → Pages → Deploy from branch → main /docs).
 // Every page is plain HTML (fast, fully crawlable); the 3D Bugsy is an extra layer loaded after the page.
 import fs from 'node:fs';
+import { createHash } from 'node:crypto';
 import path from 'node:path';
 import { build } from 'esbuild';
 import { SERVERS as MCP_SERVERS, CHECKED as MCP_CHECKED } from './src/tools/mcp-servers.js';
@@ -63,12 +64,32 @@ const NAV = [
   ['/about/', 'About', 'hide-xs'],
 ];
 
+// Content Security Policy: the browser only runs our own scripts and only talks to the services listed here,
+// so even a bug that let someone inject HTML couldn't load or send anything elsewhere. The one inline script
+// (theme before first paint) is allowed by its hash. GitHub Pages can't send headers, so this is a <meta> tag.
+const THEME_JS = "try{var t=localStorage.getItem('bb-theme');if(t==='light'||t==='dark')document.documentElement.dataset.theme=t}catch(e){}";
+const CSP = [
+  "default-src 'self'",
+  `script-src 'self' 'sha256-${createHash('sha256').update(THEME_JS).digest('base64')}'`,
+  "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+  "font-src 'self' https://fonts.gstatic.com",
+  "img-src 'self' data: blob:",
+  `connect-src 'self'${AI_URL ? ' ' + new URL(AI_URL).origin : ''}`,
+  'frame-src https://www.youtube-nocookie.com',
+  "worker-src 'self' blob:",
+  "object-src 'none'",
+  "base-uri 'self'",
+  "form-action 'self'",
+].join('; ') + ';'; // trailing ; so anything appended later (some antivirus tools do) stays a separate rule
+
 /** Full HTML page. `scripts` = extra page scripts in /assets (e.g. a tool). */
 const layout = ({ url, title, description, image = '/img/og.jpg', body, schema = [], type = 'website', scripts = [] }) => `<!doctype html>
 <html lang="en"${AI_URL ? ` data-ai-url="${esc(AI_URL)}"` : ''}>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="${CSP}">
+<meta name="referrer" content="strict-origin-when-cross-origin">
 <title>${esc(title)}</title>
 <meta name="description" content="${esc(description)}">
 <link rel="canonical" href="${ORIGIN}${url}">
@@ -76,7 +97,7 @@ const layout = ({ url, title, description, image = '/img/og.jpg', body, schema =
 <meta name="color-scheme" content="dark light">
 <meta name="theme-color" content="#0b0814" media="(prefers-color-scheme: dark)">
 <meta name="theme-color" content="#faf8f4" media="(prefers-color-scheme: light)">
-<script>try{var t=localStorage.getItem('bb-theme');if(t==='light'||t==='dark')document.documentElement.dataset.theme=t}catch(e){}</script>
+<script>${THEME_JS}</script>
 <meta property="og:site_name" content="Byte Buddy">
 <meta property="og:type" content="${type}">
 <meta property="og:title" content="${esc(title)}">
@@ -459,7 +480,7 @@ pages.push({
   </div>
 
   <section id="tab-create" class="duo" role="tabpanel" aria-labelledby="t-create">
-    <form id="gen" class="panel pick-panel" autocomplete="off" onsubmit="return false">
+    <form id="gen" class="panel pick-panel" autocomplete="off">
       <div class="step-head"><h2>Pick a skill</h2></div>
       <div class="picks" id="sk-picks" role="group" aria-label="Skill templates"></div>
       <details class="adv" id="sk-edit"><summary>Customize <small>name, description, steps, examples</small></summary>
@@ -586,7 +607,7 @@ pages.push({
   </div>
 
   <section id="tab-create" class="duo" role="tabpanel" aria-labelledby="t-create">
-    <form id="am" class="panel pick-panel" autocomplete="off" onsubmit="return false">
+    <form id="am" class="panel pick-panel" autocomplete="off">
       <div class="step-head"><h2>Pick your stack</h2></div>
       <div class="picks" id="am-stacks" role="group" aria-label="Your stack"></div>
       <fieldset class="seg mini" id="am-pm"><legend>Package manager</legend>
