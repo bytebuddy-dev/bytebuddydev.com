@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-ai-url="https://bugsy-ai.bugsy-ai.workers.dev/chat">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -23,7 +23,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600..800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap">
-<link rel="stylesheet" href="/assets/site.css?v=mwxyarf5">
+<link rel="stylesheet" href="/assets/site.css?v=mwxz1hzm">
 <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://bytebuddydev.com/#org","name":"Byte Buddy","url":"https://bytebuddydev.com/","logo":"https://bytebuddydev.com/img/icon-192.png","sameAs":["https://www.youtube.com/@bytebuddydev","https://www.instagram.com/bytebuddydev/","https://www.tiktok.com/@bytebuddydev","https://github.com/bytebuddy-dev"]},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://bytebuddydev.com/"},{"@type":"ListItem","position":2,"name":"Tools","item":"https://bytebuddydev.com/tools/"},{"@type":"ListItem","position":3,"name":"AGENTS.md generator","item":"https://bytebuddydev.com/tools/agents-md-generator/"}]},{"@type":"WebApplication","name":"AGENTS.md & CLAUDE.md Generator","url":"https://bytebuddydev.com/tools/agents-md-generator/","applicationCategory":"DeveloperApplication","operatingSystem":"Any (runs in the browser)","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"publisher":{"@id":"https://bytebuddydev.com/#org"}},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is AGENTS.md?","acceptedAnswer":{"@type":"Answer","text":"AGENTS.md is a plain Markdown file in the root of a repository that tells AI coding agents how to work on the project: the commands to install, test and lint, the code style, and the rules to follow. It is an open format now stewarded by the Agentic AI Foundation under the Linux Foundation, and is read by Codex, Cursor, GitHub Copilot, Jules, Gemini CLI, Aider, Zed, Windsurf and many more."}},{"@type":"Question","name":"Does AGENTS.md need special fields or frontmatter?","acceptedAnswer":{"@type":"Answer","text":"No. It is standard Markdown and you can use any headings you like. Popular sections are a project overview, build and test commands, code style, testing instructions and security notes."}},{"@type":"Question","name":"Does Claude Code read AGENTS.md?","acceptedAnswer":{"@type":"Answer","text":"Recent versions of Claude Code can read AGENTS.md, but by default only when there is no CLAUDE.md. The approach Anthropic recommends for sharing one file between tools is a CLAUDE.md that contains the line @AGENTS.md, with any Claude-only instructions below it. That is what this generator creates."}},{"@type":"Question","name":"How long should CLAUDE.md be?","acceptedAnswer":{"@type":"Answer","text":"Anthropic recommends keeping each CLAUDE.md under 200 lines. Longer files use more context and Claude follows them less reliably. Move step-by-step procedures into skills and rules for specific folders into .claude/rules/."}},{"@type":"Question","name":"Should I use a symlink instead of @AGENTS.md?","acceptedAnswer":{"@type":"Answer","text":"A symlink (ln -s AGENTS.md CLAUDE.md) works if you have no Claude-specific notes, but Claude cannot edit a file through a symlink, and on Windows symlinks need admin rights or Developer Mode and Git may check them out as plain text files. The @AGENTS.md import works everywhere."}},{"@type":"Question","name":"Which file wins in a monorepo?","acceptedAnswer":{"@type":"Answer","text":"Put an AGENTS.md in each package that needs its own rules. Agents read the file closest to the code being edited, so the nearest AGENTS.md takes precedence, and an explicit instruction in the chat overrides them all."}},{"@type":"Question","name":"Does this tool upload my files?","acceptedAnswer":{"@type":"Answer","text":"No. The generator and the checker run entirely in your browser. Nothing you type or paste is sent anywhere."}}]}]}</script>
 </head>
 <body>
@@ -167,8 +167,8 @@
   <div class="chat-chips"></div>
   <form><label class="sr" for="chat-input">Message</label><input id="chat-input" autocomplete="off" maxlength="500" placeholder="Ask Bugsy or leave a message…"><button type="submit" aria-label="Send">➤</button></form>
 </section>
-<script type="module" src="/assets/site.js?v=mwxyarf5"></script>
-<script type="module" src="/assets/chat.js?v=mwxyarf5"></script>
-<script type="module" src="/assets/tool-agents-md.js?v=mwxyarf5"></script>
+<script type="module" src="/assets/site.js?v=mwxz1hzm"></script>
+<script type="module" src="/assets/chat.js?v=mwxz1hzm"></script>
+<script type="module" src="/assets/tool-agents-md.js?v=mwxz1hzm"></script>
 </body>
 </html>

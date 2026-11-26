@@ -21,11 +21,11 @@ The Groq key is a Worker **secret**: it is never in the website's code or in git
    ```
 4. Build the site with AI on:
    ```bash
-   cd .. && BUGSY_AI_URL=https://bugsy-ai.<your-subdomain>.workers.dev/chat npm run build
+   cd .. && npm run build   # the deployed URL is the default in build.mjs; set BUGSY_AI_URL to override
    ```
    This also updates the privacy page to mention Groq.
 
-Without `BUGSY_AI_URL`, the site uses scripted Bugsy only. If Groq is down or the free quota runs out,
+With `BUGSY_AI_URL=` (empty), the site uses scripted Bugsy only. If Groq is down or the free quota runs out,
 the Worker returns `{ fallback: true }` and the site quietly switches to scripted answers.
 
 Change the model in `wrangler.toml` (`GROQ_MODEL`), default `openai/gpt-oss-20b`.

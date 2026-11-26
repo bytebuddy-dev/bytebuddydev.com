@@ -7,8 +7,8 @@ import { SERVERS as MCP_SERVERS, CHECKED as MCP_CHECKED } from './src/tools/mcp-
 const SERVER_COUNT = MCP_SERVERS.length;
 
 const ORIGIN = 'https://bytebuddydev.com';
-// AI Bugsy: the deployed Worker's /chat URL. Empty = scripted Bugsy only. e.g. BUGSY_AI_URL=https://bugsy-ai.<you>.workers.dev/chat npm run build
-const AI_URL = process.env.BUGSY_AI_URL || '';
+// AI Bugsy: the deployed Worker's /chat URL (public; the Groq key is a Worker secret). BUGSY_AI_URL=http://localhost:8787/chat to test locally.
+const AI_URL = process.env.BUGSY_AI_URL ?? 'https://bugsy-ai.bugsy-ai.workers.dev/chat'; // BUGSY_AI_URL= (empty) for scripted Bugsy only
 const OUT = 'docs';
 const TODAY = new Date().toISOString().slice(0, 10);
 const SOCIAL = {
