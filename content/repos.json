@@ -1,0 +1,173 @@
+[
+  {
+    "part": "Part 1",
+    "title": "10 GitHub repos every developer should know",
+    "video": "https://youtube.com/shorts/1kS2Cjerbwk",
+    "repos": [
+      {
+        "repo": "codecrafters-io/build-your-own-x",
+        "url": "https://github.com/codecrafters-io/build-your-own-x",
+        "what": "Build your own Git, Docker, database, and more, step by step"
+      },
+      {
+        "repo": "EbookFoundation/free-programming-books",
+        "url": "https://github.com/EbookFoundation/free-programming-books",
+        "what": "Thousands of free programming books and courses"
+      },
+      {
+        "repo": "donnemartin/system-design-primer",
+        "url": "https://github.com/donnemartin/system-design-primer",
+        "what": "Learn how big systems are designed"
+      },
+      {
+        "repo": "jwasham/coding-interview-university",
+        "url": "https://github.com/jwasham/coding-interview-university",
+        "what": "A full study plan for coding interviews"
+      },
+      {
+        "repo": "ossu/computer-science",
+        "url": "https://github.com/ossu/computer-science",
+        "what": "A free computer science degree from online courses"
+      },
+      {
+        "repo": "sindresorhus/awesome",
+        "url": "https://github.com/sindresorhus/awesome",
+        "what": "The list of \"awesome\" lists on every topic"
+      },
+      {
+        "repo": "practical-tutorials/project-based-learning",
+        "url": "https://github.com/practical-tutorials/project-based-learning",
+        "what": "Learn by building real projects"
+      },
+      {
+        "repo": "trimstray/the-book-of-secret-knowledge",
+        "url": "https://github.com/trimstray/the-book-of-secret-knowledge",
+        "what": "Command-line tricks, cheat sheets and tools"
+      },
+      {
+        "repo": "public-apis/public-apis",
+        "url": "https://github.com/public-apis/public-apis",
+        "what": "Free APIs for your next project"
+      },
+      {
+        "repo": "florinpop17/app-ideas",
+        "url": "https://github.com/florinpop17/app-ideas",
+        "what": "App ideas to build, from beginner to advanced"
+      }
+    ]
+  },
+  {
+    "part": "Part 2",
+    "title": "10 more GitHub repos",
+    "video": "https://youtube.com/shorts/PgbY-pC4eE0",
+    "repos": [
+      {
+        "repo": "rasbt/LLMs-from-scratch",
+        "url": "https://github.com/rasbt/LLMs-from-scratch",
+        "what": "Build a ChatGPT-style model from scratch"
+      },
+      {
+        "repo": "microsoft/generative-ai-for-beginners",
+        "url": "https://github.com/microsoft/generative-ai-for-beginners",
+        "what": "Free generative AI course by Microsoft"
+      },
+      {
+        "repo": "awesome-selfhosted/awesome-selfhosted",
+        "url": "https://github.com/awesome-selfhosted/awesome-selfhosted",
+        "what": "Free apps you can run on your own server"
+      },
+      {
+        "repo": "ripienaar/free-for-dev",
+        "url": "https://github.com/ripienaar/free-for-dev",
+        "what": "Services with free tiers for developers"
+      },
+      {
+        "repo": "mtdvio/every-programmer-should-know",
+        "url": "https://github.com/mtdvio/every-programmer-should-know",
+        "what": "What every programmer should know"
+      },
+      {
+        "repo": "trekhleb/javascript-algorithms",
+        "url": "https://github.com/trekhleb/javascript-algorithms",
+        "what": "Algorithms and data structures in JavaScript"
+      },
+      {
+        "repo": "getify/You-Dont-Know-JS",
+        "url": "https://github.com/getify/You-Dont-Know-JS",
+        "what": "Deep dive into how JavaScript really works"
+      },
+      {
+        "repo": "jlevy/the-art-of-command-line",
+        "url": "https://github.com/jlevy/the-art-of-command-line",
+        "what": "Master the command line"
+      },
+      {
+        "repo": "leonardomso/33-js-concepts",
+        "url": "https://github.com/leonardomso/33-js-concepts",
+        "what": "33 JavaScript concepts every developer should know"
+      },
+      {
+        "repo": "dwmkerr/hacker-laws",
+        "url": "https://github.com/dwmkerr/hacker-laws",
+        "what": "Laws and principles developers find useful"
+      }
+    ]
+  },
+  {
+    "part": "Part 3",
+    "title": "10 GitHub repos with tools you can use today",
+    "video": null,
+    "repos": [
+      {
+        "repo": "open-webui/open-webui",
+        "url": "https://github.com/open-webui/open-webui",
+        "what": "A ChatGPT-style interface for your own AI models"
+      },
+      {
+        "repo": "ollama/ollama",
+        "url": "https://github.com/ollama/ollama",
+        "what": "Run AI models on your own computer"
+      },
+      {
+        "repo": "TheAlgorithms/Python",
+        "url": "https://github.com/TheAlgorithms/Python",
+        "what": "Every algorithm, written in Python"
+      },
+      {
+        "repo": "yangshun/tech-interview-handbook",
+        "url": "https://github.com/yangshun/tech-interview-handbook",
+        "what": "Free guide to tech interviews"
+      },
+      {
+        "repo": "mermaid-js/mermaid",
+        "url": "https://github.com/mermaid-js/mermaid",
+        "what": "Draw diagrams by writing text"
+      },
+      {
+        "repo": "localsend/localsend",
+        "url": "https://github.com/localsend/localsend",
+        "what": "Send files between devices, no internet needed"
+      },
+      {
+        "repo": "hoppscotch/hoppscotch",
+        "url": "https://github.com/hoppscotch/hoppscotch",
+        "what": "Free, open-source API testing tool"
+      },
+      {
+        "repo": "excalidraw/excalidraw",
+        "url": "https://github.com/excalidraw/excalidraw",
+        "what": "Hand-drawn style whiteboard"
+      },
+      {
+        "repo": "jesseduffield/lazygit",
+        "url": "https://github.com/jesseduffield/lazygit",
+        "what": "Simple terminal UI for Git"
+      },
+      {
+        "repo": "tldr-pages/tldr",
+        "url": "https://github.com/tldr-pages/tldr",
+        "what": "Short, practical examples for terminal commands"
+      }
+    ]
+  }
+]

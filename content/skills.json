@@ -1,0 +1,82 @@
+[
+  {
+    "n": 1,
+    "repo": "obra/superpowers",
+    "stars": "326K",
+    "what": "Claude stops jumping straight into code. It asks what you want, writes a plan, then builds it test-first.",
+    "why": "It can work on its own for hours",
+    "install": "/plugin install superpowers@claude-plugins-official"
+  },
+  {
+    "n": 2,
+    "repo": "anthropics/skills",
+    "stars": "200K",
+    "what": "Anthropic's own skills, including the ones behind Claude's Word, PDF, PowerPoint and Excel files.",
+    "why": "Read how Anthropic writes skills",
+    "install": "/plugin marketplace add anthropics/skills"
+  },
+  {
+    "n": 3,
+    "repo": "nextlevelbuilder/ui-ux-pro-max-skill",
+    "stars": "154K",
+    "what": "Generates a full design system for your app: styles, colour palettes, fonts and UX rules.",
+    "why": "Your AI-built app stops looking AI-built",
+    "install": "/plugin marketplace add nextlevelbuilder/ui-ux-pro-max-skill"
+  },
+  {
+    "n": 4,
+    "repo": "K-Dense-AI/scientific-agent-skills",
+    "stars": "58K",
+    "what": "177 science skills and 100+ databases: biology, chemistry, medicine, physics and more.",
+    "why": "Turns your coding agent into a lab assistant",
+    "install": null
+  },
+  {
+    "n": 5,
+    "repo": "vercel-labs/agent-skills",
+    "stars": "35K",
+    "what": "Vercel's official skills: React & Next.js performance rules and an audit of your Vercel costs.",
+    "why": "The framework team's own playbook",
+    "install": "npx skills add vercel-labs/agent-skills"
+  },
+  {
+    "n": 6,
+    "repo": "alirezarezvani/claude-skills",
+    "stars": "30K",
+    "what": "434 skills that go way past code: marketing, product, compliance, finance, even C-suite advice.",
+    "why": "A whole company in one repo",
+    "install": "/plugin marketplace add alirezarezvani/claude-skills"
+  },
+  {
+    "n": 7,
+    "repo": "OthmanAdi/planning-with-files",
+    "stars": "28K",
+    "what": "Keeps Claude's plan in Markdown files on disk, so it picks up where it left off after /clear or a crash.",
+    "why": "Manus-style memory for long tasks",
+    "install": "npx skills add OthmanAdi/planning-with-files -g"
+  },
+  {
+    "n": 8,
+    "repo": "Jeffallan/claude-skills",
+    "stars": "12.5K",
+    "what": "71 skills for full-stack devs: frameworks, APIs, testing, DevOps, security and data/ML.",
+    "why": "A specialist for every layer of your stack",
+    "install": "/plugin marketplace add jeffallan/claude-skills"
+  },
+  {
+    "n": 9,
+    "repo": "remotion-dev/skills",
+    "stars": "8K",
+    "what": "Make videos with code. Type \"/remotion-create Make a promo video for a record store\".",
+    "why": "Our own videos are built with Remotion",
+    "install": "npx skills add remotion-dev/skills"
+  },
+  {
+    "n": 10,
+    "repo": "lackeyjb/playwright-skill",
+    "stars": "3.3K",
+    "what": "Claude writes and runs browser tests, then shows you screenshots and console output.",
+    "why": "\"Test if my site loads\" just works",
+    "install": "/plugin marketplace add lackeyjb/playwright-skill"
+  }
+]

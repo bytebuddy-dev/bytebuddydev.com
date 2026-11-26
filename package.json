@@ -1,0 +1,14 @@
+{
+  "name": "bytebuddydev-site",
+  "private": true,
+  "type": "module",
+  "description": "bytebuddydev.com: static site with a 3D Bugsy. `npm run build` writes docs/ (GitHub Pages serves main /docs).",
+  "scripts": {
+    "build": "node build.mjs",
+    "serve": "npx --yes serve docs -l 4321"
+  },
+  "devDependencies": {
+    "esbuild": "0.28.1",
+    "three": "0.187.0"
+  }
+}

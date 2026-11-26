@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AGENTS.md &amp; CLAUDE.md Generator + Checker (Free)</title>
+<meta name="description" content="Generate an AGENTS.md and CLAUDE.md for your repo in a few clicks: pick your stack, tick your rules, download. Plus a checker that finds leaked secrets, vague rules and missing test commands.">
+<link rel="canonical" href="https://bytebuddydev.com/tools/agents-md-generator/">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<meta name="color-scheme" content="dark light">
+<meta name="theme-color" content="#0b0814" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#faf8f4" media="(prefers-color-scheme: light)">
+<script>try{var t=localStorage.getItem('bb-theme');if(t==='light'||t==='dark')document.documentElement.dataset.theme=t}catch(e){}</script>
+<meta property="og:site_name" content="Byte Buddy">
+<meta property="og:type" content="article">
+<meta property="og:title" content="AGENTS.md &amp; CLAUDE.md Generator + Checker (Free)">
+<meta property="og:description" content="Generate an AGENTS.md and CLAUDE.md for your repo in a few clicks: pick your stack, tick your rules, download. Plus a checker that finds leaked secrets, vague rules and missing test commands.">
+<meta property="og:url" content="https://bytebuddydev.com/tools/agents-md-generator/">
+<meta property="og:image" content="https://bytebuddydev.com/img/og.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="/img/favicon-48.png" sizes="48x48" type="image/png">
+<link rel="apple-touch-icon" href="/img/icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600..800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap">
+<link rel="stylesheet" href="/assets/site.css?v=mwxwi2jp">
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://bytebuddydev.com/#org","name":"Byte Buddy","url":"https://bytebuddydev.com/","logo":"https://bytebuddydev.com/img/icon-192.png","sameAs":["https://www.youtube.com/@bytebuddydev","https://www.instagram.com/bytebuddydev/","https://www.tiktok.com/@bytebuddydev","https://github.com/bytebuddy-dev"]},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://bytebuddydev.com/"},{"@type":"ListItem","position":2,"name":"Tools","item":"https://bytebuddydev.com/tools/"},{"@type":"ListItem","position":3,"name":"AGENTS.md generator","item":"https://bytebuddydev.com/tools/agents-md-generator/"}]},{"@type":"WebApplication","name":"AGENTS.md & CLAUDE.md Generator","url":"https://bytebuddydev.com/tools/agents-md-generator/","applicationCategory":"DeveloperApplication","operatingSystem":"Any (runs in the browser)","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"publisher":{"@id":"https://bytebuddydev.com/#org"}},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is AGENTS.md?","acceptedAnswer":{"@type":"Answer","text":"AGENTS.md is a plain Markdown file in the root of a repository that tells AI coding agents how to work on the project: the commands to install, test and lint, the code style, and the rules to follow. It is an open format now stewarded by the Agentic AI Foundation under the Linux Foundation, and is read by Codex, Cursor, GitHub Copilot, Jules, Gemini CLI, Aider, Zed, Windsurf and many more."}},{"@type":"Question","name":"Does AGENTS.md need special fields or frontmatter?","acceptedAnswer":{"@type":"Answer","text":"No. It is standard Markdown and you can use any headings you like. Popular sections are a project overview, build and test commands, code style, testing instructions and security notes."}},{"@type":"Question","name":"Does Claude Code read AGENTS.md?","acceptedAnswer":{"@type":"Answer","text":"Recent versions of Claude Code can read AGENTS.md, but by default only when there is no CLAUDE.md. The approach Anthropic recommends for sharing one file between tools is a CLAUDE.md that contains the line @AGENTS.md, with any Claude-only instructions below it. That is what this generator creates."}},{"@type":"Question","name":"How long should CLAUDE.md be?","acceptedAnswer":{"@type":"Answer","text":"Anthropic recommends keeping each CLAUDE.md under 200 lines. Longer files use more context and Claude follows them less reliably. Move step-by-step procedures into skills and rules for specific folders into .claude/rules/."}},{"@type":"Question","name":"Should I use a symlink instead of @AGENTS.md?","acceptedAnswer":{"@type":"Answer","text":"A symlink (ln -s AGENTS.md CLAUDE.md) works if you have no Claude-specific notes, but Claude cannot edit a file through a symlink, and on Windows symlinks need admin rights or Developer Mode and Git may check them out as plain text files. The @AGENTS.md import works everywhere."}},{"@type":"Question","name":"Which file wins in a monorepo?","acceptedAnswer":{"@type":"Answer","text":"Put an AGENTS.md in each package that needs its own rules. Agents read the file closest to the code being edited, so the nearest AGENTS.md takes precedence, and an explicit instruction in the chat overrides them all."}},{"@type":"Question","name":"Does this tool upload my files?","acceptedAnswer":{"@type":"Answer","text":"No. The generator and the checker run entirely in your browser. Nothing you type or paste is sent anywhere."}}]}]}</script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="site-header"><div class="wrap">
+<a class="brand" href="/"><img src="/img/icon-192.png" alt="" width="36" height="36">Byte<span>Buddy</span></a>
+<nav class="nav" aria-label="Main"><a href="/" class="hide-sm">Home</a><a href="/tools/">Tools</a><a href="/skills/" class="hide-xs">Skills</a><a href="/repos/" class="hide-sm">Repos</a><a href="/gta/" class="hide-sm">GTA Portfolio</a><a href="/about/" class="hide-xs">About</a></nav>
+<button class="search-btn" type="button" aria-label="Search the site" aria-keyshortcuts="Control+K"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><span>Search</span><kbd>Ctrl K</kbd></button>
+<button class="theme-btn" type="button" aria-label="Switch colour theme"><svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg><svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M4.9 19.1l1.8-1.8M17.3 6.7l1.8-1.8"/></svg></button>
+</div></header>
+<main id="main">
+
+<div class="wrap page-hero"><nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a> / <a href="/tools/">Tools</a> / AGENTS.md generator</nav>
+<span class="eyebrow">🤖 Free tool</span>
+<h1><span class="hl">AGENTS.md</span> &amp; CLAUDE.md generator</h1>
+<p class="lead">Pick your stack, copy the files. One set of rules for Claude Code, Codex, Cursor, Copilot and every other agent. Or check the file you already have. Free, and nothing leaves your browser.</p>
+</div>
+<div class="wrap tool simple">
+  <div class="tabs" role="tablist" aria-label="What do you want to do?">
+    <button type="button" role="tab" id="t-create" aria-controls="tab-create" aria-selected="true">Create</button>
+    <button type="button" role="tab" id="t-check" aria-controls="tab-check" aria-selected="false" tabindex="-1">Check a file</button>
+  </div>
+
+  <section id="tab-create" class="duo" role="tabpanel" aria-labelledby="t-create">
+    <form id="am" class="panel pick-panel" autocomplete="off" onsubmit="return false">
+      <div class="step-head"><h2>Pick your stack</h2></div>
+      <div class="picks" id="am-stacks" role="group" aria-label="Your stack"></div>
+      <fieldset class="seg mini" id="am-pm"><legend>Package manager</legend>
+        <label><input type="radio" name="pm" value="npm" checked> npm</label>
+        <label><input type="radio" name="pm" value="pnpm"> pnpm</label>
+        <label><input type="radio" name="pm" value="yarn"> yarn</label>
+        <label><input type="radio" name="pm" value="bun"> bun</label>
+      </fieldset>
+      <details class="adv" id="am-edit"><summary>Customize <small>commands, code style, rules, which files</small></summary>
+        <div class="adv-body">
+          <fieldset class="seg mini"><legend>Files</legend>
+            <label><input type="radio" name="mode" value="both" checked> AGENTS.md + CLAUDE.md</label>
+            <label><input type="radio" name="mode" value="claude"> CLAUDE.md only</label>
+            <label><input type="radio" name="mode" value="agents"> AGENTS.md only</label>
+          </fieldset>
+          <div class="two"><label>Project name <input name="name" placeholder="my-app"></label><label>What it is <input name="about" placeholder="A Next.js web app"></label></div>
+          <fieldset class="cmds"><legend>Commands <small>leave a box empty to skip it</small></legend><div id="am-cmds" class="cmd-grid"></div></fieldset>
+          <label>Code style <small>one rule per line</small><textarea name="codestyle" rows="4"></textarea></label>
+          <label>Gotchas <small>things the code doesn't make obvious · optional</small><textarea name="gotchas" rows="2" placeholder="Dates in the API are UTC; the UI converts them&#10;tests/e2e needs the dev server running first"></textarea></label>
+          <fieldset class="rules"><legend>Rules</legend><div id="am-rules" class="rule-list"></div></fieldset>
+          <label>Your own rules <small>one per line, optional</small><textarea name="extra" rows="2" placeholder="All UI text goes through the t() translation helper"></textarea></label>
+          <label class="check"><input type="checkbox" name="layout"><span><span>Add a project layout section</span><small>Usually not needed: agents can read your folders. Anthropic's docs suggest leaving it out to keep the file short.</small></span></label>
+          <label id="am-structure" hidden>Project layout <small>one folder per line: path — what's in it</small><textarea name="structure" rows="4"></textarea></label>
+          <label id="am-claude-notes">Claude Code-only notes <small>optional · e.g. skills or commands only Claude has</small><textarea name="claude" rows="2" placeholder="Use the /release skill to publish a new version"></textarea></label>
+        </div>
+      </details>
+    </form>
+    <div class="panel result" id="am-result" aria-live="polite"></div>
+  </section>
+
+  <section id="tab-check" class="duo" role="tabpanel" aria-labelledby="t-check" hidden>
+    <div class="panel pick-panel">
+      <div class="step-head"><h2>Paste your file</h2><button type="button" id="ck-bad" class="link-btn">Load a messy example</button></div>
+      <label class="scope-row">It's a <select id="ck-kind" class="mini"><option value="auto">detect it for me</option><option value="agents">AGENTS.md</option><option value="claude">CLAUDE.md</option></select></label>
+      <label class="sr" for="ck-in">Paste an AGENTS.md or CLAUDE.md</label>
+      <textarea id="ck-in" rows="14" spellcheck="false" placeholder="Paste your AGENTS.md or CLAUDE.md here"></textarea>
+    </div>
+    <div class="panel result" id="ck-result" aria-live="polite"></div>
+  </section>
+</div>
+
+<div class="wrap guide-divider"><span>Guide</span></div>
+
+<article class="wrap article">
+<h2 id="what-is-agents-md">What is AGENTS.md?</h2>
+<p><strong>AGENTS.md</strong> is a README for AI coding agents. Your README tells humans what a project is; AGENTS.md tells an agent how to work on it: which commands install, test and lint the code, which style to follow, and what it must not do. It's plain Markdown with no required fields, and it lives in the root of your repo.</p>
+<p>It started as a shared effort between OpenAI Codex, Amp, Google's Jules, Cursor and Factory, and is now stewarded by the Agentic AI Foundation under the Linux Foundation. Codex, Cursor, GitHub Copilot, Jules, Gemini CLI, Aider, Zed, Windsurf, Devin, Junie and many more read it.</p>
+
+<h2 id="agents-md-vs-claude-md">AGENTS.md vs CLAUDE.md</h2>
+<table><thead><tr><th></th><th>AGENTS.md</th><th>CLAUDE.md</th></tr></thead><tbody>
+<tr><td>Read by</td><td>Most coding agents</td><td>Claude Code</td></tr>
+<tr><td>Format</td><td>Plain Markdown, any headings</td><td>Plain Markdown, plus <code>@path</code> imports</td></tr>
+<tr><td>Where</td><td>Repo root, plus one per package in a monorepo (closest file wins)</td><td>Repo root or <code>.claude/CLAUDE.md</code>; personal rules in <code>~/.claude/CLAUDE.md</code>; private project notes in <code>CLAUDE.local.md</code></td></tr>
+<tr><td>Size</td><td>No limit set; shorter is better</td><td>Anthropic recommends under 200 lines</td></tr>
+</tbody></table>
+<p><strong>Use both.</strong> Put the shared rules in AGENTS.md and make CLAUDE.md a one-line import:</p>
+<pre><code>@AGENTS.md
+
+## Claude Code
+- Use the /release skill to publish a new version.</code></pre>
+<p>Claude Code loads AGENTS.md through the import, and every other agent reads AGENTS.md directly. You maintain one set of rules. Newer versions of Claude Code can also read AGENTS.md on their own, but only when there is no CLAUDE.md, so the import is the reliable way to get both.</p>
+
+<h2 id="what-to-put-in-it-and-what-to-leave-out">What to put in it (and what to leave out)</h2>
+<ul>
+<li><strong>Exact commands.</strong> Install, test, lint, type-check, and how to run a single test. Agents run these to check their own work before they finish.</li>
+<li><strong>Rules you'd otherwise repeat.</strong> Anything you've had to correct twice belongs here.</li>
+<li><strong>Things the code doesn't say.</strong> Decisions made outside the repo, misleading names, the test that needs a running server.</li>
+<li><strong>Leave out</strong> what an agent can find by reading the repo: folder tours, dependency lists, long architecture essays. Every line is read on every task.</li>
+<li><strong>Write plainly.</strong> "Use 2-space indentation" beats "format code properly". Anthropic's guidance is that current models follow plain wording, and piling on IMPORTANT and ALL CAPS makes them over-apply a rule.</li>
+<li><strong>No secrets.</strong> This file is committed to git. Never paste API keys or database URLs into it.</li>
+</ul>
+<p class="note">For things that must <em>never</em> happen (force-pushing, deleting a database), don't rely on a line of text: in Claude Code, use a hook or a permission deny rule, which are enforced every time.</p>
+
+<h2 id="what-the-checker-looks-for">What the checker looks for</h2>
+<table><thead><tr><th>Check</th><th>Why</th></tr></thead><tbody>
+<tr><td>API keys, tokens, private keys, database passwords</td><td>The file gets committed and shared</td></tr>
+<tr><td>Missing commands or test command</td><td>Agents need them to verify their work</td></tr>
+<tr><td>Over 200 lines (CLAUDE.md)</td><td>Anthropic's recommended size</td></tr>
+<tr><td>Vague rules ("best practices", "clean code")</td><td>Nothing the agent can act on</td></tr>
+<tr><td>Shouting (IMPORTANT, MUST, NEVER…)</td><td>Makes the model over-apply rules</td></tr>
+<tr><td>Paths from one person's machine</td><td>Breaks for everyone else</td></tr>
+<tr><td>Duplicate headings, TODOs, placeholders</td><td>Contradictions and unfinished rules</td></tr>
+<tr><td><code>@imports</code></td><td>Listed for CLAUDE.md; flagged in AGENTS.md, where other agents can't follow them</td></tr>
+</tbody></table>
+<p class="meta">Sources: <a href="https://agents.md/" rel="noopener">agents.md</a>, <a href="https://code.claude.com/docs/en/memory" rel="noopener">Claude Code: How Claude remembers your project</a>, <a href="https://code.claude.com/docs/en/best-practices" rel="noopener">Claude Code: Best practices</a>. Checked November 2026.</p>
+
+<h2 id="next-step-teach-your-agent-a-skill">Next step: teach your agent a skill</h2>
+<p>AGENTS.md holds the rules for every task. For a repeatable job (writing commits, reviewing a PR, shipping a release) write a skill instead: it only loads when needed. Make one with the <a href="/tools/skill-md-generator/">SKILL.md generator</a>.</p>
+
+<h2 id="faq">FAQ</h2>
+<h3 id="what-is-agents-md-2">What is AGENTS.md?</h3><p>AGENTS.md is a plain Markdown file in the root of a repository that tells AI coding agents how to work on the project: the commands to install, test and lint, the code style, and the rules to follow. It is an open format now stewarded by the Agentic AI Foundation under the Linux Foundation, and is read by Codex, Cursor, GitHub Copilot, Jules, Gemini CLI, Aider, Zed, Windsurf and many more.</p>
+<h3 id="does-agents-md-need-special-fields-or-frontmatter">Does AGENTS.md need special fields or frontmatter?</h3><p>No. It is standard Markdown and you can use any headings you like. Popular sections are a project overview, build and test commands, code style, testing instructions and security notes.</p>
+<h3 id="does-claude-code-read-agents-md">Does Claude Code read AGENTS.md?</h3><p>Recent versions of Claude Code can read AGENTS.md, but by default only when there is no CLAUDE.md. The approach Anthropic recommends for sharing one file between tools is a CLAUDE.md that contains the line @AGENTS.md, with any Claude-only instructions below it. That is what this generator creates.</p>
+<h3 id="how-long-should-claude-md-be">How long should CLAUDE.md be?</h3><p>Anthropic recommends keeping each CLAUDE.md under 200 lines. Longer files use more context and Claude follows them less reliably. Move step-by-step procedures into skills and rules for specific folders into .claude/rules/.</p>
+<h3 id="should-i-use-a-symlink-instead-of-agents-md">Should I use a symlink instead of @AGENTS.md?</h3><p>A symlink (ln -s AGENTS.md CLAUDE.md) works if you have no Claude-specific notes, but Claude cannot edit a file through a symlink, and on Windows symlinks need admin rights or Developer Mode and Git may check them out as plain text files. The @AGENTS.md import works everywhere.</p>
+<h3 id="which-file-wins-in-a-monorepo">Which file wins in a monorepo?</h3><p>Put an AGENTS.md in each package that needs its own rules. Agents read the file closest to the code being edited, so the nearest AGENTS.md takes precedence, and an explicit instruction in the chat overrides them all.</p>
+<h3 id="does-this-tool-upload-my-files">Does this tool upload my files?</h3><p>No. The generator and the checker run entirely in your browser. Nothing you type or paste is sent anywhere.</p>
+</article>
+</main>
+<footer class="site-footer"><div class="wrap">
+<div class="foot-grid">
+<div class="foot-brand"><a class="brand" href="/"><img src="/img/icon-192.png" alt="" width="34" height="34" loading="lazy">Byte<span>Buddy</span></a><p>Practical tech for developers, hosted by a bug. Free tools and guides, checked against the official docs.</p></div>
+<div><p class="foot-h">Free tools</p><nav aria-label="Tools"><a href="/tools/skill-md-generator/">SKILL.md generator</a><a href="/tools/agents-md-generator/">AGENTS.md generator</a><a href="/tools/mcp-config-generator/">MCP config generator</a><a href="/tools/">All tools</a></nav></div>
+<div><p class="foot-h">Guides</p><nav aria-label="Guides"><a href="/skills/">Claude Skills repos</a><a href="/repos/">30 GitHub repos</a><a href="/gta/">GTA 6-style portfolio</a></nav></div>
+<div><p class="foot-h">Byte Buddy</p><nav aria-label="Byte Buddy"><a href="/about/">About</a><a href="/contact/">Contact</a><a href="/privacy/">Privacy</a><a href="https://www.youtube.com/@bytebuddydev" rel="noopener">YouTube</a><a href="https://github.com/bytebuddy-dev" rel="noopener">GitHub</a></nav></div>
+</div>
+<div class="foot-base"><span>© 2026 Byte Buddy</span><span>Free, no sign-up. Nothing you type in our tools leaves your browser.</span></div>
+</div></footer>
+<dialog id="palette" aria-label="Search the site"><form method="dialog"><div class="pal-in"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><label class="sr" for="pal-q">Search</label><input id="pal-q" type="search" autocomplete="off" spellcheck="false" placeholder="Search tools, guides, repos…" role="combobox" aria-expanded="true" aria-controls="pal-list"><kbd>Esc</kbd></div><ul id="pal-list" role="listbox"></ul><p class="pal-foot"><span><kbd>↑</kbd><kbd>↓</kbd> move</span><span><kbd>Enter</kbd> open</span></p></form></dialog>
+<canvas id="bugsy-canvas" aria-hidden="true"></canvas>
+<div id="bugsy-bubble" role="status" aria-live="polite"></div>
+<button id="chat-launch" type="button" aria-label="Chat with Bugsy" aria-expanded="false" aria-controls="chat"><span class="chat-tip">Chat with me!</span></button>
+<section id="chat" aria-label="Chat with Bugsy" hidden>
+  <header><img src="/img/icon-192.png" alt="" width="34" height="34"><div><strong>Bugsy</strong><small>Replies instantly · I'm a bot</small></div><button class="chat-close" type="button" aria-label="Close chat">✕</button></header>
+  <div class="chat-log" aria-live="polite"></div>
+  <div class="chat-chips"></div>
+  <form><label class="sr" for="chat-input">Message</label><input id="chat-input" autocomplete="off" maxlength="500" placeholder="Ask Bugsy or leave a message…"><button type="submit" aria-label="Send">➤</button></form>
+</section>
+<script type="module" src="/assets/site.js?v=mwxwi2jp"></script>
+<script type="module" src="/assets/chat.js?v=mwxwi2jp"></script>
+<script type="module" src="/assets/tool-agents-md.js?v=mwxwi2jp"></script>
+</body>
+</html>

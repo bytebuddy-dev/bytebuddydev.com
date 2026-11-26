@@ -1,0 +1,7 @@
+# Bugsy AI worker. Deploy: npx wrangler login && npx wrangler secret put GROQ_API_KEY && npx wrangler deploy
+name = "bugsy-ai"
+main = "src/index.js"
+compatibility_date = "2026-11-01"
+
+[vars]
+GROQ_MODEL = "openai/gpt-oss-20b"

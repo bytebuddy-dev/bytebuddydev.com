@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SKILL.md Generator &amp; Validator: Create Claude Agent Skills (Free)</title>
+<meta name="description" content="Free SKILL.md generator and validator for Claude Code and the open Agent Skills standard. Build a skill in a minute or check yours against the official name, description and frontmatter rules.">
+<link rel="canonical" href="https://bytebuddydev.com/tools/skill-md-generator/">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<meta name="color-scheme" content="dark light">
+<meta name="theme-color" content="#0b0814" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#faf8f4" media="(prefers-color-scheme: light)">
+<script>try{var t=localStorage.getItem('bb-theme');if(t==='light'||t==='dark')document.documentElement.dataset.theme=t}catch(e){}</script>
+<meta property="og:site_name" content="Byte Buddy">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SKILL.md Generator &amp; Validator: Create Claude Agent Skills (Free)">
+<meta property="og:description" content="Free SKILL.md generator and validator for Claude Code and the open Agent Skills standard. Build a skill in a minute or check yours against the official name, description and frontmatter rules.">
+<meta property="og:url" content="https://bytebuddydev.com/tools/skill-md-generator/">
+<meta property="og:image" content="https://bytebuddydev.com/img/og.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="/img/favicon-48.png" sizes="48x48" type="image/png">
+<link rel="apple-touch-icon" href="/img/icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600..800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap">
+<link rel="stylesheet" href="/assets/site.css?v=mwxwi2jp">
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://bytebuddydev.com/#org","name":"Byte Buddy","url":"https://bytebuddydev.com/","logo":"https://bytebuddydev.com/img/icon-192.png","sameAs":["https://www.youtube.com/@bytebuddydev","https://www.instagram.com/bytebuddydev/","https://www.tiktok.com/@bytebuddydev","https://github.com/bytebuddy-dev"]},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://bytebuddydev.com/"},{"@type":"ListItem","position":2,"name":"Tools","item":"https://bytebuddydev.com/tools/"},{"@type":"ListItem","position":3,"name":"SKILL.md generator","item":"https://bytebuddydev.com/tools/skill-md-generator/"}]},{"@type":"WebApplication","name":"SKILL.md Generator & Validator","url":"https://bytebuddydev.com/tools/skill-md-generator/","applicationCategory":"DeveloperApplication","operatingSystem":"Any (runs in the browser)","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"publisher":{"@id":"https://bytebuddydev.com/#org"}},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is a SKILL.md file?","acceptedAnswer":{"@type":"Answer","text":"A SKILL.md is the main file of an Agent Skill: a folder of instructions (and optional scripts and resources) that an AI agent such as Claude loads only when a task needs it. The file starts with YAML frontmatter (name and description) followed by Markdown instructions."}},{"@type":"Question","name":"Where do I put a SKILL.md for Claude Code?","acceptedAnswer":{"@type":"Answer","text":"Personal skills go in ~/.claude/skills/<skill-name>/SKILL.md and work in every project. Project skills go in .claude/skills/<skill-name>/SKILL.md inside the repo, so your team gets them too."}},{"@type":"Question","name":"How long can the description be?","acceptedAnswer":{"@type":"Answer","text":"Up to 1,024 characters in the Agent Skills spec. It must not be empty, and it should say both what the skill does and when to use it, because that is what the agent reads to decide whether to load the skill."}},{"@type":"Question","name":"Why does my skill never trigger?","acceptedAnswer":{"@type":"Answer","text":"Almost always the description. Make it specific: name the task, the file types or tools involved, and the phrases a user would say (\"Use when the user asks to…\"). A vague description like \"Helps with PDFs\" gives the agent nothing to match."}},{"@type":"Question","name":"Can I use the same SKILL.md with other AI agents?","acceptedAnswer":{"@type":"Answer","text":"Yes, if you stick to the standard fields (name, description, license, compatibility, metadata, allowed-tools). Claude Code adds extra fields such as argument-hint and disable-model-invocation that other agents may ignore or reject."}},{"@type":"Question","name":"Does this tool upload my skill anywhere?","acceptedAnswer":{"@type":"Answer","text":"No. The generator and validator run entirely in your browser. Nothing you type is sent to a server."}}]}]}</script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="site-header"><div class="wrap">
+<a class="brand" href="/"><img src="/img/icon-192.png" alt="" width="36" height="36">Byte<span>Buddy</span></a>
+<nav class="nav" aria-label="Main"><a href="/" class="hide-sm">Home</a><a href="/tools/">Tools</a><a href="/skills/" class="hide-xs">Skills</a><a href="/repos/" class="hide-sm">Repos</a><a href="/gta/" class="hide-sm">GTA Portfolio</a><a href="/about/" class="hide-xs">About</a></nav>
+<button class="search-btn" type="button" aria-label="Search the site" aria-keyshortcuts="Control+K"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><span>Search</span><kbd>Ctrl K</kbd></button>
+<button class="theme-btn" type="button" aria-label="Switch colour theme"><svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg><svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M4.9 19.1l1.8-1.8M17.3 6.7l1.8-1.8"/></svg></button>
+</div></header>
+<main id="main">
+
+<div class="wrap page-hero"><nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a> / <a href="/tools/">Tools</a> / SKILL.md generator</nav>
+<span class="eyebrow">🧠 Free tool</span>
+<h1><span class="hl">SKILL.md</span> generator &amp; validator</h1>
+<p class="lead">Pick a skill, copy the SKILL.md. Or paste yours and check it against the official rules. Free, and nothing leaves your browser.</p>
+</div>
+<div class="wrap tool simple">
+  <div class="tabs" role="tablist" aria-label="What do you want to do?">
+    <button type="button" role="tab" id="t-create" aria-controls="tab-create" aria-selected="true">Create</button>
+    <button type="button" role="tab" id="t-check" aria-controls="tab-check" aria-selected="false" tabindex="-1">Check a SKILL.md</button>
+  </div>
+
+  <section id="tab-create" class="duo" role="tabpanel" aria-labelledby="t-create">
+    <form id="gen" class="panel pick-panel" autocomplete="off" onsubmit="return false">
+      <div class="step-head"><h2>Pick a skill</h2></div>
+      <div class="picks" id="sk-picks" role="group" aria-label="Skill templates"></div>
+      <details class="adv" id="sk-edit"><summary>Customize <small>name, description, steps, examples</small></summary>
+        <div class="adv-body">
+          <label>Skill title <input name="title" placeholder="e.g. Commit messages"></label>
+          <label>Name <small>lowercase, numbers, hyphens · same as the folder</small><input name="name" placeholder="commit-messages" maxlength="64"></label>
+          <label>What it does <textarea name="what" rows="2" placeholder="Writes clear Conventional Commit messages from staged git changes"></textarea></label>
+          <label>When to use it <textarea name="when" rows="2" placeholder="the user asks to commit or write a commit message"></textarea></label>
+          <label>Steps <small>one per line</small><textarea name="steps" rows="5" placeholder="Run git diff --staged&#10;Pick the commit type&#10;Write a subject under 72 characters"></textarea></label>
+          <div class="two"><label>Example input <textarea name="exIn" rows="3"></textarea></label><label>Example output <textarea name="exOut" rows="3"></textarea></label></div>
+          <label>Edge cases <small>one per line, optional</small><textarea name="edge" rows="2"></textarea></label>
+          <p class="adv-title">Extras (optional)</p>
+          <label>Allowed tools <small>space-separated</small><input name="tools" placeholder="Read Grep Bash(git:*)"></label>
+          <div class="two">
+            <label>License <select name="license"><option value="">None</option><option>MIT</option><option>Apache-2.0</option><option>Proprietary</option></select></label>
+            <label>Author <input name="author" placeholder="your-name"></label>
+          </div>
+          <label>Compatibility <small>only if it needs something special</small><input name="compat" maxlength="500" placeholder="Requires git and Node.js 20+"></label>
+          <label class="cc-only">Argument hint <small>shown after /name</small><input name="hint" placeholder="[file or folder]"></label>
+          <label class="cc-only check"><input type="checkbox" name="manual"><span><span>Only run when I type <code>/name</code></span><small>Claude won't load it on its own. Good for deploys and other risky actions.</small></span></label>
+        </div>
+      </details>
+    </form>
+    <div class="panel result" id="sk-result" aria-live="polite"></div>
+  </section>
+
+  <section id="tab-check" class="duo" role="tabpanel" aria-labelledby="t-check" hidden>
+    <div class="panel pick-panel">
+      <div class="step-head"><h2>Paste your SKILL.md</h2><button type="button" id="val-bad" class="link-btn">Load a broken example</button></div>
+      <label class="sr" for="val-in">Paste a SKILL.md</label>
+      <textarea id="val-in" rows="14" spellcheck="false" placeholder="---&#10;name: my-skill&#10;description: …&#10;---&#10;&#10;# Instructions"></textarea>
+    </div>
+    <div class="panel result" id="val-result" aria-live="polite"></div>
+  </section>
+</div>
+
+<div class="wrap guide-divider"><span>Guide</span></div>
+
+<article class="wrap article">
+<h2 id="what-is-a-skill-md">What is a SKILL.md?</h2>
+<p>An <strong>Agent Skill</strong> is a folder that teaches an AI agent how to do one job well. Its only required file is <code>SKILL.md</code>: a few lines of YAML frontmatter, then Markdown instructions. Agents such as Claude load only each skill's name and description at startup (about 100 tokens each), then read the full file when a task matches. That is why one agent can carry dozens of skills without filling its context window.</p>
+<pre><code>commit-messages/
+├── SKILL.md        # required: frontmatter + instructions
+├── scripts/        # optional: code the agent can run
+├── references/     # optional: extra docs, loaded only when needed
+└── assets/         # optional: templates, images, data</code></pre>
+
+<h2 id="the-rules-this-validator-checks">The rules this validator checks</h2>
+<table><thead><tr><th>Field</th><th>Rule</th><th>Source</th></tr></thead><tbody>
+<tr><td><code>name</code></td><td>Required. 1–64 characters: lowercase letters, numbers and hyphens. No leading, trailing or double hyphens. Must match the folder name.</td><td>Agent Skills spec</td></tr>
+<tr><td><code>name</code></td><td>No XML tags, and no reserved words <code>anthropic</code> or <code>claude</code></td><td>Claude docs</td></tr>
+<tr><td><code>description</code></td><td>Required, 1–1,024 characters. Says what the skill does <em>and</em> when to use it.</td><td>Agent Skills spec</td></tr>
+<tr><td><code>description</code></td><td>No XML tags. Written in third person ("Processes Excel files…", not "I can help…").</td><td>Claude docs</td></tr>
+<tr><td><code>compatibility</code></td><td>Optional, 1–500 characters. Only for real environment needs.</td><td>Agent Skills spec</td></tr>
+<tr><td><code>metadata</code></td><td>Optional map of string keys to string values (quote numbers: <code>version: "1.0"</code>).</td><td>Agent Skills spec</td></tr>
+<tr><td><code>allowed-tools</code></td><td>Optional, space-separated pre-approved tools. Experimental.</td><td>Agent Skills spec</td></tr>
+<tr><td>Body</td><td>Keep it under 500 lines (about 5,000 tokens). Move long reference material into separate files, one level deep.</td><td>Spec &amp; Claude docs</td></tr>
+</tbody></table>
+<p class="meta">Sources: <a href="https://agentskills.io/specification" rel="noopener">agentskills.io/specification</a>, <a href="https://platform.claude.com/docs/en/agents-and-tools/agent-skills/best-practices" rel="noopener">Claude: Skill authoring best practices</a>, <a href="https://code.claude.com/docs/en/skills" rel="noopener">Claude Code: Skills</a>. Checked November 2026.</p>
+
+<h2 id="where-to-save-it">Where to save it</h2>
+<ul>
+<li><strong>Claude Code, all projects:</strong> <code>~/.claude/skills/&lt;skill-name&gt;/SKILL.md</code></li>
+<li><strong>Claude Code, one project (shared with your team):</strong> <code>.claude/skills/&lt;skill-name&gt;/SKILL.md</code></li>
+<li><strong>Other agents:</strong> check where your agent loads skills from. The folder name must still match <code>name</code>.</li>
+</ul>
+<p>In Claude Code you can also run a skill directly by typing <code>/skill-name</code>. Set <code>disable-model-invocation: true</code> if it should only ever run when you type the command, for example a deploy skill.</p>
+
+<h2 id="write-a-description-that-actually-triggers">Write a description that actually triggers</h2>
+<p>The description is the only thing the agent sees before deciding to load your skill. Compare:</p>
+<table><thead><tr><th>❌ Too vague</th><th>✅ Specific</th></tr></thead><tbody>
+<tr><td>Helps with PDFs.</td><td>Extracts text and tables from PDF files, fills PDF forms, and merges multiple PDFs. Use when working with PDF documents or when the user mentions PDFs, forms, or document extraction.</td></tr>
+<tr><td>I can write commits for you.</td><td>Writes Conventional Commit messages from staged git changes. Use when the user asks to commit or describe their changes.</td></tr>
+</tbody></table>
+<p>Good descriptions name the task, the file types or tools, and the words a user would actually say. The PDF example above is the one used in the official spec.</p>
+
+<h2 id="free-skills-to-learn-from">Free skills to learn from</h2>
+<p>Reading good skills is the fastest way to write one. Our list of <a href="/skills/">10 Claude Skills repos that feel illegal to know</a> includes Anthropic's own skills and the 300K+ star superpowers collection.</p>
+
+<h2 id="faq">FAQ</h2>
+<h3 id="what-is-a-skill-md-file">What is a SKILL.md file?</h3><p>A SKILL.md is the main file of an Agent Skill: a folder of instructions (and optional scripts and resources) that an AI agent such as Claude loads only when a task needs it. The file starts with YAML frontmatter (name and description) followed by Markdown instructions.</p>
+<h3 id="where-do-i-put-a-skill-md-for-claude-code">Where do I put a SKILL.md for Claude Code?</h3><p>Personal skills go in ~/.claude/skills/&lt;skill-name&gt;/SKILL.md and work in every project. Project skills go in .claude/skills/&lt;skill-name&gt;/SKILL.md inside the repo, so your team gets them too.</p>
+<h3 id="how-long-can-the-description-be">How long can the description be?</h3><p>Up to 1,024 characters in the Agent Skills spec. It must not be empty, and it should say both what the skill does and when to use it, because that is what the agent reads to decide whether to load the skill.</p>
+<h3 id="why-does-my-skill-never-trigger">Why does my skill never trigger?</h3><p>Almost always the description. Make it specific: name the task, the file types or tools involved, and the phrases a user would say ("Use when the user asks to…"). A vague description like "Helps with PDFs" gives the agent nothing to match.</p>
+<h3 id="can-i-use-the-same-skill-md-with-other-ai-agents">Can I use the same SKILL.md with other AI agents?</h3><p>Yes, if you stick to the standard fields (name, description, license, compatibility, metadata, allowed-tools). Claude Code adds extra fields such as argument-hint and disable-model-invocation that other agents may ignore or reject.</p>
+<h3 id="does-this-tool-upload-my-skill-anywhere">Does this tool upload my skill anywhere?</h3><p>No. The generator and validator run entirely in your browser. Nothing you type is sent to a server.</p>
+</article>
+</main>
+<footer class="site-footer"><div class="wrap">
+<div class="foot-grid">
+<div class="foot-brand"><a class="brand" href="/"><img src="/img/icon-192.png" alt="" width="34" height="34" loading="lazy">Byte<span>Buddy</span></a><p>Practical tech for developers, hosted by a bug. Free tools and guides, checked against the official docs.</p></div>
+<div><p class="foot-h">Free tools</p><nav aria-label="Tools"><a href="/tools/skill-md-generator/">SKILL.md generator</a><a href="/tools/agents-md-generator/">AGENTS.md generator</a><a href="/tools/mcp-config-generator/">MCP config generator</a><a href="/tools/">All tools</a></nav></div>
+<div><p class="foot-h">Guides</p><nav aria-label="Guides"><a href="/skills/">Claude Skills repos</a><a href="/repos/">30 GitHub repos</a><a href="/gta/">GTA 6-style portfolio</a></nav></div>
+<div><p class="foot-h">Byte Buddy</p><nav aria-label="Byte Buddy"><a href="/about/">About</a><a href="/contact/">Contact</a><a href="/privacy/">Privacy</a><a href="https://www.youtube.com/@bytebuddydev" rel="noopener">YouTube</a><a href="https://github.com/bytebuddy-dev" rel="noopener">GitHub</a></nav></div>
+</div>
+<div class="foot-base"><span>© 2026 Byte Buddy</span><span>Free, no sign-up. Nothing you type in our tools leaves your browser.</span></div>
+</div></footer>
+<dialog id="palette" aria-label="Search the site"><form method="dialog"><div class="pal-in"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><label class="sr" for="pal-q">Search</label><input id="pal-q" type="search" autocomplete="off" spellcheck="false" placeholder="Search tools, guides, repos…" role="combobox" aria-expanded="true" aria-controls="pal-list"><kbd>Esc</kbd></div><ul id="pal-list" role="listbox"></ul><p class="pal-foot"><span><kbd>↑</kbd><kbd>↓</kbd> move</span><span><kbd>Enter</kbd> open</span></p></form></dialog>
+<canvas id="bugsy-canvas" aria-hidden="true"></canvas>
+<div id="bugsy-bubble" role="status" aria-live="polite"></div>
+<button id="chat-launch" type="button" aria-label="Chat with Bugsy" aria-expanded="false" aria-controls="chat"><span class="chat-tip">Chat with me!</span></button>
+<section id="chat" aria-label="Chat with Bugsy" hidden>
+  <header><img src="/img/icon-192.png" alt="" width="34" height="34"><div><strong>Bugsy</strong><small>Replies instantly · I'm a bot</small></div><button class="chat-close" type="button" aria-label="Close chat">✕</button></header>
+  <div class="chat-log" aria-live="polite"></div>
+  <div class="chat-chips"></div>
+  <form><label class="sr" for="chat-input">Message</label><input id="chat-input" autocomplete="off" maxlength="500" placeholder="Ask Bugsy or leave a message…"><button type="submit" aria-label="Send">➤</button></form>
+</section>
+<script type="module" src="/assets/site.js?v=mwxwi2jp"></script>
+<script type="module" src="/assets/chat.js?v=mwxwi2jp"></script>
+<script type="module" src="/assets/tool-skill-md.js?v=mwxwi2jp"></script>
+</body>
+</html>

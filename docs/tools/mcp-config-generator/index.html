@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MCP Config Generator &amp; Converter: Claude Code, Cursor, Codex</title>
+<meta name="description" content="Build the MCP config for Claude Code, Claude Desktop, Cursor, VS Code, Codex, Windsurf, Gemini CLI and Zed in a few clicks, or convert one app's config to another. Keys stay out of the file. Free.">
+<link rel="canonical" href="https://bytebuddydev.com/tools/mcp-config-generator/">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<meta name="color-scheme" content="dark light">
+<meta name="theme-color" content="#0b0814" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#faf8f4" media="(prefers-color-scheme: light)">
+<script>try{var t=localStorage.getItem('bb-theme');if(t==='light'||t==='dark')document.documentElement.dataset.theme=t}catch(e){}</script>
+<meta property="og:site_name" content="Byte Buddy">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MCP Config Generator &amp; Converter: Claude Code, Cursor, Codex">
+<meta property="og:description" content="Build the MCP config for Claude Code, Claude Desktop, Cursor, VS Code, Codex, Windsurf, Gemini CLI and Zed in a few clicks, or convert one app's config to another. Keys stay out of the file. Free.">
+<meta property="og:url" content="https://bytebuddydev.com/tools/mcp-config-generator/">
+<meta property="og:image" content="https://bytebuddydev.com/img/og.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="/img/favicon-48.png" sizes="48x48" type="image/png">
+<link rel="apple-touch-icon" href="/img/icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600..800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap">
+<link rel="stylesheet" href="/assets/site.css?v=mwxwi2jp">
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://bytebuddydev.com/#org","name":"Byte Buddy","url":"https://bytebuddydev.com/","logo":"https://bytebuddydev.com/img/icon-192.png","sameAs":["https://www.youtube.com/@bytebuddydev","https://www.instagram.com/bytebuddydev/","https://www.tiktok.com/@bytebuddydev","https://github.com/bytebuddy-dev"]},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://bytebuddydev.com/"},{"@type":"ListItem","position":2,"name":"Tools","item":"https://bytebuddydev.com/tools/"},{"@type":"ListItem","position":3,"name":"MCP config generator","item":"https://bytebuddydev.com/tools/mcp-config-generator/"}]},{"@type":"WebApplication","name":"MCP Config Generator & Converter","url":"https://bytebuddydev.com/tools/mcp-config-generator/","applicationCategory":"DeveloperApplication","operatingSystem":"Any (runs in the browser)","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"publisher":{"@id":"https://bytebuddydev.com/#org"}},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How do I add an MCP server to Claude Code?","acceptedAnswer":{"@type":"Answer","text":"Run claude mcp add in your terminal, for example claude mcp add --transport http linear https://mcp.linear.app/mcp for a remote server, or claude mcp add playwright -- npx -y @playwright/mcp@latest for a local one. Add --scope project to save it in .mcp.json so your team gets it too. This tool writes the commands for you."}},{"@type":"Question","name":"Where is claude_desktop_config.json?","acceptedAnswer":{"@type":"Answer","text":"On macOS: ~/Library/Application Support/Claude/claude_desktop_config.json. On Windows: %APPDATA%\\Claude\\claude_desktop_config.json. On Linux: ~/.config/Claude/claude_desktop_config.json. The quickest way to open it is Settings → Developer → Edit Config in Claude Desktop."}},{"@type":"Question","name":"Is Cursor's mcp.json the same as VS Code's?","acceptedAnswer":{"@type":"Answer","text":"No. Cursor uses \"mcpServers\" in .cursor/mcp.json and reads secrets with ${env:NAME}. VS Code's .vscode/mcp.json uses \"servers\", needs a \"type\" on every server, and can prompt for secrets with an \"inputs\" list. The newer Copilot format (mcp-config.json) goes back to \"mcpServers\". Paste one into the converter on this page to get the other."}},{"@type":"Question","name":"How do I add MCP servers to Codex?","acceptedAnswer":{"@type":"Answer","text":"Codex reads TOML, not JSON: add a [mcp_servers.<name>] table to ~/.codex/config.toml with command and args for a local server, or url for a remote one. Keys go in env_vars or bearer_token_env_var so they are read from your environment. You can also run codex mcp add. The same config is used by the Codex CLI, the IDE extension and the app."}},{"@type":"Question","name":"Why won't my MCP server start?","acceptedAnswer":{"@type":"Answer","text":"The usual causes: npx without -y waiting for an install prompt, a Node.js version that is too old, docker run without -i, a remote URL without \"type\": \"http\" in Claude Code, or an environment variable that isn't set in the app's environment. Restart the app after every change. Paste your config into the checker on this page to find these."}},{"@type":"Question","name":"Should I use a remote or a local MCP server?","acceptedAnswer":{"@type":"Answer","text":"If the service has an official remote server (GitHub, Linear, Notion, Sentry, Stripe, Figma…), use it: nothing to install, it updates itself, and you sign in with OAuth instead of storing a key. Use a local server when it needs your machine: files, a browser, git, or a database on your network."}},{"@type":"Question","name":"Does this tool upload my config?","acceptedAnswer":{"@type":"Answer","text":"No. The generator, converter and checker run entirely in your browser. Nothing you paste or type is sent anywhere."}}]}]}</script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="site-header"><div class="wrap">
+<a class="brand" href="/"><img src="/img/icon-192.png" alt="" width="36" height="36">Byte<span>Buddy</span></a>
+<nav class="nav" aria-label="Main"><a href="/" class="hide-sm">Home</a><a href="/tools/">Tools</a><a href="/skills/" class="hide-xs">Skills</a><a href="/repos/" class="hide-sm">Repos</a><a href="/gta/" class="hide-sm">GTA Portfolio</a><a href="/about/" class="hide-xs">About</a></nav>
+<button class="search-btn" type="button" aria-label="Search the site" aria-keyshortcuts="Control+K"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><span>Search</span><kbd>Ctrl K</kbd></button>
+<button class="theme-btn" type="button" aria-label="Switch colour theme"><svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg><svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M4.9 19.1l1.8-1.8M17.3 6.7l1.8-1.8"/></svg></button>
+</div></header>
+<main id="main">
+
+<div class="wrap page-hero"><nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a> / <a href="/tools/">Tools</a> / MCP config generator</nav>
+<span class="eyebrow">🔌 Free tool</span>
+<h1><span class="hl">MCP config</span> generator &amp; converter</h1>
+<p class="lead">Pick your servers, pick your app, copy. Or paste a config from one app and get it for another. Free, and nothing leaves your browser.</p>
+</div>
+<div class="wrap tool simple">
+  <div class="tabs" role="tablist" aria-label="What do you want to do?">
+    <button type="button" role="tab" id="t-create" aria-controls="tab-create" aria-selected="true">Create</button>
+    <button type="button" role="tab" id="t-convert" aria-controls="tab-convert" aria-selected="false" tabindex="-1">Convert or check</button>
+  </div>
+
+  <section id="tab-create" class="duo" role="tabpanel" aria-labelledby="t-create">
+    <div class="panel pick-panel">
+      <div class="step-head"><h2>Pick your servers</h2><label class="search-mini"><span class="sr">Search servers</span><input id="mc-q" type="search" autocomplete="off" placeholder="Search 22 servers…"></label></div>
+      <div class="picks" id="mc-servers" role="group" aria-label="MCP servers"></div>
+      <button type="button" class="link-btn" id="mc-all"></button>
+      <div id="mc-needs" class="needs"></div>
+      <details class="adv" id="mc-adv"><summary>More options <small>remote or local, API key or sign-in, your own server</small></summary>
+        <div class="adv-body">
+          <div id="mc-selected" class="srv-opts"></div>
+          <div class="custom" id="mc-custom">
+            <p class="adv-title">Add your own server</p>
+            <fieldset class="seg mini"><legend class="sr">Kind</legend><label><input type="radio" name="ckind" value="stdio" checked> Local command</label><label><input type="radio" name="ckind" value="http"> Remote URL</label></fieldset>
+            <label id="mc-c-name">Name <input spellcheck="false" placeholder="my-server"></label>
+            <label id="mc-c-cmd">Command <small>exactly what you'd type in a terminal</small><input spellcheck="false" placeholder="npx -y my-mcp-server"></label>
+            <label id="mc-c-env">Environment variables <small>KEY=value, one per line · leave the value empty to read it from your computer</small><textarea rows="2" spellcheck="false" placeholder="API_KEY="></textarea></label>
+            <label id="mc-c-url" hidden>URL <input spellcheck="false" placeholder="https://example.com/mcp"></label>
+            <label id="mc-c-headers" hidden>Headers <small>Name: value, one per line · use ${VAR} for secrets</small><textarea rows="2" spellcheck="false" placeholder="Authorization: Bearer ${MY_TOKEN}"></textarea></label>
+            <div class="btns"><button type="button" class="chip" id="mc-c-add">Add server</button><span class="meta" id="mc-c-msg" aria-live="polite"></span></div>
+          </div>
+        </div>
+      </details>
+    </div>
+    <div class="panel result" id="mc-result"></div>
+  </section>
+
+  <section id="tab-convert" class="duo" role="tabpanel" aria-labelledby="t-convert" hidden>
+    <div class="panel pick-panel">
+      <div class="step-head"><h2>Paste your config</h2><button type="button" id="cv-sample" class="link-btn">Load an example</button></div>
+      <label class="sr" for="cv-in">Paste an MCP config</label>
+      <textarea id="cv-in" rows="14" spellcheck="false" placeholder="Paste any MCP config here: JSON from Claude, Cursor, VS Code, Windsurf, Zed… or Codex TOML"></textarea>
+      <div id="cv-checks"></div>
+    </div>
+    <div class="panel result" id="cv-result"></div>
+  </section>
+</div>
+
+<div class="wrap guide-divider"><span>Guide</span></div>
+<article class="wrap article">
+<h2 id="what-is-an-mcp-config">What is an MCP config?</h2>
+<p>The <strong>Model Context Protocol</strong> (MCP) is the open standard AI apps use to connect to tools: GitHub, a browser, your database, your issue tracker. Each tool runs as an <em>MCP server</em>. Your AI app (the <em>client</em>) finds its servers in a small config file: a name for each server, plus either the command that starts it on your computer (a <strong>local</strong> server) or the URL it lives at (a <strong>remote</strong> server).</p>
+<p>The idea is the same everywhere, but every app spells the file differently: a different file name and location, a different top-level key, different names for the URL field and a different way to read secrets. That's the part this tool takes care of.</p>
+
+<h2 id="where-each-app-keeps-its-mcp-config">Where each app keeps its MCP config</h2>
+<table><thead><tr><th>App</th><th>File</th><th>Top-level key</th><th>Remote server</th><th>Secrets</th></tr></thead><tbody>
+<tr><td>Claude Code</td><td><code>.mcp.json</code> (project) · <code>~/.claude.json</code> (user)</td><td><code>mcpServers</code></td><td><code>"type": "http"</code> + <code>url</code></td><td><code>${VAR}</code>, <code>${VAR:-default}</code></td></tr>
+<tr><td>Claude Desktop</td><td><code>claude_desktop_config.json</code></td><td><code>mcpServers</code></td><td>Settings → Connectors, or <code>mcp-remote</code></td><td>Typed into the file</td></tr>
+<tr><td>Cursor</td><td><code>.cursor/mcp.json</code> · <code>~/.cursor/mcp.json</code></td><td><code>mcpServers</code></td><td><code>url</code></td><td><code>${env:VAR}</code></td></tr>
+<tr><td>VS Code</td><td><code>.vscode/mcp.json</code></td><td><code>servers</code> (+ <code>inputs</code>)</td><td><code>"type": "http"</code> + <code>url</code></td><td><code>${input:id}</code> prompt, <code>${env:VAR}</code></td></tr>
+<tr><td>GitHub Copilot (new)</td><td><code>~/.copilot/mcp-config.json</code></td><td><code>mcpServers</code></td><td><code>"type": "http"</code> + <code>url</code></td><td><code>${VAR}</code></td></tr>
+<tr><td>Windsurf</td><td><code>~/.codeium/windsurf/mcp_config.json</code></td><td><code>mcpServers</code></td><td><code>serverUrl</code></td><td><code>${env:VAR}</code></td></tr>
+<tr><td>Codex</td><td><code>~/.codex/config.toml</code></td><td><code>[mcp_servers.name]</code> (TOML)</td><td><code>url</code></td><td><code>env_vars</code>, <code>bearer_token_env_var</code></td></tr>
+<tr><td>Gemini CLI</td><td><code>~/.gemini/settings.json</code></td><td><code>mcpServers</code></td><td><code>httpUrl</code> (<code>url</code> = SSE)</td><td><code>${VAR}</code></td></tr>
+<tr><td>Antigravity</td><td><code>~/.gemini/config/mcp_config.json</code></td><td><code>mcpServers</code></td><td><code>serverUrl</code></td><td>Typed into the file</td></tr>
+<tr><td>Zed</td><td><code>settings.json</code></td><td><code>context_servers</code></td><td><code>url</code></td><td>Typed into the file</td></tr>
+</tbody></table>
+<p class="meta">On Windows, <code>~</code> is your user folder (<code>%USERPROFILE%</code>), for example <code>C:\Users\you\.cursor\mcp.json</code>.</p>
+
+<h2 id="where-is-claude-desktop-config-json">Where is claude_desktop_config.json?</h2>
+<ul>
+<li><strong>macOS:</strong> <code>~/Library/Application Support/Claude/claude_desktop_config.json</code></li>
+<li><strong>Windows:</strong> <code>%APPDATA%\Claude\claude_desktop_config.json</code></li>
+<li><strong>Linux:</strong> <code>~/.config/Claude/claude_desktop_config.json</code></li>
+</ul>
+<p>The easy way: in Claude Desktop open <strong>Settings → Developer → Edit Config</strong>. The file only starts local servers. To add a remote server, use <strong>Settings → Connectors → Add custom connector</strong>, or bridge it with <code>npx -y mcp-remote &lt;url&gt;</code> (the generator does this for you). Quit and reopen Claude Desktop after every change.</p>
+
+<h2 id="local-or-remote-server">Local or remote server?</h2>
+<p><strong>Remote</strong> servers run on the service's side: you paste a URL and sign in with OAuth. Nothing to install, nothing to update, and no key sitting in a file. GitHub, Linear, Notion, Sentry, Stripe, Figma, Atlassian, Vercel, Cloudflare and Supabase all have official remote servers. <strong>Local</strong> servers run on your computer through <code>npx</code>, <code>uvx</code> or <code>docker</code>. You need them when the tool works with your machine: files, a browser, git, a local database.</p>
+
+<h2 id="keep-api-keys-out-of-your-config">Keep API keys out of your config</h2>
+<p>Config files get committed, shared in screenshots and pasted into chats. This generator never puts a key in the file: it writes a reference like <code>${GITHUB_PAT}</code> (or each app's own version of it), and shows you the one command that sets the variable on your computer. VS Code gets an <code>inputs</code> prompt instead, so it asks once and stores the key securely. Three apps (Claude Desktop, Antigravity and Zed) can't read variables in their config; for those you get a clear <code>&lt;PLACEHOLDER&gt;</code> to fill in, in a file that should stay on your machine.</p>
+
+<h2 id="common-mcp-config-mistakes-the-checker-finds-these">Common MCP config mistakes (the checker finds these)</h2>
+<table><thead><tr><th>Mistake</th><th>What happens</th></tr></thead><tbody>
+<tr><td><code>npx</code> without <code>-y</code></td><td>npx waits for "Ok to proceed?" and the server never starts</td></tr>
+<tr><td><code>docker run</code> without <code>-i</code></td><td>The server can't read requests from the app</td></tr>
+<tr><td>A <code>url</code> with no <code>"type"</code> in Claude Code</td><td>Claude Code treats it as a local command and fails</td></tr>
+<tr><td><code>url</code> instead of <code>httpUrl</code> in Gemini CLI</td><td>Gemini connects with the old SSE transport</td></tr>
+<tr><td><code>servers</code> vs <code>mcpServers</code></td><td>The app silently finds no servers</td></tr>
+<tr><td>An API key typed into the file</td><td>Anyone who sees the file can use your account</td></tr>
+<tr><td>Archived packages (<code>@modelcontextprotocol/server-github</code>, <code>-postgres</code>, <code>-brave-search</code>, <code>-puppeteer</code>…)</td><td>No more fixes; most have an official replacement</td></tr>
+<tr><td>SSE endpoints (<code>…/sse</code>)</td><td>SSE is deprecated in the MCP spec; Notion's SSE endpoint shuts down in February 2027</td></tr>
+</tbody></table>
+
+<h2 id="example-the-same-server-in-three-apps">Example: the same server in three apps</h2>
+<p>GitHub's official remote server with a personal access token read from <code>GITHUB_PAT</code>:</p>
+<h3>Claude Code (.mcp.json)</h3>
+<pre><code>{
+  "mcpServers": {
+    "github": {
+      "type": "http",
+      "url": "https://api.githubcopilot.com/mcp/",
+      "headers": { "Authorization": "Bearer ${GITHUB_PAT}" }
+    }
+  }
+}</code></pre>
+<h3>Cursor (.cursor/mcp.json)</h3>
+<pre><code>{
+  "mcpServers": {
+    "github": {
+      "url": "https://api.githubcopilot.com/mcp/",
+      "headers": { "Authorization": "Bearer ${env:GITHUB_PAT}" }
+    }
+  }
+}</code></pre>
+<h3>Codex (~/.codex/config.toml)</h3>
+<pre><code>[mcp_servers.github]
+url = "https://api.githubcopilot.com/mcp/"
+bearer_token_env_var = "GITHUB_PAT"</code></pre>
+
+<p class="meta">Sources: <a href="https://code.claude.com/docs/en/mcp" rel="noopener">Claude Code MCP</a>, <a href="https://modelcontextprotocol.io/docs/develop/connect-local-servers" rel="noopener">Claude Desktop (modelcontextprotocol.io)</a>, <a href="https://cursor.com/docs/context/mcp" rel="noopener">Cursor</a>, <a href="https://code.visualstudio.com/docs/copilot/reference/mcp-configuration" rel="noopener">VS Code</a>, <a href="https://docs.devin.ai/windsurf/plugins/cascade/mcp" rel="noopener">Windsurf</a>, <a href="https://developers.openai.com/codex/mcp" rel="noopener">Codex</a>, <a href="https://geminicli.com/docs/tools/mcp-server/" rel="noopener">Gemini CLI</a>, <a href="https://antigravity.google/docs/mcp" rel="noopener">Antigravity</a>, <a href="https://zed.dev/docs/ai/mcp" rel="noopener">Zed</a>, and each server's own docs (linked in the generator). Checked 26 November 2026.</p>
+
+<h2 id="next-tell-your-agent-how-your-project-works">Next: tell your agent how your project works</h2>
+<p>MCP servers give an agent tools. To give it your project's rules (the test command, the code style, what it must not touch), make an <a href="/tools/agents-md-generator/">AGENTS.md and CLAUDE.md</a>. For a repeatable job, write a <a href="/tools/skill-md-generator/">skill</a>.</p>
+
+<h2 id="faq">FAQ</h2>
+<h3 id="how-do-i-add-an-mcp-server-to-claude-code">How do I add an MCP server to Claude Code?</h3><p>Run claude mcp add in your terminal, for example claude mcp add --transport http linear https://mcp.linear.app/mcp for a remote server, or claude mcp add playwright -- npx -y @playwright/mcp@latest for a local one. Add --scope project to save it in .mcp.json so your team gets it too. This tool writes the commands for you.</p>
+<h3 id="where-is-claude-desktop-config-json-2">Where is claude_desktop_config.json?</h3><p>On macOS: ~/Library/Application Support/Claude/claude_desktop_config.json. On Windows: %APPDATA%\Claude\claude_desktop_config.json. On Linux: ~/.config/Claude/claude_desktop_config.json. The quickest way to open it is Settings → Developer → Edit Config in Claude Desktop.</p>
+<h3 id="is-cursor-s-mcp-json-the-same-as-vs-code-s">Is Cursor's mcp.json the same as VS Code's?</h3><p>No. Cursor uses &quot;mcpServers&quot; in .cursor/mcp.json and reads secrets with ${env:NAME}. VS Code's .vscode/mcp.json uses &quot;servers&quot;, needs a &quot;type&quot; on every server, and can prompt for secrets with an &quot;inputs&quot; list. The newer Copilot format (mcp-config.json) goes back to &quot;mcpServers&quot;. Paste one into the converter on this page to get the other.</p>
+<h3 id="how-do-i-add-mcp-servers-to-codex">How do I add MCP servers to Codex?</h3><p>Codex reads TOML, not JSON: add a [mcp_servers.&lt;name&gt;] table to ~/.codex/config.toml with command and args for a local server, or url for a remote one. Keys go in env_vars or bearer_token_env_var so they are read from your environment. You can also run codex mcp add. The same config is used by the Codex CLI, the IDE extension and the app.</p>
+<h3 id="why-won-t-my-mcp-server-start">Why won't my MCP server start?</h3><p>The usual causes: npx without -y waiting for an install prompt, a Node.js version that is too old, docker run without -i, a remote URL without &quot;type&quot;: &quot;http&quot; in Claude Code, or an environment variable that isn't set in the app's environment. Restart the app after every change. Paste your config into the checker on this page to find these.</p>
+<h3 id="should-i-use-a-remote-or-a-local-mcp-server">Should I use a remote or a local MCP server?</h3><p>If the service has an official remote server (GitHub, Linear, Notion, Sentry, Stripe, Figma…), use it: nothing to install, it updates itself, and you sign in with OAuth instead of storing a key. Use a local server when it needs your machine: files, a browser, git, or a database on your network.</p>
+<h3 id="does-this-tool-upload-my-config">Does this tool upload my config?</h3><p>No. The generator, converter and checker run entirely in your browser. Nothing you paste or type is sent anywhere.</p>
+</article>
+</main>
+<footer class="site-footer"><div class="wrap">
+<div class="foot-grid">
+<div class="foot-brand"><a class="brand" href="/"><img src="/img/icon-192.png" alt="" width="34" height="34" loading="lazy">Byte<span>Buddy</span></a><p>Practical tech for developers, hosted by a bug. Free tools and guides, checked against the official docs.</p></div>
+<div><p class="foot-h">Free tools</p><nav aria-label="Tools"><a href="/tools/skill-md-generator/">SKILL.md generator</a><a href="/tools/agents-md-generator/">AGENTS.md generator</a><a href="/tools/mcp-config-generator/">MCP config generator</a><a href="/tools/">All tools</a></nav></div>
+<div><p class="foot-h">Guides</p><nav aria-label="Guides"><a href="/skills/">Claude Skills repos</a><a href="/repos/">30 GitHub repos</a><a href="/gta/">GTA 6-style portfolio</a></nav></div>
+<div><p class="foot-h">Byte Buddy</p><nav aria-label="Byte Buddy"><a href="/about/">About</a><a href="/contact/">Contact</a><a href="/privacy/">Privacy</a><a href="https://www.youtube.com/@bytebuddydev" rel="noopener">YouTube</a><a href="https://github.com/bytebuddy-dev" rel="noopener">GitHub</a></nav></div>
+</div>
+<div class="foot-base"><span>© 2026 Byte Buddy</span><span>Free, no sign-up. Nothing you type in our tools leaves your browser.</span></div>
+</div></footer>
+<dialog id="palette" aria-label="Search the site"><form method="dialog"><div class="pal-in"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><label class="sr" for="pal-q">Search</label><input id="pal-q" type="search" autocomplete="off" spellcheck="false" placeholder="Search tools, guides, repos…" role="combobox" aria-expanded="true" aria-controls="pal-list"><kbd>Esc</kbd></div><ul id="pal-list" role="listbox"></ul><p class="pal-foot"><span><kbd>↑</kbd><kbd>↓</kbd> move</span><span><kbd>Enter</kbd> open</span></p></form></dialog>
+<canvas id="bugsy-canvas" aria-hidden="true"></canvas>
+<div id="bugsy-bubble" role="status" aria-live="polite"></div>
+<button id="chat-launch" type="button" aria-label="Chat with Bugsy" aria-expanded="false" aria-controls="chat"><span class="chat-tip">Chat with me!</span></button>
+<section id="chat" aria-label="Chat with Bugsy" hidden>
+  <header><img src="/img/icon-192.png" alt="" width="34" height="34"><div><strong>Bugsy</strong><small>Replies instantly · I'm a bot</small></div><button class="chat-close" type="button" aria-label="Close chat">✕</button></header>
+  <div class="chat-log" aria-live="polite"></div>
+  <div class="chat-chips"></div>
+  <form><label class="sr" for="chat-input">Message</label><input id="chat-input" autocomplete="off" maxlength="500" placeholder="Ask Bugsy or leave a message…"><button type="submit" aria-label="Send">➤</button></form>
+</section>
+<script type="module" src="/assets/site.js?v=mwxwi2jp"></script>
+<script type="module" src="/assets/chat.js?v=mwxwi2jp"></script>
+<script type="module" src="/assets/tool-mcp-config.js?v=mwxwi2jp"></script>
+</body>
+</html>
