@@ -336,7 +336,7 @@ const bugRows = read('content/gta-build-log.md')
 pages.push({
   url: '/gta/',
   title: 'GTA 6-Style Portfolio Built with Claude Code (Free Code + Prompts)',
-  description: 'A GTA 6-style developer portfolio with working cheat codes, built with Claude Code in plain HTML, CSS and JS. Watch the build, play the live site, get the code and the prompts.',
+  description: 'A GTA 6-style developer portfolio with working cheat codes, built with Claude Code in plain HTML, CSS and JS. Play it, then get the code and the prompts.',
   image: '/img/gta-thumb.jpg',
   type: 'article',
   schema: [
@@ -402,7 +402,7 @@ ${prompts.map((p) => `<h3>${esc(p.title)}</h3>\n<pre><code>${esc(p.text)}</code>
 pages.push({
   url: '/tools/',
   title: 'Free AI Developer Tools · Byte Buddy',
-  description: 'Free browser tools for developers working with AI coding agents: MCP config generator and converter, AGENTS.md and CLAUDE.md generator, SKILL.md generator. No sign-up, nothing leaves your browser.',
+  description: 'Free tools for AI coding agents: MCP config generator, AGENTS.md and CLAUDE.md generator, SKILL.md validator. No sign-up, nothing leaves your browser.',
   schema: [ORG, crumbSchema([['/', 'Home'], ['/tools/', 'Tools']])],
   body: `
 <div class="wrap page-hero">${crumbs([['/', 'Home'], ['/tools/', 'Tools']])}
@@ -429,7 +429,7 @@ const SKILL_FAQ = [
 pages.push({
   url: '/tools/skill-md-generator/',
   title: 'SKILL.md Generator & Validator: Create Claude Agent Skills (Free)',
-  description: 'Free SKILL.md generator and validator for Claude Code and the open Agent Skills standard. Build a skill in a minute or check yours against the official name, description and frontmatter rules.',
+  description: 'Free SKILL.md generator and validator for Claude Code and the open Agent Skills standard. Build a skill in a minute or check yours against the official rules.',
   type: 'article',
   scripts: ['tool-skill-md.js'],
   schema: [
@@ -556,7 +556,7 @@ const AGENTS_FAQ = [
 pages.push({
   url: '/tools/agents-md-generator/',
   title: 'AGENTS.md & CLAUDE.md Generator + Checker (Free)',
-  description: 'Generate an AGENTS.md and CLAUDE.md for your repo in a few clicks: pick your stack, tick your rules, download. Plus a checker that finds leaked secrets, vague rules and missing test commands.',
+  description: 'Generate AGENTS.md and CLAUDE.md for your repo: pick your stack, copy. Plus a free checker for leaked secrets, vague rules and missing test commands.',
   type: 'article',
   scripts: ['tool-agents-md.js'],
   schema: [
@@ -693,7 +693,7 @@ const MCP_FAQ = [
 pages.push({
   url: '/tools/mcp-config-generator/',
   title: 'MCP Config Generator & Converter: Claude Code, Cursor, Codex',
-  description: 'Build the MCP config for Claude Code, Claude Desktop, Cursor, VS Code, Codex, Windsurf, Gemini CLI and Zed in a few clicks, or convert one app\'s config to another. Keys stay out of the file. Free.',
+  description: 'Free MCP config generator for Claude Code, Cursor, VS Code, Codex, Claude Desktop, Windsurf and Zed. Or convert one app\'s config to another.',
   type: 'article',
   scripts: ['tool-mcp-config.js'],
   schema: [

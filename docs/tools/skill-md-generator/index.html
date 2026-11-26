@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>SKILL.md Generator &amp; Validator: Create Claude Agent Skills (Free)</title>
-<meta name="description" content="Free SKILL.md generator and validator for Claude Code and the open Agent Skills standard. Build a skill in a minute or check yours against the official name, description and frontmatter rules.">
+<meta name="description" content="Free SKILL.md generator and validator for Claude Code and the open Agent Skills standard. Build a skill in a minute or check yours against the official rules.">
 <link rel="canonical" href="https://bytebuddydev.com/tools/skill-md-generator/">
 <meta name="robots" content="index, follow, max-image-preview:large">
 <meta name="color-scheme" content="dark light">
@@ -14,7 +14,7 @@
 <meta property="og:site_name" content="Byte Buddy">
 <meta property="og:type" content="article">
 <meta property="og:title" content="SKILL.md Generator &amp; Validator: Create Claude Agent Skills (Free)">
-<meta property="og:description" content="Free SKILL.md generator and validator for Claude Code and the open Agent Skills standard. Build a skill in a minute or check yours against the official name, description and frontmatter rules.">
+<meta property="og:description" content="Free SKILL.md generator and validator for Claude Code and the open Agent Skills standard. Build a skill in a minute or check yours against the official rules.">
 <meta property="og:url" content="https://bytebuddydev.com/tools/skill-md-generator/">
 <meta property="og:image" content="https://bytebuddydev.com/img/og.jpg">
 <meta name="twitter:card" content="summary_large_image">
@@ -23,7 +23,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600..800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap">
-<link rel="stylesheet" href="/assets/site.css?v=mwxwi2jp">
+<link rel="stylesheet" href="/assets/site.css?v=mwxyarf5">
 <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://bytebuddydev.com/#org","name":"Byte Buddy","url":"https://bytebuddydev.com/","logo":"https://bytebuddydev.com/img/icon-192.png","sameAs":["https://www.youtube.com/@bytebuddydev","https://www.instagram.com/bytebuddydev/","https://www.tiktok.com/@bytebuddydev","https://github.com/bytebuddy-dev"]},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://bytebuddydev.com/"},{"@type":"ListItem","position":2,"name":"Tools","item":"https://bytebuddydev.com/tools/"},{"@type":"ListItem","position":3,"name":"SKILL.md generator","item":"https://bytebuddydev.com/tools/skill-md-generator/"}]},{"@type":"WebApplication","name":"SKILL.md Generator & Validator","url":"https://bytebuddydev.com/tools/skill-md-generator/","applicationCategory":"DeveloperApplication","operatingSystem":"Any (runs in the browser)","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"publisher":{"@id":"https://bytebuddydev.com/#org"}},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is a SKILL.md file?","acceptedAnswer":{"@type":"Answer","text":"A SKILL.md is the main file of an Agent Skill: a folder of instructions (and optional scripts and resources) that an AI agent such as Claude loads only when a task needs it. The file starts with YAML frontmatter (name and description) followed by Markdown instructions."}},{"@type":"Question","name":"Where do I put a SKILL.md for Claude Code?","acceptedAnswer":{"@type":"Answer","text":"Personal skills go in ~/.claude/skills/<skill-name>/SKILL.md and work in every project. Project skills go in .claude/skills/<skill-name>/SKILL.md inside the repo, so your team gets them too."}},{"@type":"Question","name":"How long can the description be?","acceptedAnswer":{"@type":"Answer","text":"Up to 1,024 characters in the Agent Skills spec. It must not be empty, and it should say both what the skill does and when to use it, because that is what the agent reads to decide whether to load the skill."}},{"@type":"Question","name":"Why does my skill never trigger?","acceptedAnswer":{"@type":"Answer","text":"Almost always the description. Make it specific: name the task, the file types or tools involved, and the phrases a user would say (\"Use when the user asks to…\"). A vague description like \"Helps with PDFs\" gives the agent nothing to match."}},{"@type":"Question","name":"Can I use the same SKILL.md with other AI agents?","acceptedAnswer":{"@type":"Answer","text":"Yes, if you stick to the standard fields (name, description, license, compatibility, metadata, allowed-tools). Claude Code adds extra fields such as argument-hint and disable-model-invocation that other agents may ignore or reject."}},{"@type":"Question","name":"Does this tool upload my skill anywhere?","acceptedAnswer":{"@type":"Answer","text":"No. The generator and validator run entirely in your browser. Nothing you type is sent to a server."}}]}]}</script>
 </head>
 <body>
@@ -156,8 +156,8 @@
   <div class="chat-chips"></div>
   <form><label class="sr" for="chat-input">Message</label><input id="chat-input" autocomplete="off" maxlength="500" placeholder="Ask Bugsy or leave a message…"><button type="submit" aria-label="Send">➤</button></form>
 </section>
-<script type="module" src="/assets/site.js?v=mwxwi2jp"></script>
-<script type="module" src="/assets/chat.js?v=mwxwi2jp"></script>
-<script type="module" src="/assets/tool-skill-md.js?v=mwxwi2jp"></script>
+<script type="module" src="/assets/site.js?v=mwxyarf5"></script>
+<script type="module" src="/assets/chat.js?v=mwxyarf5"></script>
+<script type="module" src="/assets/tool-skill-md.js?v=mwxyarf5"></script>
 </body>
 </html>
