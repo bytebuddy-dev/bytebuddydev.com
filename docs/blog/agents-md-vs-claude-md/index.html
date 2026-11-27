@@ -26,7 +26,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600..800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap">
-<link rel="stylesheet" href="/assets/site.css?v=mwy0l1t3">
+<link rel="stylesheet" href="/assets/site.css?v=mwyt1469">
 <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://bytebuddydev.com/#org","name":"Byte Buddy","url":"https://bytebuddydev.com/","logo":"https://bytebuddydev.com/img/icon-192.png","sameAs":["https://www.youtube.com/@bytebuddydev","https://www.instagram.com/bytebuddydev/","https://www.tiktok.com/@bytebuddydev","https://github.com/bytebuddy-dev"]},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://bytebuddydev.com/"},{"@type":"ListItem","position":2,"name":"Blog","item":"https://bytebuddydev.com/blog/"},{"@type":"ListItem","position":3,"name":"AGENTS.md vs CLAUDE.md: Which One Do You Need?","item":"https://bytebuddydev.com/blog/agents-md-vs-claude-md/"}]},{"@type":"BlogPosting","headline":"AGENTS.md vs CLAUDE.md: Which One Do You Need?","description":"AGENTS.md is read by most coding agents, CLAUDE.md by Claude Code. How they differ, and the one-line setup that keeps both in sync.","datePublished":"2026-11-27","dateModified":"2026-11-27","url":"https://bytebuddydev.com/blog/agents-md-vs-claude-md/","mainEntityOfPage":"https://bytebuddydev.com/blog/agents-md-vs-claude-md/","image":"https://bytebuddydev.com/img/og.jpg","author":{"@id":"https://bytebuddydev.com/#org"},"publisher":{"@id":"https://bytebuddydev.com/#org"}}]}</script>
 </head>
 <body>
@@ -39,26 +39,30 @@
 </div></header>
 <main id="main">
 
-<div class="wrap page-hero"><nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a> / <a href="/blog/">Blog</a> / AGENTS.md vs CLAUDE.md: Which One Do You Need?</nav>
+<div class="wrap post-hero">
+<div><nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a> / <a href="/blog/">Blog</a> / AGENTS.md vs CLAUDE.md: Which One Do You Need?</nav>
 <span class="eyebrow">🤖 Guide</span>
 <h1>AGENTS.md vs CLAUDE.md: Which One Do You Need?</h1>
 <p class="lead">AGENTS.md is read by most coding agents, CLAUDE.md by Claude Code. How they differ, and the one-line setup that keeps both in sync.</p>
-<p class="meta post-meta">By Byte Buddy · <time datetime="2026-11-27">November 27, 2026</time> · 3 min read</p>
+<div class="byline"><img src="/img/icon-192.png" alt="" width="40" height="40"><div><strong>Byte Buddy</strong><span><time datetime="2026-11-27">November 27, 2026</time> · 3 min read</span></div><span class="checked">✓ Checked against the official docs</span></div>
 </div>
-<article class="wrap article post">
+<div class="post-art" aria-hidden="true"><span>🤖</span><small>AGENTS.md</small></div>
+</div>
+<div class="wrap post-layout">
+<article class="post" id="post" data-slug="agents-md-vs-claude-md" data-minutes="3" data-total="3">
+<aside class="tldr" aria-label="Key points"><p class="tldr-h">⚡ The 30-second version</p><ul><li>Write your rules once, in <code>AGENTS.md</code>: Codex, Cursor, Copilot, Gemini CLI and most other agents read it.</li><li>Make <code>CLAUDE.md</code> one line, <code>@AGENTS.md</code>, so Claude Code reads the same rules.</li><li>Skip the symlink: Claude can’t edit through it, and Windows handles it badly.</li><li>For things that must never happen, use a hook or a deny rule, not a line of text.</li></ul></aside>
 <p><strong>Short answer:</strong> use both, but write your rules only once. Put them in <code>AGENTS.md</code>, and make <code>CLAUDE.md</code> a single line that imports it:</p>
-<pre><code class="language-markdown">@AGENTS.md
-</code></pre>
+<figure class="code"><figcaption><span class="dots" aria-hidden="true"></span><span class="lang">Markdown</span></figcaption><pre><code class="hljs">@AGENTS.md</code></pre></figure>
 <p>Claude Code reads <code>CLAUDE.md</code>, follows the import and gets your rules. Codex, Cursor, Copilot, Gemini CLI and the rest read <code>AGENTS.md</code> directly. One set of rules, every agent.</p>
 <p>The rest of this post explains why, and what goes in each file.</p>
-<h2 id="what-each-file-is">What each file is</h2>
+<h2 id="what-each-file-is">What each file is<a class="anchor" href="#what-each-file-is" aria-label="Link to this section">#</a></h2>
 <p>Both files do the same job: they tell an AI coding agent how to work on your project. That means which command runs the tests, which style to follow, and what it must never touch. Think of them as a README written for the agent instead of for people.</p>
 <ul>
 <li><strong>AGENTS.md</strong> is an open format. It started as a shared effort between OpenAI Codex, Amp, Google&#39;s Jules, Cursor and Factory, and is now looked after by the Agentic AI Foundation under the Linux Foundation. Codex, Cursor, GitHub Copilot, Jules, Gemini CLI, Aider, Zed, Windsurf, Devin, Junie and many more read it.</li>
 <li><strong>CLAUDE.md</strong> is Claude Code&#39;s own file. Claude Code loads it at the start of every session.</li>
 </ul>
-<h2 id="the-differences-that-matter">The differences that matter</h2>
-<table>
+<h2 id="the-differences-that-matter">The differences that matter<a class="anchor" href="#the-differences-that-matter" aria-label="Link to this section">#</a></h2>
+<div class="table-wrap"><table>
 <thead>
 <tr>
 <th></th>
@@ -87,17 +91,17 @@
 <td>Anthropic recommends under 200 lines</td>
 </tr>
 </tbody></table>
-<p>The <code>@path</code> import is the key difference. A line like <code>@AGENTS.md</code> in a CLAUDE.md pulls that file in, which is what lets one file serve both.</p>
-<h2 id="why-not-only-agents-md">Why not only AGENTS.md?</h2>
+</div><p>The <code>@path</code> import is the key difference. A line like <code>@AGENTS.md</code> in a CLAUDE.md pulls that file in, which is what lets one file serve both.</p>
+<h2 id="why-not-only-agents-md">Why not only AGENTS.md?<a class="anchor" href="#why-not-only-agents-md" aria-label="Link to this section">#</a></h2>
 <p>Recent versions of Claude Code can read <code>AGENTS.md</code>, but by default only when there is <strong>no</strong> <code>CLAUDE.md</code>. The moment someone on your team adds a CLAUDE.md (or Claude creates one with <code>/init</code>), your AGENTS.md stops being read. The import line removes that trap.</p>
-<h2 id="why-not-a-symlink">Why not a symlink?</h2>
+<h2 id="why-not-a-symlink">Why not a symlink?<a class="anchor" href="#why-not-a-symlink" aria-label="Link to this section">#</a></h2>
 <p><code>ln -s AGENTS.md CLAUDE.md</code> works if you never need Claude-only notes, but it has two problems:</p>
 <ul>
 <li>Claude can&#39;t edit a file through a symlink, so it can&#39;t update its own memory file.</li>
 <li>On Windows, symlinks need admin rights or Developer Mode, and Git may check them out as a plain text file holding the path.</li>
 </ul>
 <p>The import works on every system.</p>
-<h2 id="what-goes-where">What goes where</h2>
+<h2 id="what-goes-where">What goes where<a class="anchor" href="#what-goes-where" aria-label="Link to this section">#</a></h2>
 <p><strong>AGENTS.md</strong> holds everything every agent should know:</p>
 <ul>
 <li>The exact commands: install, test, lint, type-check, and how to run a single test.</li>
@@ -106,26 +110,39 @@
 <li>No secrets. This file is committed to git.</li>
 </ul>
 <p><strong>CLAUDE.md</strong> holds the import, plus anything only Claude Code understands:</p>
-<pre><code class="language-markdown">@AGENTS.md
+<figure class="code"><figcaption><span class="dots" aria-hidden="true"></span><span class="lang">Markdown</span></figcaption><pre><code class="hljs">@AGENTS.md
 
-## Claude Code
-- Use the /release skill to publish a new version.
-</code></pre>
-<h2 id="what-to-leave-out-of-both">What to leave out of both</h2>
+<span class="hljs-section">## Claude Code</span>
+<span class="hljs-bullet">-</span> Use the /release skill to publish a new version.</code></pre></figure>
+<h2 id="what-to-leave-out-of-both">What to leave out of both<a class="anchor" href="#what-to-leave-out-of-both" aria-label="Link to this section">#</a></h2>
 <ul>
 <li><strong>Folder tours.</strong> Agents can read your folders. Every line in these files is read on every task, so a long tour wastes space.</li>
 <li><strong>Shouting.</strong> Piling on IMPORTANT and ALL CAPS makes current models over-apply a rule. Plain wording works better.</li>
 <li><strong>Hard limits.</strong> For things that must <em>never</em> happen, like force-pushing or deleting a database, a line of text isn&#39;t enough. In Claude Code, use a hook or a permission deny rule: those are enforced every time.</li>
 </ul>
-<h2 id="monorepos">Monorepos</h2>
+<h2 id="monorepos">Monorepos<a class="anchor" href="#monorepos" aria-label="Link to this section">#</a></h2>
 <p>Put an <code>AGENTS.md</code> in each package that needs its own rules. Agents read the file closest to the code they are editing, so <code>packages/api/AGENTS.md</code> wins over the root file for API code. An instruction you type in the chat overrides them all.</p>
-<h2 id="make-both-files-in-a-minute">Make both files in a minute</h2>
+<h2 id="make-both-files-in-a-minute">Make both files in a minute<a class="anchor" href="#make-both-files-in-a-minute" aria-label="Link to this section">#</a></h2>
 <p>Our free generator writes both files for your stack, with the import already set up, and checks them for leaked keys, vague rules and missing test commands. It runs in your browser, so nothing you type leaves your computer.</p>
 <p><em>Sources: <a href="https://agents.md/" rel="noopener">agents.md</a>, <a href="https://code.claude.com/docs/en/memory" rel="noopener">Claude Code: How Claude remembers your project</a>, <a href="https://code.claude.com/docs/en/best-practices" rel="noopener">Claude Code: Best practices</a>. Checked November 2026.</em></p>
 
-<div class="tool-cta"><div><strong>AGENTS.md &amp; CLAUDE.md generator</strong><p>Pick your stack, tick your rules, get an AGENTS.md and CLAUDE.md. Plus a checker for leaked secrets and vague rules.</p></div><a class="btn btn-primary" href="/tools/agents-md-generator/">Open the free tool →</a></div>
-<h2 class="more-h">Keep reading</h2><ul class="post-links"><li><a href="/blog/add-mcp-server-to-cursor/">How to Add an MCP Server to Cursor (and Fix It When It Won't Start)</a></li><li><a href="/blog/claude-code-hooks-examples/">Claude Code Hooks: 10 Copy-Paste Examples That Actually Work</a></li></ul>
+<section class="finish" id="finish" aria-labelledby="finish-h">
+<div class="finish-top"><img src="/img/icon-192.png" alt="" width="64" height="64"><div><p class="finish-k" id="finish-k">The end</p><h2 id="finish-h">Worth keeping? Bookmark it.</h2></div></div>
+<p class="finish-p">We update this guide when the docs change, so the bookmark stays right. Press <kbd class="kbd-mod">Ctrl</kbd> + <kbd>D</kbd> to bookmark this page.</p>
+<div class="share-row"><a class="share-btn" href="https://x.com/intent/post?text=AGENTS.md%20vs%20CLAUDE.md%3A%20Which%20One%20Do%20You%20Need%3F&amp;url=https%3A%2F%2Fbytebuddydev.com%2Fblog%2Fagents-md-vs-claude-md%2F" rel="noopener" target="_blank">Post on X</a><a class="share-btn" href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fbytebuddydev.com%2Fblog%2Fagents-md-vs-claude-md%2F" rel="noopener" target="_blank">Share on LinkedIn</a><button type="button" class="share-btn" data-copy-link>Copy link</button></div>
+<p class="finish-stat" id="finish-stat" hidden></p>
+</section>
+<div class="tool-cta"><div><span class="kicker">Try it yourself</span><strong>AGENTS.md &amp; CLAUDE.md generator</strong><p>Pick your stack, tick your rules, get an AGENTS.md and CLAUDE.md. Plus a checker for leaked secrets and vague rules.</p></div><a class="btn btn-primary" href="/tools/agents-md-generator/">Open the free tool →</a></div>
 </article>
+<aside class="post-side" aria-label="On this page">
+<nav class="toc" id="toc">
+<p class="toc-h">On this page <span class="toc-left" id="toc-left">3 min</span></p>
+<div class="read-tools" role="group" aria-label="Reading settings"><button type="button" data-size="-1" aria-label="Smaller text">A−</button><button type="button" data-size="1" aria-label="Bigger text">A+</button><button type="button" data-focus aria-pressed="false" title="Hide everything but the text">Focus mode</button></div>
+<ol><li><a href="#what-each-file-is" data-id="what-each-file-is">What each file is</a></li><li><a href="#the-differences-that-matter" data-id="the-differences-that-matter">The differences that matter</a></li><li><a href="#why-not-only-agents-md" data-id="why-not-only-agents-md">Why not only AGENTS.md?</a></li><li><a href="#why-not-a-symlink" data-id="why-not-a-symlink">Why not a symlink?</a></li><li><a href="#what-goes-where" data-id="what-goes-where">What goes where</a></li><li><a href="#what-to-leave-out-of-both" data-id="what-to-leave-out-of-both">What to leave out of both</a></li><li><a href="#monorepos" data-id="monorepos">Monorepos</a></li><li><a href="#make-both-files-in-a-minute" data-id="make-both-files-in-a-minute">Make both files in a minute</a></li><li><a href="#finish" data-id="finish">The end</a></li></ol>
+</nav>
+</aside>
+</div>
+<section class="wrap keep-reading"><div class="section-head"><div><span class="kicker">Keep reading</span><h2 id="up-next">Up next</h2></div><a href="/blog/">All guides →</a></div><div class="cards"><a class="card post-card next" href="/blog/claude-code-hooks-examples/" data-slug="claude-code-hooks-examples"><div class="post-art" aria-hidden="true"><span>🪝</span><small>hooks</small></div><div class="body"><span class="tag">4 min read</span><h3>Claude Code Hooks: 10 Copy-Paste Examples That Actually Work</h3><p>Ten tested Claude Code hooks: notifications, auto-format, blocking rm -rf and force-push, protecting .env, running tests before Claude stops. Windows too.</p><span class="go">Read it →</span></div><span class="read-meter" aria-hidden="true"></span></a><a class="card post-card" href="/blog/add-mcp-server-to-cursor/" data-slug="add-mcp-server-to-cursor"><div class="post-art" aria-hidden="true"><span>🔌</span><small>mcp.json</small></div><div class="body"><span class="tag">2 min read</span><h3>How to Add an MCP Server to Cursor (and Fix It When It Won't Start)</h3><p>Where Cursor's mcp.json lives, the exact format for local and remote servers, how to keep API keys out of it, and the 5 mistakes that stop servers.</p><span class="go">Read it →</span></div><span class="read-meter" aria-hidden="true"></span></a></div></section>
 </main>
 <footer class="site-footer"><div class="wrap">
 <div class="foot-grid">
@@ -146,8 +163,8 @@
   <div class="chat-chips"></div>
   <form><label class="sr" for="chat-input">Message</label><input id="chat-input" autocomplete="off" maxlength="500" placeholder="Ask Bugsy or leave a message…"><button type="submit" aria-label="Send">➤</button></form>
 </section>
-<script type="module" src="/assets/site.js?v=mwy0l1t3"></script>
-<script type="module" src="/assets/chat.js?v=mwy0l1t3"></script>
-
+<script type="module" src="/assets/site.js?v=mwyt1469"></script>
+<script type="module" src="/assets/chat.js?v=mwyt1469"></script>
+<script type="module" src="/assets/blog.js?v=mwyt1469"></script>
 </body>
 </html>

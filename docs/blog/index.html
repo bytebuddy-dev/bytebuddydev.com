@@ -26,7 +26,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600..800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap">
-<link rel="stylesheet" href="/assets/site.css?v=mwy0l1t3">
+<link rel="stylesheet" href="/assets/site.css?v=mwyt1469">
 <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://bytebuddydev.com/#org","name":"Byte Buddy","url":"https://bytebuddydev.com/","logo":"https://bytebuddydev.com/img/icon-192.png","sameAs":["https://www.youtube.com/@bytebuddydev","https://www.instagram.com/bytebuddydev/","https://www.tiktok.com/@bytebuddydev","https://github.com/bytebuddy-dev"]},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://bytebuddydev.com/"},{"@type":"ListItem","position":2,"name":"Blog","item":"https://bytebuddydev.com/blog/"}]},{"@type":"Blog","name":"Byte Buddy Blog","url":"https://bytebuddydev.com/blog/","publisher":{"@id":"https://bytebuddydev.com/#org"}}]}</script>
 </head>
 <body>
@@ -42,14 +42,13 @@
 <div class="wrap page-hero"><nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a> / Blog</nav>
 <span class="eyebrow">📝 Blog</span>
 <h1>Guides for <span class="hl">AI-powered</span> developers</h1>
-<p class="lead">Short, practical answers about Claude Code, MCP and AI coding agents. Every step is checked against the official docs. <a href="/blog/rss.xml">RSS feed</a></p>
+<p class="lead">Short, practical answers about Claude Code, MCP and AI coding agents. Every step is checked against the official docs.</p>
+<div class="blog-stats"><span id="blog-progress">3 guides · 9 min of reading</span><a href="/blog/rss.xml">RSS feed</a></div>
 </div>
-<div class="wrap" style="padding-bottom:80px">
-<div class="cards">
-<a class="card post-card" href="/blog/add-mcp-server-to-cursor/"><div class="body"><span class="tag">🔌 Guide · 2 min read</span><h3>How to Add an MCP Server to Cursor (and Fix It When It Won't Start)</h3><p>Where Cursor's mcp.json lives, the exact format for local and remote servers, how to keep API keys out of it, and the 5 mistakes that stop servers.</p><span class="go">Read it →</span></div></a>
-<a class="card post-card" href="/blog/agents-md-vs-claude-md/"><div class="body"><span class="tag">🤖 Guide · 3 min read</span><h3>AGENTS.md vs CLAUDE.md: Which One Do You Need?</h3><p>AGENTS.md is read by most coding agents, CLAUDE.md by Claude Code. How they differ, and the one-line setup that keeps both in sync.</p><span class="go">Read it →</span></div></a>
-<a class="card post-card" href="/blog/claude-code-hooks-examples/"><div class="body"><span class="tag">🪝 Guide · 3 min read</span><h3>Claude Code Hooks: 10 Copy-Paste Examples That Actually Work</h3><p>Ten tested Claude Code hooks: notifications, auto-format, blocking rm -rf and force-push, protecting .env, running tests before Claude stops. Windows too.</p><span class="go">Read it →</span></div></a>
-</div>
+<div class="wrap blog-list" style="padding-bottom:80px">
+<a class="card post-card featured" href="/blog/claude-code-hooks-examples/" data-slug="claude-code-hooks-examples"><div class="post-art" aria-hidden="true"><span>🪝</span><small>hooks</small></div><div class="body"><span class="tag">4 min read</span><h3>Claude Code Hooks: 10 Copy-Paste Examples That Actually Work</h3><p>Ten tested Claude Code hooks: notifications, auto-format, blocking rm -rf and force-push, protecting .env, running tests before Claude stops. Windows too.</p><span class="go">Read it →</span></div><span class="read-meter" aria-hidden="true"></span></a>
+<div class="cards"><a class="card post-card" href="/blog/add-mcp-server-to-cursor/" data-slug="add-mcp-server-to-cursor"><div class="post-art" aria-hidden="true"><span>🔌</span><small>mcp.json</small></div><div class="body"><span class="tag">2 min read</span><h3>How to Add an MCP Server to Cursor (and Fix It When It Won't Start)</h3><p>Where Cursor's mcp.json lives, the exact format for local and remote servers, how to keep API keys out of it, and the 5 mistakes that stop servers.</p><span class="go">Read it →</span></div><span class="read-meter" aria-hidden="true"></span></a>
+<a class="card post-card" href="/blog/agents-md-vs-claude-md/" data-slug="agents-md-vs-claude-md"><div class="post-art" aria-hidden="true"><span>🤖</span><small>AGENTS.md</small></div><div class="body"><span class="tag">3 min read</span><h3>AGENTS.md vs CLAUDE.md: Which One Do You Need?</h3><p>AGENTS.md is read by most coding agents, CLAUDE.md by Claude Code. How they differ, and the one-line setup that keeps both in sync.</p><span class="go">Read it →</span></div><span class="read-meter" aria-hidden="true"></span></a></div>
 </div>
 </main>
 <footer class="site-footer"><div class="wrap">
@@ -71,8 +70,8 @@
   <div class="chat-chips"></div>
   <form><label class="sr" for="chat-input">Message</label><input id="chat-input" autocomplete="off" maxlength="500" placeholder="Ask Bugsy or leave a message…"><button type="submit" aria-label="Send">➤</button></form>
 </section>
-<script type="module" src="/assets/site.js?v=mwy0l1t3"></script>
-<script type="module" src="/assets/chat.js?v=mwy0l1t3"></script>
-
+<script type="module" src="/assets/site.js?v=mwyt1469"></script>
+<script type="module" src="/assets/chat.js?v=mwyt1469"></script>
+<script type="module" src="/assets/blog.js?v=mwyt1469"></script>
 </body>
 </html>

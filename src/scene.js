@@ -352,6 +352,12 @@ function start() {
 
   // The chat (site.js) asks Bugsy to react: window.dispatchEvent(new CustomEvent('bugsy:mood', { detail: 'wave' }))
   addEventListener('bugsy:mood', (e) => setMood(e.detail || 'wave', 2.4));
+  // The blog (blog.js) cheers the reader on: new CustomEvent('bugsy:say', { detail: { text, mood } })
+  addEventListener('bugsy:say', (e) => {
+    setMood(e.detail?.mood || 'wave', 3);
+    jumpV = reduceMotion ? 0 : 4;
+    say(String(e.detail?.text || ''), 3.6);
+  });
 
   // keyboard easter eggs (ignored while typing in a field)
   const buf = [];

@@ -26,7 +26,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600..800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap">
-<link rel="stylesheet" href="/assets/site.css?v=mwy0l1t3">
+<link rel="stylesheet" href="/assets/site.css?v=mwyt1469">
 <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://bytebuddydev.com/#org","name":"Byte Buddy","url":"https://bytebuddydev.com/","logo":"https://bytebuddydev.com/img/icon-192.png","sameAs":["https://www.youtube.com/@bytebuddydev","https://www.instagram.com/bytebuddydev/","https://www.tiktok.com/@bytebuddydev","https://github.com/bytebuddy-dev"]},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://bytebuddydev.com/"},{"@type":"ListItem","position":2,"name":"Blog","item":"https://bytebuddydev.com/blog/"},{"@type":"ListItem","position":3,"name":"How to Add an MCP Server to Cursor (and Fix It When It Won't Start)","item":"https://bytebuddydev.com/blog/add-mcp-server-to-cursor/"}]},{"@type":"BlogPosting","headline":"How to Add an MCP Server to Cursor (and Fix It When It Won't Start)","description":"Where Cursor's mcp.json lives, the exact format for local and remote servers, how to keep API keys out of it, and the 5 mistakes that stop servers.","datePublished":"2026-11-27","dateModified":"2026-11-27","url":"https://bytebuddydev.com/blog/add-mcp-server-to-cursor/","mainEntityOfPage":"https://bytebuddydev.com/blog/add-mcp-server-to-cursor/","image":"https://bytebuddydev.com/img/og.jpg","author":{"@id":"https://bytebuddydev.com/#org"},"publisher":{"@id":"https://bytebuddydev.com/#org"}}]}</script>
 </head>
 <body>
@@ -39,16 +39,21 @@
 </div></header>
 <main id="main">
 
-<div class="wrap page-hero"><nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a> / <a href="/blog/">Blog</a> / How to Add an MCP Server to Cursor (and Fix It When It Won't Start)</nav>
+<div class="wrap post-hero">
+<div><nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a> / <a href="/blog/">Blog</a> / How to Add an MCP Server to Cursor (and Fix It When It Won't Start)</nav>
 <span class="eyebrow">🔌 Guide</span>
 <h1>How to Add an MCP Server to Cursor (and Fix It When It Won't Start)</h1>
 <p class="lead">Where Cursor's mcp.json lives, the exact format for local and remote servers, how to keep API keys out of it, and the 5 mistakes that stop servers.</p>
-<p class="meta post-meta">By Byte Buddy · <time datetime="2026-11-27">November 27, 2026</time> · 2 min read</p>
+<div class="byline"><img src="/img/icon-192.png" alt="" width="40" height="40"><div><strong>Byte Buddy</strong><span><time datetime="2026-11-27">November 27, 2026</time> · 2 min read</span></div><span class="checked">✓ Checked against the official docs</span></div>
 </div>
-<article class="wrap article post">
+<div class="post-art" aria-hidden="true"><span>🔌</span><small>mcp.json</small></div>
+</div>
+<div class="wrap post-layout">
+<article class="post" id="post" data-slug="add-mcp-server-to-cursor" data-minutes="2" data-total="3">
+<aside class="tldr" aria-label="Key points"><p class="tldr-h">⚡ The 30-second version</p><ul><li>Servers go in <code>.cursor/mcp.json</code> (this project) or <code>~/.cursor/mcp.json</code> (all projects).</li><li>A local server is a <code>command</code> plus <code>args</code>; a remote one is just a <code>url</code>.</li><li>Keep keys out of the file: write <code>${env:GITHUB_PAT}</code> and set the variable on your computer.</li><li>Most broken setups are <code>npx</code> without <code>-y</code>, <code>docker run</code> without <code>-i</code>, or <code>servers</code> instead of <code>mcpServers</code>.</li></ul></aside>
 <p>Cursor finds its MCP servers in a small JSON file called <code>mcp.json</code>. Add a server to it, restart Cursor, and the agent can use the server&#39;s tools: GitHub, a browser, your database, your issue tracker.</p>
-<h2 id="where-the-file-goes">Where the file goes</h2>
-<table>
+<h2 id="where-the-file-goes">Where the file goes<a class="anchor" href="#where-the-file-goes" aria-label="Link to this section">#</a></h2>
+<div class="table-wrap"><table>
 <thead>
 <tr>
 <th>Scope</th>
@@ -67,44 +72,40 @@
 <td><code>%USERPROFILE%\.cursor\mcp.json</code></td>
 </tr>
 </tbody></table>
-<p>Use the project file for servers your team should share. Commit it, but without any keys (see below). Use the global file for personal servers.</p>
-<h2 id="a-local-server-runs-on-your-computer">A local server (runs on your computer)</h2>
+</div><p>Use the project file for servers your team should share. Commit it, but without any keys (see below). Use the global file for personal servers.</p>
+<h2 id="a-local-server-runs-on-your-computer">A local server (runs on your computer)<a class="anchor" href="#a-local-server-runs-on-your-computer" aria-label="Link to this section">#</a></h2>
 <p>Local servers start from a command, usually <code>npx</code>, <code>uvx</code> or <code>docker</code>. Here is Playwright, which lets the agent drive a real browser:</p>
-<pre><code class="language-json">{
-  &quot;mcpServers&quot;: {
-    &quot;playwright&quot;: {
-      &quot;command&quot;: &quot;npx&quot;,
-      &quot;args&quot;: [&quot;-y&quot;, &quot;@playwright/mcp@latest&quot;]
-    }
-  }
-}
-</code></pre>
+<figure class="code"><figcaption><span class="dots" aria-hidden="true"></span><span class="lang">JSON</span></figcaption><pre><code class="hljs"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;mcpServers&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+    <span class="hljs-attr">&quot;playwright&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+      <span class="hljs-attr">&quot;command&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;npx&quot;</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">&quot;args&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-string">&quot;-y&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-string">&quot;@playwright/mcp@latest&quot;</span><span class="hljs-punctuation">]</span>
+    <span class="hljs-punctuation">}</span>
+  <span class="hljs-punctuation">}</span>
+<span class="hljs-punctuation">}</span></code></pre></figure>
 <p>Playwright&#39;s server needs Node.js 20 or newer.</p>
-<h2 id="a-remote-server-hosted-by-the-service">A remote server (hosted by the service)</h2>
+<h2 id="a-remote-server-hosted-by-the-service">A remote server (hosted by the service)<a class="anchor" href="#a-remote-server-hosted-by-the-service" aria-label="Link to this section">#</a></h2>
 <p>Remote servers are just a URL. Here is GitHub&#39;s official server, with a personal access token read from your environment:</p>
-<pre><code class="language-json">{
-  &quot;mcpServers&quot;: {
-    &quot;github&quot;: {
-      &quot;url&quot;: &quot;https://api.githubcopilot.com/mcp/&quot;,
-      &quot;headers&quot;: { &quot;Authorization&quot;: &quot;Bearer ${env:GITHUB_PAT}&quot; }
-    }
-  }
-}
-</code></pre>
+<figure class="code"><figcaption><span class="dots" aria-hidden="true"></span><span class="lang">JSON</span></figcaption><pre><code class="hljs"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;mcpServers&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+    <span class="hljs-attr">&quot;github&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+      <span class="hljs-attr">&quot;url&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;https://api.githubcopilot.com/mcp/&quot;</span><span class="hljs-punctuation">,</span>
+      <span class="hljs-attr">&quot;headers&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span> <span class="hljs-attr">&quot;Authorization&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Bearer ${env:GITHUB_PAT}&quot;</span> <span class="hljs-punctuation">}</span>
+    <span class="hljs-punctuation">}</span>
+  <span class="hljs-punctuation">}</span>
+<span class="hljs-punctuation">}</span></code></pre></figure>
 <p>If a service has an official remote server (GitHub, Linear, Notion, Sentry, Stripe, Figma and many more do), use it. There&#39;s nothing to install and it updates itself. For servers that use sign-in (OAuth), Cursor asks you to sign in the first time it connects.</p>
-<h2 id="keep-api-keys-out-of-the-file">Keep API keys out of the file</h2>
+<h2 id="keep-api-keys-out-of-the-file">Keep API keys out of the file<a class="anchor" href="#keep-api-keys-out-of-the-file" aria-label="Link to this section">#</a></h2>
 <p>Never paste a key straight into <code>mcp.json</code>. The file gets committed, shown in screenshots and pasted into chats. Cursor reads environment variables with <code>${env:NAME}</code>, so write <code>${env:GITHUB_PAT}</code> in the file and set the variable on your computer:</p>
-<pre><code class="language-bash"># macOS / Linux (add it to ~/.zshrc or ~/.bashrc to keep it)
-export GITHUB_PAT=&quot;your-token&quot;
-</code></pre>
-<pre><code class="language-powershell"># Windows (PowerShell), saved for your user
-setx GITHUB_PAT &quot;your-token&quot;
-</code></pre>
+<figure class="code"><figcaption><span class="dots" aria-hidden="true"></span><span class="lang">Terminal</span></figcaption><pre><code class="hljs"><span class="hljs-comment"># macOS / Linux (add it to ~/.zshrc or ~/.bashrc to keep it)</span>
+<span class="hljs-built_in">export</span> GITHUB_PAT=<span class="hljs-string">&quot;your-token&quot;</span></code></pre></figure>
+<figure class="code"><figcaption><span class="dots" aria-hidden="true"></span><span class="lang">PowerShell</span></figcaption><pre><code class="hljs"><span class="hljs-comment"># Windows (PowerShell), saved for your user</span>
+setx GITHUB_PAT <span class="hljs-string">&quot;your-token&quot;</span></code></pre></figure>
 <p>Restart Cursor afterwards so it sees the new variable.</p>
 <blockquote>
 <p>Watch out: Cursor writes <code>${env:NAME}</code>, but Claude Code writes <code>${NAME}</code> and VS Code uses a different file format altogether. A config copied from another app&#39;s docs often fails for exactly this reason. Our converter turns one app&#39;s config into another&#39;s.</p>
 </blockquote>
-<h2 id="when-the-server-won-39-t-start">When the server won&#39;t start</h2>
+<h2 id="when-the-server-wont-start">When the server won&#39;t start<a class="anchor" href="#when-the-server-wont-start" aria-label="Link to this section">#</a></h2>
 <p>These five mistakes cause most broken MCP setups:</p>
 <ol>
 <li><strong><code>npx</code> without <code>-y</code>.</strong> npx stops to ask &quot;Ok to proceed?&quot;, nobody answers, and the server never starts. Always write <code>&quot;args&quot;: [&quot;-y&quot;, &quot;package-name&quot;]</code>.</li>
@@ -114,13 +115,27 @@ setx GITHUB_PAT &quot;your-token&quot;
 <li><strong>An old, archived package.</strong> <code>@modelcontextprotocol/server-github</code>, <code>-postgres</code>, <code>-brave-search</code> and <code>-puppeteer</code> are archived and get no more fixes. Most have an official replacement; GitHub&#39;s is the remote server above.</li>
 </ol>
 <p>Also check that the JSON is valid: one missing comma breaks the whole file. Restart Cursor after every change.</p>
-<h2 id="do-it-in-30-seconds-instead">Do it in 30 seconds instead</h2>
+<h2 id="do-it-in-30-seconds-instead">Do it in 30 seconds instead<a class="anchor" href="#do-it-in-30-seconds-instead" aria-label="Link to this section">#</a></h2>
 <p>Our free MCP config generator writes the exact file for Cursor (and Claude Code, VS Code, Codex, Windsurf and more). Pick your servers, and it adds the <code>-y</code>, the <code>-i</code> and the <code>${env:…}</code> references for you. Its checker finds all five mistakes above in a config you paste. It runs in your browser, so your config never leaves your computer.</p>
 <p><em>Sources: <a href="https://cursor.com/docs/context/mcp" rel="noopener">Cursor: Model Context Protocol</a>, <a href="https://github.com/github/github-mcp-server" rel="noopener">GitHub MCP server</a>, <a href="https://github.com/microsoft/playwright-mcp" rel="noopener">Playwright MCP</a>. Checked November 2026.</em></p>
 
-<div class="tool-cta"><div><strong>MCP config generator &amp; converter</strong><p>The exact MCP config for Claude Code, Cursor, VS Code, Codex and 6 more apps, or convert one app's config to another.</p></div><a class="btn btn-primary" href="/tools/mcp-config-generator/">Open the free tool →</a></div>
-<h2 class="more-h">Keep reading</h2><ul class="post-links"><li><a href="/blog/agents-md-vs-claude-md/">AGENTS.md vs CLAUDE.md: Which One Do You Need?</a></li><li><a href="/blog/claude-code-hooks-examples/">Claude Code Hooks: 10 Copy-Paste Examples That Actually Work</a></li></ul>
+<section class="finish" id="finish" aria-labelledby="finish-h">
+<div class="finish-top"><img src="/img/icon-192.png" alt="" width="64" height="64"><div><p class="finish-k" id="finish-k">The end</p><h2 id="finish-h">Worth keeping? Bookmark it.</h2></div></div>
+<p class="finish-p">We update this guide when the docs change, so the bookmark stays right. Press <kbd class="kbd-mod">Ctrl</kbd> + <kbd>D</kbd> to bookmark this page.</p>
+<div class="share-row"><a class="share-btn" href="https://x.com/intent/post?text=How%20to%20Add%20an%20MCP%20Server%20to%20Cursor%20(and%20Fix%20It%20When%20It%20Won't%20Start)&amp;url=https%3A%2F%2Fbytebuddydev.com%2Fblog%2Fadd-mcp-server-to-cursor%2F" rel="noopener" target="_blank">Post on X</a><a class="share-btn" href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fbytebuddydev.com%2Fblog%2Fadd-mcp-server-to-cursor%2F" rel="noopener" target="_blank">Share on LinkedIn</a><button type="button" class="share-btn" data-copy-link>Copy link</button></div>
+<p class="finish-stat" id="finish-stat" hidden></p>
+</section>
+<div class="tool-cta"><div><span class="kicker">Try it yourself</span><strong>MCP config generator &amp; converter</strong><p>The exact MCP config for Claude Code, Cursor, VS Code, Codex and 6 more apps, or convert one app's config to another.</p></div><a class="btn btn-primary" href="/tools/mcp-config-generator/">Open the free tool →</a></div>
 </article>
+<aside class="post-side" aria-label="On this page">
+<nav class="toc" id="toc">
+<p class="toc-h">On this page <span class="toc-left" id="toc-left">2 min</span></p>
+<div class="read-tools" role="group" aria-label="Reading settings"><button type="button" data-size="-1" aria-label="Smaller text">A−</button><button type="button" data-size="1" aria-label="Bigger text">A+</button><button type="button" data-focus aria-pressed="false" title="Hide everything but the text">Focus mode</button></div>
+<ol><li><a href="#where-the-file-goes" data-id="where-the-file-goes">Where the file goes</a></li><li><a href="#a-local-server-runs-on-your-computer" data-id="a-local-server-runs-on-your-computer">A local server (runs on your computer)</a></li><li><a href="#a-remote-server-hosted-by-the-service" data-id="a-remote-server-hosted-by-the-service">A remote server (hosted by the service)</a></li><li><a href="#keep-api-keys-out-of-the-file" data-id="keep-api-keys-out-of-the-file">Keep API keys out of the file</a></li><li><a href="#when-the-server-wont-start" data-id="when-the-server-wont-start">When the server won't start</a></li><li><a href="#do-it-in-30-seconds-instead" data-id="do-it-in-30-seconds-instead">Do it in 30 seconds instead</a></li><li><a href="#finish" data-id="finish">The end</a></li></ol>
+</nav>
+</aside>
+</div>
+<section class="wrap keep-reading"><div class="section-head"><div><span class="kicker">Keep reading</span><h2 id="up-next">Up next</h2></div><a href="/blog/">All guides →</a></div><div class="cards"><a class="card post-card next" href="/blog/agents-md-vs-claude-md/" data-slug="agents-md-vs-claude-md"><div class="post-art" aria-hidden="true"><span>🤖</span><small>AGENTS.md</small></div><div class="body"><span class="tag">3 min read</span><h3 id="agents-md-vs-claude-md-which-one-do-you-need">AGENTS.md vs CLAUDE.md: Which One Do You Need?</h3><p>AGENTS.md is read by most coding agents, CLAUDE.md by Claude Code. How they differ, and the one-line setup that keeps both in sync.</p><span class="go">Read it →</span></div><span class="read-meter" aria-hidden="true"></span></a><a class="card post-card" href="/blog/claude-code-hooks-examples/" data-slug="claude-code-hooks-examples"><div class="post-art" aria-hidden="true"><span>🪝</span><small>hooks</small></div><div class="body"><span class="tag">4 min read</span><h3>Claude Code Hooks: 10 Copy-Paste Examples That Actually Work</h3><p>Ten tested Claude Code hooks: notifications, auto-format, blocking rm -rf and force-push, protecting .env, running tests before Claude stops. Windows too.</p><span class="go">Read it →</span></div><span class="read-meter" aria-hidden="true"></span></a></div></section>
 </main>
 <footer class="site-footer"><div class="wrap">
 <div class="foot-grid">
@@ -141,8 +156,8 @@ setx GITHUB_PAT &quot;your-token&quot;
   <div class="chat-chips"></div>
   <form><label class="sr" for="chat-input">Message</label><input id="chat-input" autocomplete="off" maxlength="500" placeholder="Ask Bugsy or leave a message…"><button type="submit" aria-label="Send">➤</button></form>
 </section>
-<script type="module" src="/assets/site.js?v=mwy0l1t3"></script>
-<script type="module" src="/assets/chat.js?v=mwy0l1t3"></script>
-
+<script type="module" src="/assets/site.js?v=mwyt1469"></script>
+<script type="module" src="/assets/chat.js?v=mwyt1469"></script>
+<script type="module" src="/assets/blog.js?v=mwyt1469"></script>
 </body>
 </html>

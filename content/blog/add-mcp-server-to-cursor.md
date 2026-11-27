@@ -4,6 +4,7 @@ description: "Where Cursor's mcp.json lives, the exact format for local and remo
 date: 2026-11-27
 tool: /tools/mcp-config-generator/
 emoji: 🔌
+tldr: "Servers go in `.cursor/mcp.json` (this project) or `~/.cursor/mcp.json` (all projects). | A local server is a `command` plus `args`; a remote one is just a `url`. | Keep keys out of the file: write `${env:GITHUB_PAT}` and set the variable on your computer. | Most broken setups are `npx` without `-y`, `docker run` without `-i`, or `servers` instead of `mcpServers`."
 ---
 
 Cursor finds its MCP servers in a small JSON file called `mcp.json`. Add a server to it, restart Cursor, and the agent can use the server's tools: GitHub, a browser, your database, your issue tracker.

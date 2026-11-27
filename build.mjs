@@ -5,6 +5,14 @@ import { createHash } from 'node:crypto';
 import path from 'node:path';
 import { build } from 'esbuild';
 import { marked } from 'marked';
+import hljs from 'highlight.js/lib/core';
+import hlJson from 'highlight.js/lib/languages/json';
+import hlBash from 'highlight.js/lib/languages/bash';
+import hlMd from 'highlight.js/lib/languages/markdown';
+import hlPs from 'highlight.js/lib/languages/powershell';
+import hlYaml from 'highlight.js/lib/languages/yaml';
+import hlToml from 'highlight.js/lib/languages/ini';
+import hlJs from 'highlight.js/lib/languages/javascript';
 import { SERVERS as MCP_SERVERS, CHECKED as MCP_CHECKED } from './src/tools/mcp-servers.js';
 import { CHECKED as HOOKS_CHECKED } from './src/tools/hooks-recipes.js';
 const SERVER_COUNT = MCP_SERVERS.length;
@@ -1024,11 +1032,32 @@ ${HOOKS_FAQ.map(([q, a]) => `<h3>${esc(q)}</h3><p>${esc(a)}</p>`).join('\n')}
 // ---- blog ----
 // One Markdown file per post in content/blog/<slug>.md, with a small frontmatter block:
 //   title, description (≤158 chars), date, updated, tool (a /tools/ url this post supports), emoji, draft
+for (const [n, l] of [['json', hlJson], ['bash', hlBash], ['markdown', hlMd], ['powershell', hlPs], ['yaml', hlYaml], ['toml', hlToml], ['javascript', hlJs]]) hljs.registerLanguage(n, l);
+const LANG = { json: 'json', jsonc: 'json', bash: 'bash', sh: 'bash', shell: 'bash', zsh: 'bash', markdown: 'markdown', md: 'markdown', powershell: 'powershell', ps1: 'powershell', yaml: 'yaml', yml: 'yaml', toml: 'toml', ini: 'toml', js: 'javascript', javascript: 'javascript' };
+const LANG_LABEL = { json: 'JSON', bash: 'Terminal', markdown: 'Markdown', powershell: 'PowerShell', yaml: 'YAML', toml: 'TOML', javascript: 'JavaScript' };
+const slugify = (s) => s.toLowerCase().replace(/<[^>]+>/g, '').replace(/&[a-z]+;|&#\d+;/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 60);
 marked.use({
   renderer: {
     link({ href, title, tokens }) {
       const text = this.parser.parseInline(tokens);
       return `<a href="${href}"${title ? ` title="${title}"` : ''}${/^https?:/.test(href) ? ' rel="noopener"' : ''}>${text}</a>`;
+    },
+    // code blocks: highlighted at build time (no script needed), in a small "window" with the language on top
+    code({ text, lang }) {
+      const l = LANG[(lang || '').trim().toLowerCase()];
+      const body = l ? hljs.highlight(text, { language: l }).value : esc(text);
+      return `<figure class="code"><figcaption><span class="dots" aria-hidden="true"></span><span class="lang">${l ? LANG_LABEL[l] : 'Code'}</span></figcaption><pre><code class="hljs">${body}</code></pre></figure>\n`;
+    },
+    // h2/h3 get ids + a "#" link, so the table of contents and shared links can point at them
+    heading({ tokens, depth }) {
+      const inner = this.parser.parseInline(tokens);
+      if (depth > 3) return `<h${depth}>${inner}</h${depth}>\n`;
+      const id = slugify(inner);
+      return `<h${depth} id="${id}">${inner}<a class="anchor" href="#${id}" aria-label="Link to this section">#</a></h${depth}>\n`;
+    },
+    // a table can be wider than the text column: let it scroll on its own
+    table(token) {
+      return `<div class="table-wrap">${marked.Renderer.prototype.table.call(this, token)}</div>`;
     },
   },
 });
@@ -1052,18 +1081,31 @@ const POSTS = fs.existsSync('content/blog')
         for (const k of ['title', 'description', 'date']) if (!data[k]) throw new Error(`content/blog/${f}: needs "${k}"`);
         if (data.description.length > 158) throw new Error(`content/blog/${f}: description is ${data.description.length} chars (max 158)`);
         const words = body.replace(/```[\s\S]*?```/g, ' ').split(/\s+/).filter(Boolean).length;
-        return { ...data, slug: f.replace(/\.md$/, ''), url: `/blog/${f.replace(/\.md$/, '')}/`, html: marked.parse(body), minutes: Math.max(1, Math.round(words / 220)), updated: data.updated || data.date };
+        const html = marked.parse(body);
+        const toc = [...html.matchAll(/<h2 id="([^"]+)">([\s\S]*?)<a class="anchor"/g)].map(([, id, t]) => ({ id, t: t.replace(/<[^>]+>/g, '').replace(/&#39;/g, "'").replace(/&quot;/g, '"').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, '&') }));
+        const tldr = (data.tldr || '').split('|').map((s) => s.trim()).filter(Boolean);
+        return { ...data, slug: f.replace(/\.md$/, ''), url: `/blog/${f.replace(/\.md$/, '')}/`, html, toc, tldr, minutes: Math.max(1, Math.round(words / 220)), updated: data.updated || data.date };
       })
       .filter((p) => p.draft !== 'true')
       .sort((a, b) => b.date.localeCompare(a.date))
   : [];
 const niceDate = (d) => new Date(d + 'T12:00:00Z').toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' });
-const postCard = (p) =>
-  `<a class="card post-card" href="${p.url}"><div class="body"><span class="tag">${esc(p.emoji || '📝')} Guide · ${p.minutes} min read</span><h3>${esc(p.title)}</h3><p>${esc(p.description)}</p><span class="go">Read it →</span></div></a>`;
+const postArt = (p) => {
+  const tool = TOOLS.find((t) => t.url === p.tool);
+  return `<div class="post-art" aria-hidden="true"><span>${esc(p.emoji || '📝')}</span>${tool ? `<small>${esc(tool.art[0])}</small>` : ''}</div>`;
+};
+// data-slug lets blog.js mark cards "✓ Read" / "Continue · 40%" from what this visitor read before (kept in their browser only)
+const postCard = (p, cls = '') =>
+  `<a class="card post-card${cls}" href="${p.url}" data-slug="${p.slug}">${postArt(p)}<div class="body"><span class="tag">${p.minutes} min read</span><h3>${esc(p.title)}</h3><p>${esc(p.description)}</p><span class="go">Read it →</span></div><span class="read-meter" aria-hidden="true"></span></a>`;
+const SHARE = (p) => {
+  const u = encodeURIComponent(`${ORIGIN}${p.url}`);
+  return `<a class="share-btn" href="https://x.com/intent/post?text=${encodeURIComponent(p.title)}&amp;url=${u}" rel="noopener" target="_blank">Post on X</a><a class="share-btn" href="https://www.linkedin.com/sharing/share-offsite/?url=${u}" rel="noopener" target="_blank">Share on LinkedIn</a><button type="button" class="share-btn" data-copy-link>Copy link</button>`;
+};
 
-for (const p of POSTS) {
+for (const [i, p] of POSTS.entries()) {
   const tool = TOOLS.find((t) => t.url === p.tool);
   const others = POSTS.filter((x) => x !== p).slice(0, 3);
+  const next = POSTS.length > 1 ? POSTS[(i + 1) % POSTS.length] : null;
   pages.push({
     url: p.url,
     title: p.title,
@@ -1087,20 +1129,41 @@ for (const p of POSTS) {
         publisher: { '@id': `${ORIGIN}/#org` },
       },
     ],
+    scripts: ['blog.js'],
     body: `
-<div class="wrap page-hero">${crumbs([['/', 'Home'], ['/blog/', 'Blog'], [p.url, p.title]])}
+<div class="wrap post-hero">
+<div>${crumbs([['/', 'Home'], ['/blog/', 'Blog'], [p.url, p.title]])}
 <span class="eyebrow">${esc(p.emoji || '📝')} Guide</span>
 <h1>${esc(p.title)}</h1>
 <p class="lead">${esc(p.description)}</p>
-<p class="meta post-meta">By Byte Buddy · ${p.updated !== p.date ? `Updated <time datetime="${p.updated}">${niceDate(p.updated)}</time>` : `<time datetime="${p.date}">${niceDate(p.date)}</time>`} · ${p.minutes} min read</p>
+<div class="byline"><img src="/img/icon-192.png" alt="" width="40" height="40"><div><strong>Byte Buddy</strong><span>${p.updated !== p.date ? `Updated <time datetime="${p.updated}">${niceDate(p.updated)}</time>` : `<time datetime="${p.date}">${niceDate(p.date)}</time>`} · ${p.minutes} min read</span></div><span class="checked">✓ Checked against the official docs</span></div>
 </div>
-<article class="wrap article post">
+${postArt(p)}
+</div>
+<div class="wrap post-layout">
+<article class="post" id="post" data-slug="${p.slug}" data-minutes="${p.minutes}" data-total="${POSTS.length}">
+${p.tldr.length ? `<aside class="tldr" aria-label="Key points"><p class="tldr-h">⚡ The 30-second version</p><ul>${p.tldr.map((t) => `<li>${marked.parseInline(t)}</li>`).join('')}</ul></aside>` : ''}
 ${p.html}
-${tool ? `<div class="tool-cta"><div><strong>${esc(tool.name)}</strong><p>${esc(tool.blurb)}</p></div><a class="btn btn-primary" href="${tool.url}">Open the free tool →</a></div>` : ''}
-${others.length ? `<h2 class="more-h">Keep reading</h2><ul class="post-links">${others.map((o) => `<li><a href="${o.url}">${esc(o.title)}</a></li>`).join('')}</ul>` : ''}
-</article>`,
+<section class="finish" id="finish" aria-labelledby="finish-h">
+<div class="finish-top"><img src="/img/icon-192.png" alt="" width="64" height="64"><div><p class="finish-k" id="finish-k">The end</p><h2 id="finish-h">Worth keeping? Bookmark it.</h2></div></div>
+<p class="finish-p">We update this guide when the docs change, so the bookmark stays right. Press <kbd class="kbd-mod">Ctrl</kbd> + <kbd>D</kbd> to bookmark this page.</p>
+<div class="share-row">${SHARE(p)}</div>
+<p class="finish-stat" id="finish-stat" hidden></p>
+</section>
+${tool ? `<div class="tool-cta"><div><span class="kicker">Try it yourself</span><strong>${esc(tool.name)}</strong><p>${esc(tool.blurb)}</p></div><a class="btn btn-primary" href="${tool.url}">Open the free tool →</a></div>` : ''}
+</article>
+<aside class="post-side" aria-label="On this page">
+<nav class="toc" id="toc">
+<p class="toc-h">On this page <span class="toc-left" id="toc-left">${p.minutes} min</span></p>
+<div class="read-tools" role="group" aria-label="Reading settings"><button type="button" data-size="-1" aria-label="Smaller text">A−</button><button type="button" data-size="1" aria-label="Bigger text">A+</button><button type="button" data-focus aria-pressed="false" title="Hide everything but the text">Focus mode</button></div>
+<ol>${p.toc.map((h) => `<li><a href="#${h.id}" data-id="${h.id}">${esc(h.t)}</a></li>`).join('')}<li><a href="#finish" data-id="finish">The end</a></li></ol>
+</nav>
+</aside>
+</div>
+${others.length ? `<section class="wrap keep-reading"><div class="section-head"><div><span class="kicker">Keep reading</span><h2>${next ? 'Up next' : 'More guides'}</h2></div><a href="/blog/">All guides →</a></div><div class="cards">${(next ? [next, ...others.filter((o) => o !== next)] : others).slice(0, 3).map((o, k) => postCard(o, k === 0 && next ? ' next' : '')).join('')}</div></section>` : ''}`,
   });
 }
+const FEATURED = POSTS.find((p) => p.featured === 'true') || POSTS[0];
 if (POSTS.length)
   pages.push({
     url: '/blog/',
@@ -1111,13 +1174,14 @@ if (POSTS.length)
 <div class="wrap page-hero">${crumbs([['/', 'Home'], ['/blog/', 'Blog']])}
 <span class="eyebrow">📝 Blog</span>
 <h1>Guides for <span class="hl">AI-powered</span> developers</h1>
-<p class="lead">Short, practical answers about Claude Code, MCP and AI coding agents. Every step is checked against the official docs. <a href="/blog/rss.xml">RSS feed</a></p>
+<p class="lead">Short, practical answers about Claude Code, MCP and AI coding agents. Every step is checked against the official docs.</p>
+<div class="blog-stats"><span id="blog-progress">${POSTS.length} guides · ${POSTS.reduce((n, p) => n + p.minutes, 0)} min of reading</span><a href="/blog/rss.xml">RSS feed</a></div>
 </div>
-<div class="wrap" style="padding-bottom:80px">
-<div class="cards">
-${POSTS.map(postCard).join('\n')}
-</div>
+<div class="wrap blog-list" style="padding-bottom:80px">
+${postCard(FEATURED, ' featured')}
+${POSTS.length > 1 ? `<div class="cards">${POSTS.filter((p) => p !== FEATURED).map((p) => postCard(p)).join('\n')}</div>` : ''}
 </div>`,
+    scripts: ['blog.js'],
   });
 
 // ---- about / contact / privacy ----
@@ -1169,7 +1233,7 @@ pages.push({
 <div class="wrap page-hero">${crumbs([['/', 'Home'], ['/privacy/', 'Privacy']])}<h1>Privacy policy</h1><p class="meta">Last updated: ${TODAY}</p></div>
 <article class="wrap article">
 <h2>What we collect</h2>
-<p>This website does not use cookies, analytics or accounts, and we don't collect personal information. Bugsy's greeting remembers that you've seen it using your browser's session storage, and your light/dark choice is saved in your browser's local storage. Neither ever leaves your device.</p>
+<p>This website does not use cookies, analytics or accounts, and we don't collect personal information. Bugsy's greeting remembers that you've seen it using your browser's session storage, and your light/dark choice is saved in your browser's local storage. On the blog, your browser also remembers which guides you've read, how far you got and your text size, so it can show ✓ Read and offer to continue where you left off. None of it ever leaves your device.</p>
 <h2>Third-party services</h2>
 <ul>
 <li><strong>Hosting:</strong> the site is served by GitHub Pages. GitHub may log technical data such as IP addresses to keep the service secure (see the <a href="https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement" rel="noopener">GitHub Privacy Statement</a>).</li>
@@ -1237,6 +1301,7 @@ await build({ entryPoints: ['src/tools/skill-md.js'], bundle: true, minify: true
 await build({ entryPoints: ['src/tools/mcp-config.js'], bundle: true, minify: true, format: 'esm', target: 'es2020', outfile: `${OUT}/assets/tool-mcp-config.js` });
 await build({ entryPoints: ['src/tools/hooks.js'], bundle: true, minify: true, format: 'esm', target: 'es2020', outfile: `${OUT}/assets/tool-hooks.js` });
 await build({ entryPoints: ['src/tools/agents-md.js'], bundle: true, minify: true, format: 'esm', target: 'es2020', outfile: `${OUT}/assets/tool-agents-md.js` });
+await build({ entryPoints: ['src/blog.js'], bundle: true, minify: true, format: 'esm', target: 'es2020', outfile: `${OUT}/assets/blog.js` });
 await build({ entryPoints: ['src/chat.js'], bundle: true, minify: true, format: 'esm', target: 'es2020', outfile: `${OUT}/assets/chat.js` });
 await build({ entryPoints: ['src/site.js'], bundle: false, minify: true, format: 'esm', target: 'es2020', outfile: `${OUT}/assets/site.js` });
 await build({ entryPoints: ['src/site.css'], minify: true, outfile: `${OUT}/assets/site.css` });

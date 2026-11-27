@@ -4,6 +4,8 @@ description: "Ten tested Claude Code hooks: notifications, auto-format, blocking
 date: 2026-11-27
 tool: /tools/claude-code-hooks-generator/
 emoji: 🪝
+featured: true
+tldr: "Hooks are commands Claude Code runs by itself at set moments, every time. CLAUDE.md can only ask. | Put them in `~/.claude/settings.json` (all projects) or `.claude/settings.json` (one repo). | A hook that exits with code 2 blocks the action and tells Claude why. That’s how the safety hooks below work. | Type `/hooks` in Claude Code to see which hooks loaded."
 ---
 
 Hooks are commands Claude Code runs on its own at set moments: before it uses a tool, after it edits a file, when it needs you, when it finishes. CLAUDE.md can only *ask* Claude to do something; a hook makes it happen every time.
@@ -37,6 +39,8 @@ You start a long task, switch to another window, and Claude sits there waiting f
 }
 ```
 
+[Get this one for Windows, or combined with others, in the generator →](/tools/claude-code-hooks-generator/?hooks=notify)
+
 On Linux, use `notify-send 'Claude Code' 'Claude Code needs your attention'` as the command (needs `libnotify-bin`).
 
 ## 2. Notify me when Claude is done
@@ -59,6 +63,8 @@ Same idea, for when Claude finishes. On macOS it also plays a sound.
   }
 }
 ```
+
+[Get this one for Windows, or combined with others, in the generator →](/tools/claude-code-hooks-generator/?hooks=done)
 
 On Linux, use `notify-send 'Claude Code' 'Claude is done'` as the command (needs `libnotify-bin`).
 
@@ -84,6 +90,8 @@ Claude asks before running commands, but after the fiftieth "yes" you stop readi
 }
 ```
 
+[Get this one for Windows, or combined with others, in the generator →](/tools/claude-code-hooks-generator/?hooks=danger)
+
 ## 4. Protect files from edits
 
 Keeps Claude's edits away from files it should never touch. Edit the list to suit your project.
@@ -105,6 +113,8 @@ Keeps Claude's edits away from files it should never touch. Edit the list to sui
   }
 }
 ```
+
+[Get this one for Windows, or combined with others, in the generator →](/tools/claude-code-hooks-generator/?hooks=protect)
 
 This guards Claude's Edit and Write tools. Claude could still change a file with a shell command, so for secrets also add a deny rule (for example "Read(./.env)") under permissions.
 
@@ -129,6 +139,8 @@ It's easy to paste an error log or a config with a key in it. This blocks the pr
 }
 ```
 
+[Get this one for Windows, or combined with others, in the generator →](/tools/claude-code-hooks-generator/?hooks=secrets)
+
 ## 6. Format with Prettier after edits
 
 Claude's code comes out formatted the way your project wants, every time, without asking.
@@ -150,6 +162,8 @@ Claude's code comes out formatted the way your project wants, every time, withou
   }
 }
 ```
+
+[Get this one for Windows, or combined with others, in the generator →](/tools/claude-code-hooks-generator/?hooks=prettier)
 
 Needs: Prettier in your project (npm i -D prettier).
 
@@ -175,6 +189,8 @@ The Python version. For Go, swap `ruff format` for `gofmt -w` and `*.py` for `*.
 }
 ```
 
+[Get this one for Windows, or combined with others, in the generator →](/tools/claude-code-hooks-generator/?hooks=ruff)
+
 Needs: Ruff (pip install ruff).
 
 ## 8. Run tests before Claude finishes
@@ -198,6 +214,8 @@ When Claude says "done" and files have changed, your tests run. If they fail, Cl
   }
 }
 ```
+
+[Get this one for Windows, or combined with others, in the generator →](/tools/claude-code-hooks-generator/?hooks=tests)
 
 It skips when nothing changed, and only asks Claude to retry once in a row (stop_hook_active), so it can't loop forever. Slow test suite? Use a faster command here, such as only the unit tests.
 
@@ -223,6 +241,8 @@ In long sessions Claude summarizes the conversation ("compacts") and details get
 }
 ```
 
+[Get this one for Windows, or combined with others, in the generator →](/tools/claude-code-hooks-generator/?hooks=compact)
+
 ## 10. Log every command Claude runs
 
 A running list of every shell command Claude ran, in `~/.claude/command-log.txt`.
@@ -244,6 +264,8 @@ A running list of every shell command Claude ran, in `~/.claude/command-log.txt`
   }
 }
 ```
+
+[Get this one for Windows, or combined with others, in the generator →](/tools/claude-code-hooks-generator/?hooks=log)
 
 ## How to check they're working
 

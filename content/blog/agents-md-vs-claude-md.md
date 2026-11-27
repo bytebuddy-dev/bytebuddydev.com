@@ -4,6 +4,7 @@ description: "AGENTS.md is read by most coding agents, CLAUDE.md by Claude Code.
 date: 2026-11-27
 tool: /tools/agents-md-generator/
 emoji: 🤖
+tldr: "Write your rules once, in `AGENTS.md`: Codex, Cursor, Copilot, Gemini CLI and most other agents read it. | Make `CLAUDE.md` one line, `@AGENTS.md`, so Claude Code reads the same rules. | Skip the symlink: Claude can’t edit through it, and Windows handles it badly. | For things that must never happen, use a hook or a deny rule, not a line of text."
 ---
 
 **Short answer:** use both, but write your rules only once. Put them in `AGENTS.md`, and make `CLAUDE.md` a single line that imports it:
