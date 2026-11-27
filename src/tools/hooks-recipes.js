@@ -17,7 +17,7 @@ const winBalloon = (msg, sound) =>
 const psErr = (msg) => `[Console]::Error.WriteLine(${msg}); exit 2`;
 
 // Things a dangerous Bash command looks like. Case-insensitive. --force-with-lease is allowed.
-const DANGER = 'rm -(rf|fr) (/|~|\\*|\\$HOME)( |$)|git push .*(--force|-f)( |$)|git reset --hard|drop (table|database)';
+export const DANGER = 'rm -(rf|fr) (/|~|\\*|\\$HOME)( |$)|git push .*(--force|-f)( |$)|git reset --hard|drop (table|database)';
 // Things an API key or private key looks like.
 const KEYS = 'sk-[A-Za-z0-9_-]{20,}|gh[pousr]_[A-Za-z0-9]{30,}|github_pat_[A-Za-z0-9_]{30,}|AKIA[0-9A-Z]{16}|xox[baprs]-[A-Za-z0-9-]{10,}|-----BEGIN [A-Z ]*PRIVATE KEY';
 

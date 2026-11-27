@@ -216,8 +216,18 @@ const TOOLS = [
     art: ['hooks', 'Generator + checker'],
   },
 ];
-const toolCard = (t) =>
-  `<a class="card" href="${t.url}"><div class="art art-tool" aria-hidden="true"><span>${esc(t.art[0])}</span><small>${esc(t.art[1])}</small></div><div class="body"><span class="tag">Free tool</span><h3>${esc(t.name)}</h3><p>${esc(t.blurb)}</p><span class="go">Open the tool →</span></div></a>`;
+const toolCard = (t, big = false) =>
+  `<a class="card${big ? ' big' : ''}" href="${t.url}"><div class="art art-tool" aria-hidden="true"><span>${esc(t.art[0])}</span><small>${esc(t.art[1])}</small></div><div class="body"><span class="tag${big ? ' new' : ''}">${big ? 'New · free tool' : 'Free tool'}</span><h3>${esc(t.name)}</h3><p>${esc(t.blurb)}</p><span class="go">Open the tool →</span></div></a>`;
+const niceDate = (d) => new Date(d + 'T12:00:00Z').toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' });
+// The home page's "Always shipping" log. Newest first; url null = opens the Bugsy chat.
+const SHIPPED = [
+  ['2026-11-27', 'Claude Code hooks generator & checker', '/tools/claude-code-hooks-generator/', 'Tool'],
+  ['2026-11-27', 'The blog, with 3 guides and a reading mode', '/blog/', 'Guides'],
+  ['2026-11-27', 'Ask Bugsy: the bug in the corner now answers questions', null, 'Feature'],
+  ['2026-11-26', 'MCP config generator & converter', '/tools/mcp-config-generator/', 'Tool'],
+  ['2026-11-26', 'AGENTS.md & CLAUDE.md generator', '/tools/agents-md-generator/', 'Tool'],
+  ['2026-11-26', 'SKILL.md generator & validator', '/tools/skill-md-generator/', 'Tool'],
+];
 
 const pages = [];
 
@@ -251,12 +261,46 @@ pages.push({
   </div>
 </section>
 
-<section id="tools"><div class="wrap">
-  <div class="section-head"><div><span class="kicker">Free tools</span><h2>Set up your AI coding agent in minutes</h2></div><p>Generators and checkers built on the official specs.</p></div>
-  <div class="cards">
-${TOOLS.map(toolCard).join('\n')}
+<div class="marquee" aria-hidden="true"><div class="marquee-track">${Array(2).fill(['Free, no sign-up', 'Nothing leaves your browser', 'Checked against the official docs', 'Made for Claude Code, Cursor, Codex & friends', 'New guides every week', 'Hosted by a bug 🐝'].map((t) => `<span>${t}</span><b>✦</b>`).join('')).join('')}</div></div>
+
+<section id="try" class="try" aria-labelledby="try-h"><div class="wrap">
+  <div class="section-head"><div><span class="kicker">Try it right here</span><h2 id="try-h">Three tiny tools. <span class="hl">Zero sign-up.</span></h2></div><p>The same checks our full tools run, live in your browser.</p></div>
+  <div class="play">
+    <div class="play-bar"><span class="dots" aria-hidden="true"></span><div class="play-tabs" role="tablist" aria-label="Playground">
+      <button type="button" role="tab" id="pt-cmd" aria-controls="pp-cmd" aria-selected="true">🛑 <span>Would this get blocked?</span></button>
+      <button type="button" role="tab" id="pt-keys" aria-controls="pp-keys" aria-selected="false" tabindex="-1">🔑 <span>Would this leak a key?</span></button>
+      <button type="button" role="tab" id="pt-hooks" aria-controls="pp-hooks" aria-selected="false" tabindex="-1">🪝 <span>Build a hooks file</span></button>
+    </div></div>
+    <div class="play-panel" id="pp-cmd" role="tabpanel" aria-labelledby="pt-cmd">
+      <p class="play-q">Type a command Claude Code might run. Our <strong>Block dangerous commands</strong> hook decides, before it runs.</p>
+      <label class="term"><span class="sr">Command</span><span class="prompt" aria-hidden="true">$</span><input id="pl-cmd" value="rm -rf ~" spellcheck="false" autocomplete="off" autocapitalize="off"></label>
+      <div class="chips" id="pl-cmd-chips"></div>
+      <div class="verdict" id="pl-cmd-v" aria-live="polite"></div>
+      <a class="play-go" href="/tools/claude-code-hooks-generator/?hooks=danger">Add this hook to Claude Code →</a>
+    </div>
+    <div class="play-panel" id="pp-keys" role="tabpanel" aria-labelledby="pt-keys" hidden>
+      <p class="play-q">Paste a <code>.env</code>, a config or an error log. We point at anything that would leak if you pushed it to GitHub.</p>
+      <div class="play-duo"><label><span class="sr">Text to check</span><textarea id="pl-keys" rows="7" spellcheck="false"></textarea></label><div class="verdict" id="pl-keys-v" aria-live="polite"></div></div>
+      <a class="play-go" href="/tools/agents-md-generator/#check">The full secret leak checker is next. Bookmark so you catch it →</a>
+    </div>
+    <div class="play-panel" id="pp-hooks" role="tabpanel" aria-labelledby="pt-hooks" hidden>
+      <p class="play-q">Click what you want Claude Code to do on its own. Your <code>settings.json</code> writes itself.</p>
+      <div class="chips" id="pl-hooks-chips"></div>
+      <pre class="play-out"><code id="pl-hooks-out"></code></pre>
+      <a class="play-go" id="pl-hooks-go" href="/tools/claude-code-hooks-generator/">Open these in the full generator →</a>
+    </div>
   </div>
 </div></section>
+
+<section id="tools"><div class="wrap">
+  <div class="section-head"><div><span class="kicker">Free tools</span><h2>Set up your AI coding agent in minutes</h2></div><p>Generators and checkers built on the official specs.</p></div>
+  <div class="bento">
+${[TOOLS.at(-1), ...TOOLS.slice(0, -1)].map((t, i) => toolCard(t, i === 0)).join('\n')}
+    <div class="card soon"><div class="body"><span class="tag new">Coming soon</span><h3>Next on the workbench</h3><ul><li>🔐 Secret leak checker</li><li>🔁 Cursor rules ↔ CLAUDE.md converter</li><li>📄 llms.txt generator</li></ul><p>Bookmark this page (<kbd class="kbd-mod">Ctrl</kbd> + <kbd>D</kbd>) so you catch them.</p></div></div>
+  </div>
+</div></section>
+
+<!--LATEST-GUIDES-->
 
 <section id="new"><div class="wrap">
   <div class="section-head"><div><span class="kicker">Guides &amp; lists</span><h2>Fresh from the videos</h2></div><p>Every repo, prompt and line of code, in one place.</p></div>
@@ -276,20 +320,27 @@ ${TOOLS.map(toolCard).join('\n')}
   </div>
 </div></section>
 
-<section><div class="wrap">
-  <div class="section-head"><h2>What we make</h2></div>
-  <div class="pillars">
-    <div class="pillar"><div class="icon">🤖</div><h3>AI coding tools</h3><p>Claude Code, MCP, agents and prompting, shown on real projects, including the parts the AI gets wrong.</p></div>
-    <div class="pillar"><div class="icon">⚙️</div><h3>How tech works</h3><p>Why games run the same at 30 and 60 FPS, how Maps finds the fastest route, why "delete" doesn't delete.</p></div>
-    <div class="pillar"><div class="icon">📦</div><h3>Free dev resources</h3><p>Repos, tools, APIs and sites worth bookmarking. Every link is checked before it goes in a video.</p></div>
+<section id="shipped" aria-labelledby="shipped-h"><div class="wrap ship-grid">
+  <div>
+    <span class="kicker">Always shipping</span><h2 id="shipped-h">Something new every week</h2>
+    <ol class="ship-log">
+      <li class="next"><time>Up next</time><span><strong>Secret leak checker</strong> · paste code or a .env, see what would leak</span></li>
+${SHIPPED.map(([d, t, u, k]) => `      <li><time datetime="${d}">${new Date(d + 'T12:00:00Z').toLocaleDateString('en-US', { month: 'short', day: 'numeric', timeZone: 'UTC' })}</time><span>${u ? `<a href="${u}">${esc(t)}</a>` : u === null ? `<button type="button" class="link-btn" data-open-chat>${esc(t)}</button>` : esc(t)} <em>${k}</em></span></li>`).join('\n')}
+    </ol>
+  </div>
+  <div class="bookmark-card">
+    <img src="/img/icon-192.png" alt="" width="72" height="72" loading="lazy">
+    <h2>Bookmark Byte Buddy</h2>
+    <p>Free tools that stay up to date with the docs, and a short guide every week.<span class="bm-press"> Press:</span></p>
+    <div class="keys" aria-hidden="true"><kbd class="key kbd-mod" data-key="mod">Ctrl</kbd><span>+</span><kbd class="key" data-key="d">D</kbd></div>
+    <p class="bm-done" id="bm-done" hidden>🎉 Bugsy saw that. Welcome to the hive.</p>
+    <p class="bm-follow">Or follow Bugsy, new Shorts most days:</p>
+    ${socials()}
+    <p class="bm-rss"><a href="/blog/rss.xml">RSS feed for the blog</a></p>
   </div>
 </div></section>
-
-<section><div class="wrap">
-  <div class="section-head"><h2>Follow Bugsy</h2><p>New Shorts most days.</p></div>
-  ${socials()}
-</div></section>
 `,
+  scripts: ['home.js', 'blog.js'],
 });
 
 // ---- skills ----
@@ -1089,7 +1140,6 @@ const POSTS = fs.existsSync('content/blog')
       .filter((p) => p.draft !== 'true')
       .sort((a, b) => b.date.localeCompare(a.date))
   : [];
-const niceDate = (d) => new Date(d + 'T12:00:00Z').toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' });
 const postArt = (p) => {
   const tool = TOOLS.find((t) => t.url === p.tool);
   return `<div class="post-art" aria-hidden="true"><span>${esc(p.emoji || '📝')}</span>${tool ? `<small>${esc(tool.art[0])}</small>` : ''}</div>`;
@@ -1164,6 +1214,11 @@ ${others.length ? `<section class="wrap keep-reading"><div class="section-head">
   });
 }
 const FEATURED = POSTS.find((p) => p.featured === 'true') || POSTS[0];
+// home page: the latest guides (the home page is built before the posts are read, so it leaves a marker)
+pages[0].body = pages[0].body.replace('<!--LATEST-GUIDES-->', POSTS.length ? `<section id="guides"><div class="wrap">
+  <div class="section-head"><div><span class="kicker">From the blog</span><h2>Short guides that actually work</h2></div><a class="head-link" href="/blog/">All guides →</a></div>
+  <div class="cards">${[FEATURED, ...POSTS.filter((p) => p !== FEATURED)].slice(0, 3).map((p) => postCard(p)).join('')}</div>
+</div></section>` : '');
 if (POSTS.length)
   pages.push({
     url: '/blog/',
@@ -1301,6 +1356,7 @@ await build({ entryPoints: ['src/tools/skill-md.js'], bundle: true, minify: true
 await build({ entryPoints: ['src/tools/mcp-config.js'], bundle: true, minify: true, format: 'esm', target: 'es2020', outfile: `${OUT}/assets/tool-mcp-config.js` });
 await build({ entryPoints: ['src/tools/hooks.js'], bundle: true, minify: true, format: 'esm', target: 'es2020', outfile: `${OUT}/assets/tool-hooks.js` });
 await build({ entryPoints: ['src/tools/agents-md.js'], bundle: true, minify: true, format: 'esm', target: 'es2020', outfile: `${OUT}/assets/tool-agents-md.js` });
+await build({ entryPoints: ['src/home.js'], bundle: true, minify: true, format: 'esm', target: 'es2020', outfile: `${OUT}/assets/home.js` });
 await build({ entryPoints: ['src/blog.js'], bundle: true, minify: true, format: 'esm', target: 'es2020', outfile: `${OUT}/assets/blog.js` });
 await build({ entryPoints: ['src/chat.js'], bundle: true, minify: true, format: 'esm', target: 'es2020', outfile: `${OUT}/assets/chat.js` });
 await build({ entryPoints: ['src/site.js'], bundle: false, minify: true, format: 'esm', target: 'es2020', outfile: `${OUT}/assets/site.js` });

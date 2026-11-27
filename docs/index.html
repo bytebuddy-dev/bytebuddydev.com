@@ -26,7 +26,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600..800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap">
-<link rel="stylesheet" href="/assets/site.css?v=mwyt1469">
+<link rel="stylesheet" href="/assets/site.css?v=mwyv75m4">
 <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://bytebuddydev.com/#org","name":"Byte Buddy","url":"https://bytebuddydev.com/","logo":"https://bytebuddydev.com/img/icon-192.png","sameAs":["https://www.youtube.com/@bytebuddydev","https://www.instagram.com/bytebuddydev/","https://www.tiktok.com/@bytebuddydev","https://github.com/bytebuddy-dev"]},{"@type":"WebSite","@id":"https://bytebuddydev.com/#site","url":"https://bytebuddydev.com/","name":"Byte Buddy","publisher":{"@id":"https://bytebuddydev.com/#org"}}]}</script>
 </head>
 <body>
@@ -59,14 +59,51 @@
   </div>
 </section>
 
+<div class="marquee" aria-hidden="true"><div class="marquee-track"><span>Free, no sign-up</span><b>✦</b><span>Nothing leaves your browser</span><b>✦</b><span>Checked against the official docs</span><b>✦</b><span>Made for Claude Code, Cursor, Codex & friends</span><b>✦</b><span>New guides every week</span><b>✦</b><span>Hosted by a bug 🐝</span><b>✦</b><span>Free, no sign-up</span><b>✦</b><span>Nothing leaves your browser</span><b>✦</b><span>Checked against the official docs</span><b>✦</b><span>Made for Claude Code, Cursor, Codex & friends</span><b>✦</b><span>New guides every week</span><b>✦</b><span>Hosted by a bug 🐝</span><b>✦</b></div></div>
+
+<section id="try" class="try" aria-labelledby="try-h"><div class="wrap">
+  <div class="section-head"><div><span class="kicker">Try it right here</span><h2 id="try-h">Three tiny tools. <span class="hl">Zero sign-up.</span></h2></div><p>The same checks our full tools run, live in your browser.</p></div>
+  <div class="play">
+    <div class="play-bar"><span class="dots" aria-hidden="true"></span><div class="play-tabs" role="tablist" aria-label="Playground">
+      <button type="button" role="tab" id="pt-cmd" aria-controls="pp-cmd" aria-selected="true">🛑 <span>Would this get blocked?</span></button>
+      <button type="button" role="tab" id="pt-keys" aria-controls="pp-keys" aria-selected="false" tabindex="-1">🔑 <span>Would this leak a key?</span></button>
+      <button type="button" role="tab" id="pt-hooks" aria-controls="pp-hooks" aria-selected="false" tabindex="-1">🪝 <span>Build a hooks file</span></button>
+    </div></div>
+    <div class="play-panel" id="pp-cmd" role="tabpanel" aria-labelledby="pt-cmd">
+      <p class="play-q">Type a command Claude Code might run. Our <strong>Block dangerous commands</strong> hook decides, before it runs.</p>
+      <label class="term"><span class="sr">Command</span><span class="prompt" aria-hidden="true">$</span><input id="pl-cmd" value="rm -rf ~" spellcheck="false" autocomplete="off" autocapitalize="off"></label>
+      <div class="chips" id="pl-cmd-chips"></div>
+      <div class="verdict" id="pl-cmd-v" aria-live="polite"></div>
+      <a class="play-go" href="/tools/claude-code-hooks-generator/?hooks=danger">Add this hook to Claude Code →</a>
+    </div>
+    <div class="play-panel" id="pp-keys" role="tabpanel" aria-labelledby="pt-keys" hidden>
+      <p class="play-q">Paste a <code>.env</code>, a config or an error log. We point at anything that would leak if you pushed it to GitHub.</p>
+      <div class="play-duo"><label><span class="sr">Text to check</span><textarea id="pl-keys" rows="7" spellcheck="false"></textarea></label><div class="verdict" id="pl-keys-v" aria-live="polite"></div></div>
+      <a class="play-go" href="/tools/agents-md-generator/#check">The full secret leak checker is next. Bookmark so you catch it →</a>
+    </div>
+    <div class="play-panel" id="pp-hooks" role="tabpanel" aria-labelledby="pt-hooks" hidden>
+      <p class="play-q">Click what you want Claude Code to do on its own. Your <code>settings.json</code> writes itself.</p>
+      <div class="chips" id="pl-hooks-chips"></div>
+      <pre class="play-out"><code id="pl-hooks-out"></code></pre>
+      <a class="play-go" id="pl-hooks-go" href="/tools/claude-code-hooks-generator/">Open these in the full generator →</a>
+    </div>
+  </div>
+</div></section>
+
 <section id="tools"><div class="wrap">
   <div class="section-head"><div><span class="kicker">Free tools</span><h2>Set up your AI coding agent in minutes</h2></div><p>Generators and checkers built on the official specs.</p></div>
-  <div class="cards">
+  <div class="bento">
+<a class="card big" href="/tools/claude-code-hooks-generator/"><div class="art art-tool" aria-hidden="true"><span>hooks</span><small>Generator + checker</small></div><div class="body"><span class="tag new">New · free tool</span><h3>Claude Code hooks generator &amp; checker</h3><p>Notifications, auto-format, blocked dangerous commands, tests before Claude finishes: pick them, copy one settings.json. macOS, Linux and Windows.</p><span class="go">Open the tool →</span></div></a>
 <a class="card" href="/tools/skill-md-generator/"><div class="art art-tool" aria-hidden="true"><span>SKILL.md</span><small>Generator + validator</small></div><div class="body"><span class="tag">Free tool</span><h3>SKILL.md generator &amp; validator</h3><p>Make a Claude / Agent Skill in a minute, or paste one to check it against the official rules.</p><span class="go">Open the tool →</span></div></a>
 <a class="card" href="/tools/agents-md-generator/"><div class="art art-tool" aria-hidden="true"><span>AGENTS.md</span><small>Generator + checker</small></div><div class="body"><span class="tag">Free tool</span><h3>AGENTS.md &amp; CLAUDE.md generator</h3><p>Pick your stack, tick your rules, get an AGENTS.md and CLAUDE.md. Plus a checker for leaked secrets and vague rules.</p><span class="go">Open the tool →</span></div></a>
 <a class="card" href="/tools/mcp-config-generator/"><div class="art art-tool" aria-hidden="true"><span>mcp.json</span><small>Generator + converter</small></div><div class="body"><span class="tag">Free tool</span><h3>MCP config generator &amp; converter</h3><p>The exact MCP config for Claude Code, Cursor, VS Code, Codex and 6 more apps, or convert one app's config to another.</p><span class="go">Open the tool →</span></div></a>
-<a class="card" href="/tools/claude-code-hooks-generator/"><div class="art art-tool" aria-hidden="true"><span>hooks</span><small>Generator + checker</small></div><div class="body"><span class="tag">Free tool</span><h3>Claude Code hooks generator &amp; checker</h3><p>Notifications, auto-format, blocked dangerous commands, tests before Claude finishes: pick them, copy one settings.json. macOS, Linux and Windows.</p><span class="go">Open the tool →</span></div></a>
+    <div class="card soon"><div class="body"><span class="tag new">Coming soon</span><h3>Next on the workbench</h3><ul><li>🔐 Secret leak checker</li><li>🔁 Cursor rules ↔ CLAUDE.md converter</li><li>📄 llms.txt generator</li></ul><p>Bookmark this page (<kbd class="kbd-mod">Ctrl</kbd> + <kbd>D</kbd>) so you catch them.</p></div></div>
   </div>
+</div></section>
+
+<section id="guides"><div class="wrap">
+  <div class="section-head"><div><span class="kicker">From the blog</span><h2>Short guides that actually work</h2></div><a class="head-link" href="/blog/">All guides →</a></div>
+  <div class="cards"><a class="card post-card" href="/blog/claude-code-hooks-examples/" data-slug="claude-code-hooks-examples"><div class="post-art" aria-hidden="true"><span>🪝</span><small>hooks</small></div><div class="body"><span class="tag">4 min read</span><h3>Claude Code Hooks: 10 Copy-Paste Examples That Actually Work</h3><p>Ten tested Claude Code hooks: notifications, auto-format, blocking rm -rf and force-push, protecting .env, running tests before Claude stops. Windows too.</p><span class="go">Read it →</span></div><span class="read-meter" aria-hidden="true"></span></a><a class="card post-card" href="/blog/add-mcp-server-to-cursor/" data-slug="add-mcp-server-to-cursor"><div class="post-art" aria-hidden="true"><span>🔌</span><small>mcp.json</small></div><div class="body"><span class="tag">2 min read</span><h3>How to Add an MCP Server to Cursor (and Fix It When It Won't Start)</h3><p>Where Cursor's mcp.json lives, the exact format for local and remote servers, how to keep API keys out of it, and the 5 mistakes that stop servers.</p><span class="go">Read it →</span></div><span class="read-meter" aria-hidden="true"></span></a><a class="card post-card" href="/blog/agents-md-vs-claude-md/" data-slug="agents-md-vs-claude-md"><div class="post-art" aria-hidden="true"><span>🤖</span><small>AGENTS.md</small></div><div class="body"><span class="tag">3 min read</span><h3>AGENTS.md vs CLAUDE.md: Which One Do You Need?</h3><p>AGENTS.md is read by most coding agents, CLAUDE.md by Claude Code. How they differ, and the one-line setup that keeps both in sync.</p><span class="go">Read it →</span></div><span class="read-meter" aria-hidden="true"></span></a></div>
 </div></section>
 
 <section id="new"><div class="wrap">
@@ -87,18 +124,29 @@
   </div>
 </div></section>
 
-<section><div class="wrap">
-  <div class="section-head"><h2>What we make</h2></div>
-  <div class="pillars">
-    <div class="pillar"><div class="icon">🤖</div><h3>AI coding tools</h3><p>Claude Code, MCP, agents and prompting, shown on real projects, including the parts the AI gets wrong.</p></div>
-    <div class="pillar"><div class="icon">⚙️</div><h3>How tech works</h3><p>Why games run the same at 30 and 60 FPS, how Maps finds the fastest route, why "delete" doesn't delete.</p></div>
-    <div class="pillar"><div class="icon">📦</div><h3>Free dev resources</h3><p>Repos, tools, APIs and sites worth bookmarking. Every link is checked before it goes in a video.</p></div>
+<section id="shipped" aria-labelledby="shipped-h"><div class="wrap ship-grid">
+  <div>
+    <span class="kicker">Always shipping</span><h2 id="shipped-h">Something new every week</h2>
+    <ol class="ship-log">
+      <li class="next"><time>Up next</time><span><strong>Secret leak checker</strong> · paste code or a .env, see what would leak</span></li>
+      <li><time datetime="2026-11-27">Nov 27</time><span><a href="/tools/claude-code-hooks-generator/">Claude Code hooks generator &amp; checker</a> <em>Tool</em></span></li>
+      <li><time datetime="2026-11-27">Nov 27</time><span><a href="/blog/">The blog, with 3 guides and a reading mode</a> <em>Guides</em></span></li>
+      <li><time datetime="2026-11-27">Nov 27</time><span><button type="button" class="link-btn" data-open-chat>Ask Bugsy: the bug in the corner now answers questions</button> <em>Feature</em></span></li>
+      <li><time datetime="2026-11-26">Nov 26</time><span><a href="/tools/mcp-config-generator/">MCP config generator &amp; converter</a> <em>Tool</em></span></li>
+      <li><time datetime="2026-11-26">Nov 26</time><span><a href="/tools/agents-md-generator/">AGENTS.md &amp; CLAUDE.md generator</a> <em>Tool</em></span></li>
+      <li><time datetime="2026-11-26">Nov 26</time><span><a href="/tools/skill-md-generator/">SKILL.md generator &amp; validator</a> <em>Tool</em></span></li>
+    </ol>
   </div>
-</div></section>
-
-<section><div class="wrap">
-  <div class="section-head"><h2>Follow Bugsy</h2><p>New Shorts most days.</p></div>
-  <div class="follow"><a class="social" href="https://www.youtube.com/@bytebuddydev" rel="noopener me"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="1" y="4.5" width="22" height="15" rx="4.5" fill="#ff0033"/><path d="M10 8.6v6.8l5.8-3.4z" fill="#fff"/></svg> YouTube</a><a class="social" href="https://www.instagram.com/bytebuddydev/" rel="noopener me"><svg viewBox="0 0 24 24" aria-hidden="true"><defs><linearGradient id="ig" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#feda75"/><stop offset=".35" stop-color="#fa7e1e"/><stop offset=".6" stop-color="#d62976"/><stop offset="1" stop-color="#4f5bd5"/></linearGradient></defs><rect x="1" y="1" width="22" height="22" rx="6.5" fill="url(#ig)"/><rect x="5.5" y="5.5" width="13" height="13" rx="4" fill="none" stroke="#fff" stroke-width="1.8"/><circle cx="12" cy="12" r="3.1" fill="none" stroke="#fff" stroke-width="1.8"/></svg> Instagram</a><a class="social" href="https://www.tiktok.com/@bytebuddydev" rel="noopener me"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="1" y="1" width="22" height="22" rx="6" fill="#000"/><path d="M13.6 5h2.3c.2 1.6 1.4 2.9 3 3.1v2.4a5.6 5.6 0 0 1-3-1v5.2a4.3 4.3 0 1 1-4.3-4.3l.6.05v2.5a1.9 1.9 0 1 0 1.4 1.8z" fill="#fff"/></svg> TikTok</a><a class="social" href="https://github.com/bytebuddy-dev" rel="noopener me"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 .5a11.5 11.5 0 0 0-3.6 22.4c.6.1.8-.3.8-.6v-2c-3.2.7-3.9-1.5-3.9-1.5-.5-1.3-1.3-1.7-1.3-1.7-1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.8 1.3 3.5 1 .1-.8.4-1.3.7-1.6-2.6-.3-5.3-1.3-5.3-5.7 0-1.3.5-2.3 1.2-3.1-.1-.3-.5-1.5.1-3.1 0 0 1-.3 3.2 1.2a11 11 0 0 1 5.8 0c2.2-1.5 3.2-1.2 3.2-1.2.6 1.6.2 2.8.1 3.1.8.8 1.2 1.8 1.2 3.1 0 4.4-2.7 5.4-5.3 5.7.4.4.8 1.1.8 2.2v3.3c0 .3.2.7.8.6A11.5 11.5 0 0 0 12 .5z"/></svg> GitHub</a></div>
+  <div class="bookmark-card">
+    <img src="/img/icon-192.png" alt="" width="72" height="72" loading="lazy">
+    <h2>Bookmark Byte Buddy</h2>
+    <p>Free tools that stay up to date with the docs, and a short guide every week.<span class="bm-press"> Press:</span></p>
+    <div class="keys" aria-hidden="true"><kbd class="key kbd-mod" data-key="mod">Ctrl</kbd><span>+</span><kbd class="key" data-key="d">D</kbd></div>
+    <p class="bm-done" id="bm-done" hidden>🎉 Bugsy saw that. Welcome to the hive.</p>
+    <p class="bm-follow">Or follow Bugsy, new Shorts most days:</p>
+    <div class="follow"><a class="social" href="https://www.youtube.com/@bytebuddydev" rel="noopener me"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="1" y="4.5" width="22" height="15" rx="4.5" fill="#ff0033"/><path d="M10 8.6v6.8l5.8-3.4z" fill="#fff"/></svg> YouTube</a><a class="social" href="https://www.instagram.com/bytebuddydev/" rel="noopener me"><svg viewBox="0 0 24 24" aria-hidden="true"><defs><linearGradient id="ig" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#feda75"/><stop offset=".35" stop-color="#fa7e1e"/><stop offset=".6" stop-color="#d62976"/><stop offset="1" stop-color="#4f5bd5"/></linearGradient></defs><rect x="1" y="1" width="22" height="22" rx="6.5" fill="url(#ig)"/><rect x="5.5" y="5.5" width="13" height="13" rx="4" fill="none" stroke="#fff" stroke-width="1.8"/><circle cx="12" cy="12" r="3.1" fill="none" stroke="#fff" stroke-width="1.8"/></svg> Instagram</a><a class="social" href="https://www.tiktok.com/@bytebuddydev" rel="noopener me"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="1" y="1" width="22" height="22" rx="6" fill="#000"/><path d="M13.6 5h2.3c.2 1.6 1.4 2.9 3 3.1v2.4a5.6 5.6 0 0 1-3-1v5.2a4.3 4.3 0 1 1-4.3-4.3l.6.05v2.5a1.9 1.9 0 1 0 1.4 1.8z" fill="#fff"/></svg> TikTok</a><a class="social" href="https://github.com/bytebuddy-dev" rel="noopener me"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 .5a11.5 11.5 0 0 0-3.6 22.4c.6.1.8-.3.8-.6v-2c-3.2.7-3.9-1.5-3.9-1.5-.5-1.3-1.3-1.7-1.3-1.7-1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.8 1.3 3.5 1 .1-.8.4-1.3.7-1.6-2.6-.3-5.3-1.3-5.3-5.7 0-1.3.5-2.3 1.2-3.1-.1-.3-.5-1.5.1-3.1 0 0 1-.3 3.2 1.2a11 11 0 0 1 5.8 0c2.2-1.5 3.2-1.2 3.2-1.2.6 1.6.2 2.8.1 3.1.8.8 1.2 1.8 1.2 3.1 0 4.4-2.7 5.4-5.3 5.7.4.4.8 1.1.8 2.2v3.3c0 .3.2.7.8.6A11.5 11.5 0 0 0 12 .5z"/></svg> GitHub</a></div>
+    <p class="bm-rss"><a href="/blog/rss.xml">RSS feed for the blog</a></p>
+  </div>
 </div></section>
 
 </main>
@@ -121,8 +169,9 @@
   <div class="chat-chips"></div>
   <form><label class="sr" for="chat-input">Message</label><input id="chat-input" autocomplete="off" maxlength="500" placeholder="Ask Bugsy or leave a message…"><button type="submit" aria-label="Send">➤</button></form>
 </section>
-<script type="module" src="/assets/site.js?v=mwyt1469"></script>
-<script type="module" src="/assets/chat.js?v=mwyt1469"></script>
-
+<script type="module" src="/assets/site.js?v=mwyv75m4"></script>
+<script type="module" src="/assets/chat.js?v=mwyv75m4"></script>
+<script type="module" src="/assets/home.js?v=mwyv75m4"></script>
+<script type="module" src="/assets/blog.js?v=mwyv75m4"></script>
 </body>
 </html>
